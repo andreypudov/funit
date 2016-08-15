@@ -1,0 +1,22 @@
+## Project build directory
+modules/
+out/
+
+## Compiled source 
+*.mod
+*.o
+
+## System files 
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+## IDE files
+.cproject
+.project
+.settings

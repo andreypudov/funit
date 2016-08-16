@@ -24,50 +24,47 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) Equals
+submodule (Conditions) NotNull
 contains
-    module subroutine equals_character(expected, actual, message)
+    module function notNull_character(pointer, message) result(value)
         character(len=*), optional, intent(in) :: message
+        character,        pointer,  intent(in) :: pointer
 
-        character, intent(in) :: expected
-        character, intent(in) :: actual
-    end subroutine
+        logical value
+    end function
 
-    module subroutine equals_complex(expected, actual, delta, message)
+    module function notNull_complex(pointer, message) result(value)
         character(len=*), optional, intent(in) :: message
+        complex,          pointer, intent(in)  :: pointer
 
-        complex, intent(in) :: expected
-        complex, intent(in) :: actual
-        real,    intent(in) :: delta
-    end subroutine
+        logical value
+    end function
 
-    module subroutine equals_double_precision(expected, actual, delta, message)
+    module function notNull_double_precision(pointer, message) result(value)
         character(len=*), optional, intent(in) :: message
+        double precision, pointer,  intent(in) :: pointer
 
-        double precision, intent(in) :: expected
-        double precision, intent(in) :: actual
-        double precision, intent(in) :: delta
-    end subroutine
+        logical value
+    end function
 
-    module subroutine equals_integer(expected, actual, message)
+    module function notNull_integer(pointer, message) result(value)
         character(len=*), optional, intent(in) :: message
+        integer,          pointer,  intent(in) :: pointer
 
-        integer, intent(in) :: expected
-        integer, intent(in) :: actual
-    end subroutine
+        logical value
+    end function
 
-    module subroutine equals_logical(expected, actual, message)
+    module function notNull_logical(pointer, message) result(value)
         character(len=*), optional, intent(in) :: message
+        logical,          pointer,  intent(in) :: pointer
 
-        logical, intent(in) :: expected
-        logical, intent(in) :: actual
-    end subroutine
+        logical value
+    end function
 
-    module subroutine equals_real(expected, actual, delta, message)
+    module function notNull_real(pointer, message) result(value)
         character(len=*), optional, intent(in) :: message
+        real,             pointer,  intent(in) :: pointer
 
-        real, intent(in) :: expected
-        real, intent(in) :: actual
-        real, intent(in) :: delta
-    end subroutine
+        logical value
+    end function
 end submodule

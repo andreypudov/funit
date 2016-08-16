@@ -24,50 +24,62 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) ArrayEquals
+submodule (Conditions) ArrayEquals
 contains
-    module subroutine arrayEquals_character(expected, actual, message)
+    module function arrayEquals_character(expected, actual, message) result(value)
         character(len=*), optional, intent(in) :: message
 
         character, dimension(:), intent(in) :: expected
         character, dimension(:), intent(in) :: actual
-    end subroutine
 
-    module subroutine arrayEquals_complex(expected, actual, delta, message)
+        logical value
+    end function
+
+    module function arrayEquals_complex(expected, actual, delta, message) result(value)
         character(len=*), optional, intent(in) :: message
 
         complex, dimension(:), intent(in) :: expected
         complex, dimension(:), intent(in) :: actual
         real,                  intent(in) :: delta
-    end subroutine
 
-    module subroutine arrayEquals_double_precision(expected, actual, delta, message)
+        logical value
+    end function
+
+    module function arrayEquals_double_precision(expected, actual, delta, message) result(value)
         character(len=*), optional, intent(in) :: message
 
         double precision, dimension(:), intent(in) :: expected
         double precision, dimension(:), intent(in) :: actual
         double precision,               intent(in) :: delta
-    end subroutine
 
-    module subroutine arrayEquals_integer(expected, actual, message)
+        logical value
+    end function
+
+    module function arrayEquals_integer(expected, actual, message) result(value)
         character(len=*), optional, intent(in) :: message
 
         integer, dimension(:), intent(in) :: expected
         integer, dimension(:), intent(in) :: actual
-    end subroutine
 
-    module subroutine arrayEquals_logical(expected, actual, message)
+        logical value
+    end function
+
+    module function arrayEquals_logical(expected, actual, message) result(value)
         character(len=*), optional, intent(in) :: message
 
         logical, dimension(:), intent(in) :: expected
         logical, dimension(:), intent(in) :: actual
-    end subroutine
 
-    module subroutine arrayEquals_real(expected, actual, delta, message)
+        logical value
+    end function
+
+    module function arrayEquals_real(expected, actual, delta, message) result(value)
         character(len=*), optional, intent(in) :: message
 
         real, dimension(:), intent(in) :: expected
         real, dimension(:), intent(in) :: actual
         real,               intent(in) :: delta
-    end subroutine
+
+        logical value
+    end function
 end submodule

@@ -1,1 +1,1 @@
-# A unit testing framework for Fortran
+# A unit testing library for Fortran

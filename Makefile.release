@@ -1,5 +1,5 @@
 FC      = ifort
-FFLAGS  = -c -free -module modules -g3 -warn all -warn nounused
+FFLAGS  = -xHost -c -free -module modules -g3 -warn all -warn nounused
 LDFLAGS = -save-temps -dynamiclib
 
 INTERFACES = src/Foundation.f
@@ -10,15 +10,15 @@ EXECUTABLE = Foundation.dlyb
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	@echo 'Linking to $@...'
-	@$(FC) $(LDFLAGS) $(OBJECTS) -o out/$@
+    @echo 'Linking to $@...'
+    @$(FC) $(LDFLAGS) $(OBJECTS) -o out/$@
 
 out/%.o: %.f
-	@echo 'Compiling $@...'
-	@mkdir -p modules
-	@mkdir -p $(dir $@)
-	@$(FC) $(FFLAGS) -c $< -o $@
+    @echo 'Compiling $@...'
+    @mkdir -p modules
+    @mkdir -p $(dir $@)
+    @$(FC) $(FFLAGS) -c $< -o $@
 
 clean:
-	@echo "Cleaning..."
-	@rm -rf modules out $(EXECUTABLE)
+    @echo "Cleaning..."
+    @rm -rf modules out $(EXECUTABLE)

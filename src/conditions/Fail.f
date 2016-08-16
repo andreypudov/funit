@@ -24,9 +24,10 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) Fail
+submodule (Conditions) Fail
 contains
-    module subroutine fail(message)
+    module function fail(message) result(value)
         character(len=*), optional, intent(in) :: message
-    end subroutine
+        logical value
+    end function
 end submodule

@@ -1,9 +1,9 @@
 !
-! A unit testing library for Fortran.
+! A unit testing library for Fortran
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov.
+! Copyright 2011-2016 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,9 +24,12 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) Fail
+submodule (Conditions) False
 contains
-    module subroutine fail(message)
+    module function false(condition, message) result(value)
         character(len=*), optional, intent(in) :: message
-    end subroutine
+        logical, intent(in) :: condition
+
+        logical value
+    end function
 end submodule

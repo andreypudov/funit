@@ -24,50 +24,41 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) Equals
+submodule (Unit) Same
 contains
-    module subroutine equals_character(expected, actual, message)
+    module subroutine same_character(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
-
-        character, intent(in) :: expected
-        character, intent(in) :: actual
+        character,        pointer,  intent(in) :: unexpected
+        character,        pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine equals_complex(expected, actual, delta, message)
+    module subroutine same_complex(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
-
-        complex, intent(in) :: expected
-        complex, intent(in) :: actual
-        real,    intent(in) :: delta
+        complex,          pointer, intent(in)  :: unexpected
+        complex,          pointer, intent(in)  :: actual
     end subroutine
 
-    module subroutine equals_double_precision(expected, actual, delta, message)
+    module subroutine same_double_precision(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
-
-        double precision, intent(in) :: expected
-        double precision, intent(in) :: actual
-        double precision, intent(in) :: delta
+        double precision, pointer,  intent(in) :: unexpected
+        double precision, pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine equals_integer(expected, actual, message)
+    module subroutine same_integer(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
-
-        integer, intent(in) :: expected
-        integer, intent(in) :: actual
+        integer,          pointer,  intent(in) :: unexpected
+        integer,          pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine equals_logical(expected, actual, message)
+    module subroutine same_logical(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
-
-        logical, intent(in) :: expected
-        logical, intent(in) :: actual
+        logical,          pointer,  intent(in) :: unexpected
+        logical,          pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine equals_real(expected, actual, delta, message)
+    module subroutine same_real(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
-
-        real, intent(in) :: expected
-        real, intent(in) :: actual
-        real, intent(in) :: delta
+        real,             pointer,  intent(in) :: unexpected
+        real,             pointer,  intent(in) :: actual
     end subroutine
 end submodule

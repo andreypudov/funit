@@ -26,10 +26,10 @@
 
 submodule (Conditions) False
 contains
-    module function false(condition, message) result(value)
-        character(len=*), optional, intent(in) :: message
+    module pure function false(condition) result(value)
         logical, intent(in) :: condition
-
         logical value
+
+        value = (.not. condition)
     end function
 end submodule

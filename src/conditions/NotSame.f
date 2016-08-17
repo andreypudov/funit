@@ -26,51 +26,57 @@
 
 submodule (Conditions) NotSame
 contains
-    module function notSame_character(unexpected, actual, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: unexpected
-        character,        pointer,  intent(in) :: actual
+    module pure function notSame_character(unexpected, actual) result(value)
+        character, pointer,  intent(in) :: unexpected
+        character, pointer,  intent(in) :: actual
 
         logical value
+
+        value = (.not. associated(unexpected, actual))
     end function
 
-    module function notSame_complex(unexpected, actual, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: unexpected
-        complex,          pointer, intent(in)  :: actual
+    module pure function notSame_complex(unexpected, actual) result(value)
+        complex, pointer, intent(in)  :: unexpected
+        complex, pointer, intent(in)  :: actual
 
         logical value
+
+        value = (.not. associated(unexpected, actual))
     end function
 
-    module function notSame_double_precision(unexpected, actual, message) result(value)
-        character(len=*), optional, intent(in) :: message
+    module pure function notSame_double_precision(unexpected, actual) result(value)
         double precision, pointer,  intent(in) :: unexpected
         double precision, pointer,  intent(in) :: actual
 
         logical value
+
+        value = (.not. associated(unexpected, actual))
     end function
 
-    module function notSame_integer(unexpected, actual, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: unexpected
-        integer,          pointer,  intent(in) :: actual
+    module pure function notSame_integer(unexpected, actual) result(value)
+        integer, pointer,  intent(in) :: unexpected
+        integer, pointer,  intent(in) :: actual
 
         logical value
+
+        value = (.not. associated(unexpected, actual))
     end function
 
-    module function notSame_logical(unexpected, actual, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: unexpected
-        logical,          pointer,  intent(in) :: actual
+    module pure function notSame_logical(unexpected, actual) result(value)
+        logical, pointer,  intent(in) :: unexpected
+        logical, pointer,  intent(in) :: actual
 
         logical value
+
+        value = (.not. associated(unexpected, actual))
     end function
 
-    module function notSame_real(unexpected, actual, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: unexpected
-        real,             pointer,  intent(in) :: actual
+    module pure function notSame_real(unexpected, actual) result(value)
+        real, pointer,  intent(in) :: unexpected
+        real, pointer,  intent(in) :: actual
 
         logical value
+
+        value = (.not. associated(unexpected, actual))
     end function
 end submodule

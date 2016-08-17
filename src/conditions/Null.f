@@ -26,45 +26,45 @@
 
 submodule (Conditions) Null
 contains
-    module function null_character(pointer, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: pointer
-
+    module pure function null_character(pointer) result(value)
+        character, pointer,  intent(in) :: pointer
         logical value
+
+        value = associated(pointer)
     end function
 
-    module function null_complex(pointer, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: pointer
-
+    module pure function null_complex(pointer) result(value)
+        complex, pointer, intent(in)  :: pointer
         logical value
+
+        value = associated(pointer)
     end function
 
-    module function null_double_precision(pointer, message) result(value)
-        character(len=*), optional, intent(in) :: message
+    module pure function null_double_precision(pointer) result(value)
         double precision, pointer,  intent(in) :: pointer
-
         logical value
+
+        value = associated(pointer)
     end function
 
-    module function null_integer(pointer, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: pointer
-
+    module pure function null_integer(pointer) result(value)
+        integer, pointer,  intent(in) :: pointer
         logical value
+
+        value = associated(pointer)
     end function
 
-    module function null_logical(pointer, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: pointer
-
+    module pure function null_logical(pointer) result(value)
+        logical, pointer,  intent(in) :: pointer
         logical value
+
+        value = associated(pointer)
     end function
 
-    module function null_real(pointer, message) result(value)
-        character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: pointer
-
+    module pure function null_real(pointer) result(value)
+        real, pointer,  intent(in) :: pointer
         logical value
+
+        value = associated(pointer)
     end function
 end submodule

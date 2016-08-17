@@ -29,22 +29,18 @@ module Conditions
     implicit none
     public
 
-    interface
-        !
-        ! ArrayEquals - asserts that two arrays are equal.
-        !
-        module function arrayEquals_character(expected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+    !
+    ! ArrayEquals - asserts that two arrays are equal.
+    !
+    interface arrayEquals
+        module pure function arrayEquals_character(expected, actual) result(value)
             character, dimension(:), intent(in) :: expected
             character, dimension(:), intent(in) :: actual
 
             logical value
         end function
 
-        module function arrayEquals_complex(expected, actual, delta, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function arrayEquals_complex(expected, actual, delta) result(value)
             complex, dimension(:), intent(in) :: expected
             complex, dimension(:), intent(in) :: actual
             real,                  intent(in) :: delta
@@ -52,9 +48,7 @@ module Conditions
             logical value
         end function
 
-        module function arrayEquals_double_precision(expected, actual, delta, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function arrayEquals_double_precision(expected, actual, delta) result(value)
             double precision, dimension(:), intent(in) :: expected
             double precision, dimension(:), intent(in) :: actual
             double precision,               intent(in) :: delta
@@ -62,49 +56,41 @@ module Conditions
             logical value
         end function
 
-        module function arrayEquals_integer(expected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function arrayEquals_integer(expected, actual) result(value)
             integer, dimension(:), intent(in) :: expected
             integer, dimension(:), intent(in) :: actual
 
             logical value
         end function
 
-        module function arrayEquals_logical(expected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function arrayEquals_logical(expected, actual) result(value)
             logical, dimension(:), intent(in) :: expected
             logical, dimension(:), intent(in) :: actual
 
             logical value
         end function
 
-        module function arrayEquals_real(expected, actual, delta, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function arrayEquals_real(expected, actual, delta) result(value)
             real, dimension(:), intent(in) :: expected
             real, dimension(:), intent(in) :: actual
             real,               intent(in) :: delta
 
             logical value
         end function
+    end interface
 
-        !
-        ! Equals - asserts that two values are equal.
-        !
-        module function equals_character(expected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+    !
+    ! Equals - asserts that two values are equal.
+    !
+    interface equals
+        module pure function equals_character(expected, actual) result(value)
             character, intent(in) :: expected
             character, intent(in) :: actual
 
             logical value
         end function
 
-        module function equals_complex(expected, actual, delta, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function equals_complex(expected, actual, delta) result(value)
             complex, intent(in) :: expected
             complex, intent(in) :: actual
             real,    intent(in) :: delta
@@ -112,9 +98,7 @@ module Conditions
             logical value
         end function
 
-        module function equals_double_precision(expected, actual, delta, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function equals_double_precision(expected, actual, delta) result(value)
             double precision, intent(in) :: expected
             double precision, intent(in) :: actual
             double precision, intent(in) :: delta
@@ -122,27 +106,21 @@ module Conditions
             logical value
         end function
 
-        module function equals_integer(expected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function equals_integer(expected, actual) result(value)
             integer, intent(in) :: expected
             integer, intent(in) :: actual
 
             logical value
         end function
 
-        module function equals_logical(expected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function equals_logical(expected, actual) result(value)
             logical, intent(in) :: expected
             logical, intent(in) :: actual
 
             logical value
         end function
 
-        module function equals_real(expected, actual, delta, message) result(value)
-            character(len=*), optional, intent(in) :: message
-
+        module pure function equals_real(expected, actual, delta) result(value)
             real, intent(in) :: expected
             real, intent(in) :: actual
             real, intent(in) :: delta
@@ -150,223 +128,188 @@ module Conditions
             logical value
         end function
 
-        !
-        ! False - asserts that a condition is false.
-        !
-        module function false(condition, message) result(value)
-            character(len=*), optional, intent(in) :: message
+    end interface
+
+    !
+    ! False - asserts that a condition is false.
+    !
+    interface
+        module pure function false(condition) result(value)
             logical, intent(in) :: condition
+            logical value
+        end function
+    end interface
 
+    !
+    ! NutNull - asserts that a pointer isn't null (associated).
+    !
+    interface notNull
+        module pure function notNull_character(pointer) result(value)
+            character, pointer,  intent(in) :: pointer
             logical value
         end function
 
-        !
-        ! NutNull - asserts that a pointer isn't null (associated).
-        !
-        module function notNull_character(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            character,        pointer,  intent(in) :: pointer
-
+        module pure function notNull_complex(pointer) result(value)
+            complex, pointer, intent(in)  :: pointer
             logical value
         end function
 
-        module function notNull_complex(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            complex,          pointer, intent(in)  :: pointer
-
-            logical value
-        end function
-
-        module function notNull_double_precision(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
+        module pure function notNull_double_precision(pointer) result(value)
             double precision, pointer,  intent(in) :: pointer
+            logical value
+        end function
+
+        module pure function notNull_integer(pointer) result(value)
+            integer, pointer,  intent(in) :: pointer
+            logical value
+        end function
+
+        module pure function notNull_logical(pointer) result(value)
+            logical, pointer,  intent(in) :: pointer
+            logical value
+        end function
+
+        module pure function notNull_real(pointer) result(value)
+            real, pointer,  intent(in) :: pointer
+            logical value
+        end function
+    end interface
+
+    !
+    ! NotSame - asserts that two pointers do not refer to the same target.
+    !
+    interface notSame
+        module pure function notSame_character(unexpected, actual) result(value)
+            character, pointer,  intent(in) :: unexpected
+            character, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function notNull_integer(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            integer,          pointer,  intent(in) :: pointer
+        module pure function notSame_complex(unexpected, actual) result(value)
+            complex, pointer, intent(in)  :: unexpected
+            complex, pointer, intent(in)  :: actual
 
             logical value
         end function
 
-        module function notNull_logical(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            logical,          pointer,  intent(in) :: pointer
-
-            logical value
-        end function
-
-        module function notNull_real(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            real,             pointer,  intent(in) :: pointer
-
-            logical value
-        end function
-
-        !
-        ! NotSame - asserts that two pointers do not refer to the same target.
-        !
-        module function notSame_character(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            character,        pointer,  intent(in) :: unexpected
-            character,        pointer,  intent(in) :: actual
-
-            logical value
-        end function
-
-        module function notSame_complex(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            complex,          pointer, intent(in)  :: unexpected
-            complex,          pointer, intent(in)  :: actual
-
-            logical value
-        end function
-
-        module function notSame_double_precision(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
+        module pure function notSame_double_precision(unexpected, actual) result(value)
             double precision, pointer,  intent(in) :: unexpected
             double precision, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function notSame_integer(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            integer,          pointer,  intent(in) :: unexpected
-            integer,          pointer,  intent(in) :: actual
+        module pure function notSame_integer(unexpected, actual) result(value)
+            integer, pointer,  intent(in) :: unexpected
+            integer, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function notSame_logical(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            logical,          pointer,  intent(in) :: unexpected
-            logical,          pointer,  intent(in) :: actual
+        module pure function notSame_logical(unexpected, actual) result(value)
+            logical, pointer,  intent(in) :: unexpected
+            logical, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function notSame_real(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            real,             pointer,  intent(in) :: unexpected
-            real,             pointer,  intent(in) :: actual
+        module pure function notSame_real(unexpected, actual) result(value)
+            real, pointer,  intent(in) :: unexpected
+            real, pointer,  intent(in) :: actual
 
             logical value
         end function
+    end interface
 
-        !
-        ! Null - asserts that a pointer is null (not associated).
-        !
-        module function null_character(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            character,        pointer,  intent(in) :: pointer
-
+    !
+    ! Null - asserts that a pointer is null (not associated).
+    !
+    interface null
+        module pure function null_character(pointer) result(value)
+            character, pointer,  intent(in) :: pointer
             logical value
         end function
 
-        module function null_complex(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            complex,          pointer, intent(in)  :: pointer
-
+        module pure function null_complex(pointer) result(value)
+            complex, pointer, intent(in)  :: pointer
             logical value
         end function
 
-        module function null_double_precision(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
+        module pure function null_double_precision(pointer) result(value)
             double precision, pointer,  intent(in) :: pointer
+            logical value
+        end function
+
+        module pure function null_integer(pointer) result(value)
+            integer, pointer,  intent(in) :: pointer
+            logical value
+        end function
+
+        module pure function null_logical(pointer) result(value)
+            logical, pointer,  intent(in) :: pointer
+            logical value
+        end function
+
+        module pure function null_real(pointer) result(value)
+            real, pointer,  intent(in) :: pointer
+            logical value
+        end function
+    end interface
+
+    !
+    ! Same - asserts that two pointers refer to the same target.
+    !
+    interface same
+        module pure function same_character(unexpected, actual) result(value)
+            character, pointer,  intent(in) :: unexpected
+            character, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function null_integer(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            integer,          pointer,  intent(in) :: pointer
+        module pure function same_complex(unexpected, actual) result(value)
+            complex, pointer, intent(in)  :: unexpected
+            complex, pointer, intent(in)  :: actual
 
             logical value
         end function
 
-        module function null_logical(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            logical,          pointer,  intent(in) :: pointer
-
-            logical value
-        end function
-
-        module function null_real(pointer, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            real,             pointer,  intent(in) :: pointer
-
-            logical value
-        end function
-
-        !
-        ! Same - asserts that two pointers refer to the same target.
-        !
-        module function same_character(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            character,        pointer,  intent(in) :: unexpected
-            character,        pointer,  intent(in) :: actual
-
-            logical value
-        end function
-
-        module function same_complex(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            complex,          pointer, intent(in)  :: unexpected
-            complex,          pointer, intent(in)  :: actual
-
-            logical value
-        end function
-
-        module function same_double_precision(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
+        module pure function same_double_precision(unexpected, actual) result(value)
             double precision, pointer,  intent(in) :: unexpected
             double precision, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function same_integer(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            integer,          pointer,  intent(in) :: unexpected
-            integer,          pointer,  intent(in) :: actual
+        module pure function same_integer(unexpected, actual) result(value)
+            integer, pointer,  intent(in) :: unexpected
+            integer, pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function same_logical(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
+        module pure function same_logical(unexpected, actual) result(value)
             logical,          pointer,  intent(in) :: unexpected
             logical,          pointer,  intent(in) :: actual
 
             logical value
         end function
 
-        module function same_real(unexpected, actual, message) result(value)
-            character(len=*), optional, intent(in) :: message
-            real,             pointer,  intent(in) :: unexpected
-            real,             pointer,  intent(in) :: actual
+        module pure function same_real(unexpected, actual) result(value)
+            real, pointer,  intent(in) :: unexpected
+            real, pointer,  intent(in) :: actual
 
             logical value
         end function
+    end interface
 
-        !
-        ! True - asserts that a condition is true.
-        !
-        module function true(condition, message) result(value)
-            character(len=*), optional, intent(in) :: message
+    !
+    ! True - asserts that a condition is true.
+    !
+    interface
+        module pure function true(condition) result(value)
             logical, intent(in) :: condition
-
-            logical value
-        end function
-
-        !
-        ! Fail - fails a test with the given message.
-        !
-        module function fail(message) result(value)
-            character(len=*), optional, intent(in) :: message
             logical value
         end function
     end interface

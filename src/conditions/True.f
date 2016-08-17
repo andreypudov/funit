@@ -26,10 +26,10 @@
 
 submodule (Conditions) True
 contains
-    module function true(condition, message) result(value)
-        character(len=*), optional, intent(in) :: message
+    module pure function true(condition) result(value)
         logical, intent(in) :: condition
-
         logical value
+
+        value = condition
     end function
 end submodule

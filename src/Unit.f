@@ -89,7 +89,7 @@ module Unit
         generic :: equals => equals_character, &
                 equals_complex, &
                 equals_double_precision, &
-                equals_integer, &
+                    equals_integer, &
                 equals_logical, &
                 equals_real
 
@@ -120,6 +120,23 @@ module Unit
                 same_integer, &
                 same_logical, &
                 same_real
+    end type
+
+    type, private :: UnitCaseEntry
+        procedure(case), pointer, nopass :: procedure
+        type(UnitCaseEntry), pointer     :: next
+    end type
+
+    type, public :: UnitCase
+    private
+        type(UnitCaseEntry), pointer :: list => null()
+        type(UnitCaseEntry), pointer :: last => null()
+    contains
+        procedure, pass, public :: init
+        procedure, pass, public :: clean
+
+        procedure, pass, public :: addCase
+        procedure, pass, public :: run
     end type
 
     interface
@@ -384,6 +401,32 @@ module Unit
         !
         module subroutine fail(message)
             character(len=*), optional, intent(in) :: message
+        end subroutine
+    end interface
+
+    abstract interface
+        subroutine case(self)
+            import UnitCase
+            class(UnitCase), intent(in out) :: self
+        end subroutine
+    end interface
+
+    interface
+        module subroutine init(self)
+            class(UnitCase), intent(in out) :: self
+        end subroutine
+
+        module subroutine clean(self)
+            class(UnitCase), intent(in out) :: self
+        end subroutine
+
+        module subroutine addCase(self, procedure)
+            class(UnitCase), intent(in out) :: self
+            procedure(case), pointer, intent(in) :: procedure
+        end subroutine
+
+        module subroutine run(self)
+            class(UnitCase), intent(in out) :: self
         end subroutine
     end interface
 end module

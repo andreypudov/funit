@@ -24,13 +24,35 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) False
+submodule (Logger) DefaultLogger
 
     implicit none
 
 contains
-    module subroutine false(condition, message)
-        character(len=*), optional, intent(in) :: message
-        logical, intent(in) :: condition
+    module subroutine init_defaultLogger(self)
+        class(DefaultLogger), intent(in out) :: self
+
+        call cpu_time(self%start)
+    end subroutine
+
+    module subroutine clean_defaultLogger(self)
+        class(DefaultLogger), intent(in out) :: self
+    end subroutine
+
+    module function getLevel_defaultLogger(self) result(value)
+        class(DefaultLogger), intent(in) :: self
+
+        integer value
+    end function
+
+    module subroutine setLevel_defaultLogger(self, level)
+        class(DefaultLogger), intent(in out) :: self
+        integer, intent(in)           :: level
+    end subroutine
+
+    module subroutine log_defaultLogger(self, message, level)
+        class(DefaultLogger), intent(in) :: self
+        character(len=*),     intent(in) :: message
+        integer, optional,    intent(in) :: level
     end subroutine
 end submodule

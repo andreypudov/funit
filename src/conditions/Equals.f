@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) Equals
+
+    implicit none
+
 contains
     module pure function equals_character(expected, actual) result(value)
         character, intent(in) :: expected

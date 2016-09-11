@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) Same
+
+    implicit none
+
 contains
     module pure function same_character(unexpected, actual) result(value)
         character, pointer,  intent(in) :: unexpected

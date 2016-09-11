@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) Equals
+
+    implicit none
+
 contains
     module subroutine equals_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message

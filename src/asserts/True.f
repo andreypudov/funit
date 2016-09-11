@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) True
+
+    implicit none
+
 contains
     module subroutine true(condition, message)
         character(len=*), optional, intent(in) :: message

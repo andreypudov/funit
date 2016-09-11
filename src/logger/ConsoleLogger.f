@@ -24,13 +24,22 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) False
+submodule (Logger) ConsoleLogger
 
     implicit none
 
 contains
-    module subroutine false(condition, message)
-        character(len=*), optional, intent(in) :: message
-        logical, intent(in) :: condition
+    module subroutine init_consoleLogger(self)
+        class(ConsoleLogger), intent(in out) :: self
+    end subroutine
+
+    module subroutine clean_consoleLogger(self)
+        class(ConsoleLogger), intent(in out) :: self
+    end subroutine
+
+    module subroutine log_consoleLogger(self, message, level)
+        class(ConsoleLogger), intent(in) :: self
+        character(len=*), intent(in)     :: message
+        integer, optional, intent(in)    :: level
     end subroutine
 end submodule

@@ -25,27 +25,27 @@
 !
 
 submodule (Unit) UnitCase
+
+    implicit none
+
 contains
     module subroutine init_case(self)
         class(UnitCase), intent(in out) :: self
 
         self%list => null()
         self%last => null()
-
-        print *, 'init default case'
     end subroutine
 
     module subroutine clean_case(self)
         class(UnitCase), intent(in out)   :: self
         type(UnitProcedureEntry), pointer :: entry
 
-        print *, 'clean default case'
-
         do while (associated(self%list))
             entry => self%list
             self%list => self%list%next
 
-            deallocate(entry)
+            ! TODO - FIX COMPILRER ERROR
+            !deallocate(entry)
         end do
     end subroutine
 
@@ -55,8 +55,6 @@ contains
 
         type(UnitProcedureEntry), pointer :: entry
         type(UnitProcedureEntry), pointer :: previous
-
-        print *, 'add default case'
 
         allocate(entry)
         entry%next      => null()
@@ -77,7 +75,6 @@ contains
         type(UnitProcedureEntry), pointer :: entry
 
         entry => self%list
-        print '(/a)', 'run default case'
 
         do while (associated(entry))
             call entry%procedure(self)

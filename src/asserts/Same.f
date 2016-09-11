@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) Same
+
+    implicit none
+
 contains
     module subroutine same_character(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message

@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) Null
+
+    implicit none
+
 contains
     module pure function null_character(pointer) result(value)
         character, pointer,  intent(in) :: pointer

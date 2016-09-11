@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) NotNull
+
+    implicit none
+
 contains
     module subroutine notNull_character(pointer, message)
         character(len=*), optional, intent(in) :: message

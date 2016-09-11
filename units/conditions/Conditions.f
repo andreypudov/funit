@@ -33,6 +33,9 @@ module Conditions
 
     type, extends(UnitSuite), public :: ConditionsSuite
     private
+        type(TrueConditionCase), pointer :: trueCase
+
+        class(UnitCase), pointer :: trueCasePointer
     contains
         procedure, pass :: init
         procedure, pass :: clean
@@ -41,27 +44,20 @@ contains
     subroutine init(self)
         class(ConditionsSuite), intent(in out) :: self
 
-        type(TrueConditionCase), target :: trueCase
-        type(TrueConditionCase), allocatable, target :: trueCase1
-        class(UnitCase), pointer        :: trueCasePointer
-
         call self%UnitSuite%init()
 
-        print *, 'init conditions suite'
+        allocate(self%trueCase)
+        self%trueCasePointer => self%trueCase
 
-        !trueCasePointer => trueCase
-        allocate(trueCase1)
-        trueCasePointer => trueCase1
-
-        !call trueCase%init()
-        !call trueCase%run()
-        !call trueCase%clean()
-
-        call self%add(trueCasePointer)
+        call self%add(self%trueCasePointer)
     end subroutine
 
     subroutine clean(self)
         class(ConditionsSuite), intent(in out) :: self
+
+        self%trueCasePointer => null()
+        deallocate(self%trueCase)
+
         call self%UnitSuite%clean()
     end subroutine
 end module

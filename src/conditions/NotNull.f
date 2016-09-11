@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) NotNull
+
+    implicit none
+
 contains
     module pure function notNull_character(pointer) result(value)
         character, pointer,  intent(in) :: pointer

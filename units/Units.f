@@ -32,9 +32,7 @@ program Units
 
     type(ConditionsSuite) :: conditionsUnitSuite
 
-    print *, 'start testing'
-
     call conditionsUnitSuite%init()
-    print *, 'run testing'
     call conditionsUnitSuite%run()
+    call conditionsUnitSuite%clean()
 end program

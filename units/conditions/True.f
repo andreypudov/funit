@@ -37,26 +37,24 @@ module TrueCondition
         procedure, pass :: init
         procedure, pass :: clean
     end type
-
 contains
     subroutine init(self)
         class(TrueConditionCase), intent(in out) :: self
         call self%UnitCase%init()
 
-        print *, 'init true case'
         call self%add(true)
     end subroutine
 
     subroutine clean(self)
         class(TrueConditionCase), intent(in out) :: self
         call self%UnitCase%clean()
-
-        print *, 'clean true case'
     end subroutine
 
     subroutine true(self)
         class(UnitCase), intent(in out) :: self
 
-        print *, 'TRUE'
+        type(Asserts) asserts
+
+        call asserts%true(.true.)
     end subroutine
 end module

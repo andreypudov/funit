@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) NotSame
+
+    implicit none
+
 contains
     module subroutine notSame_character(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message

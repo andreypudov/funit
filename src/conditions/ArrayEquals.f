@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) ArrayEquals
+
+    implicit none
+
 contains
     module pure function arrayEquals_character(expected, actual) result(value)
         character, dimension(:), intent(in) :: expected

@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) True
+
+    implicit none
+
 contains
     module pure function true(condition) result(value)
         logical, intent(in) :: condition

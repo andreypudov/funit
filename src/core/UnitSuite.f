@@ -25,14 +25,15 @@
 !
 
 submodule (Unit) UnitSuite
+
+    implicit none
+
 contains
     module subroutine init_suite(self)
         class(UnitSuite), intent(in out) :: self
 
         self%list => null()
         self%last => null()
-
-        print '(/a)', 'init default suite'
     end subroutine
 
     module subroutine clean_suite(self)
@@ -42,6 +43,8 @@ contains
         do while (associated(self%list))
             entry => self%list
             self%list => self%list%next
+
+            call entry%case%clean()
 
             deallocate(entry)
         end do
@@ -54,16 +57,11 @@ contains
         type(UnitCaseEntry), pointer :: entry
         type(UnitCaseEntry), pointer :: previous
 
-        print *, 'add default suite'
-
         allocate(entry)
         entry%next => null()
         entry%case => case
 
-        print *, 'INIT CASES'
-
         call entry%case%init()
-        !call case%init()
 
         if (.not. associated(self%last)) then
             self%list => entry

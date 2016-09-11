@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) ArrayEquals
+
+    implicit none
+
 contains
     module subroutine arrayEquals_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message

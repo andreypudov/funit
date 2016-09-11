@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) Fail
+
+    implicit none
+
 contains
     module subroutine fail(message)
         character(len=*), optional, intent(in) :: message

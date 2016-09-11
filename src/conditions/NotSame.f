@@ -25,6 +25,9 @@
 !
 
 submodule (Conditions) NotSame
+
+    implicit none
+
 contains
     module pure function notSame_character(unexpected, actual) result(value)
         character, pointer,  intent(in) :: unexpected

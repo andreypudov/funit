@@ -25,6 +25,9 @@
 !
 
 submodule (Unit) Null
+
+    implicit none
+
 contains
     module subroutine null_character(pointer, message)
         character(len=*), optional, intent(in) :: message

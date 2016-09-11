@@ -122,21 +122,38 @@ module Unit
                 same_real
     end type
 
+    type, private :: UnitProcedureEntry
+        procedure(UnitProcedure), pointer, nopass  :: procedure
+        type(UnitProcedureEntry), pointer          :: next
+    end type
+
     type, private :: UnitCaseEntry
-        procedure(case), pointer, nopass :: procedure
-        type(UnitCaseEntry), pointer     :: next
+        class(UnitCase), pointer     :: case
+        type(UnitCaseEntry), pointer :: next
     end type
 
     type, public :: UnitCase
     private
+        type(UnitProcedureEntry), pointer :: list => null()
+        type(UnitProcedureEntry), pointer :: last => null()
+    contains
+        procedure, pass, public :: init  => init_case
+        procedure, pass, public :: clean => clean_case
+
+        procedure, pass, public :: add => add_case
+        procedure, pass, public :: run => run_case
+    end type
+
+    type, public :: UnitSuite
+    private
         type(UnitCaseEntry), pointer :: list => null()
         type(UnitCaseEntry), pointer :: last => null()
     contains
-        procedure, pass, public :: init
-        procedure, pass, public :: clean
+        procedure, pass, public :: init  => init_suite
+        procedure, pass, public :: clean => clean_suite
 
-        procedure, pass, public :: addCase
-        procedure, pass, public :: run
+        procedure, pass, public :: add => add_suite
+        procedure, pass, public :: run => run_suite
     end type
 
     interface
@@ -405,28 +422,47 @@ module Unit
     end interface
 
     abstract interface
-        subroutine case(self)
+        subroutine UnitProcedure(self)
             import UnitCase
             class(UnitCase), intent(in out) :: self
         end subroutine
     end interface
 
     interface
-        module subroutine init(self)
+        module subroutine init_case(self)
             class(UnitCase), intent(in out) :: self
         end subroutine
 
-        module subroutine clean(self)
+        module subroutine clean_case(self)
             class(UnitCase), intent(in out) :: self
         end subroutine
 
-        module subroutine addCase(self, procedure)
-            class(UnitCase), intent(in out) :: self
-            procedure(case), pointer, intent(in) :: procedure
+        module subroutine add_case(self, procedure)
+            class(UnitCase), intent(in out)               :: self
+            procedure(UnitProcedure), pointer, intent(in) :: procedure
         end subroutine
 
-        module subroutine run(self)
+        module subroutine run_case(self)
             class(UnitCase), intent(in out) :: self
+        end subroutine
+    end interface
+
+    interface
+        module subroutine init_suite(self)
+            class(UnitSuite), intent(in out) :: self
+        end subroutine
+
+        module subroutine clean_suite(self)
+            class(UnitSuite), intent(in out) :: self
+        end subroutine
+
+        module subroutine add_suite(self, case)
+            class(UnitSuite), intent(in out)     :: self
+            class(UnitCase), pointer, intent(in) :: case
+        end subroutine
+
+        module subroutine run_suite(self)
+            class(UnitSuite), intent(in) :: self
         end subroutine
     end interface
 end module

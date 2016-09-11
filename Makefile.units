@@ -29,7 +29,10 @@ FFLAGS  = -O0 -xHost -c -g3 -debug all -ftrapuv -module modules -check all -free
 LDFLAGS = -save-temps out/\#Unit.dlyb
 
 INTERFACES =
-SOURCES    = $(INTERFACES) $(shell find units -name '*.f' | sed 's/^\.\///')
+CLASSES    = units/conditions/Conditions.f units/Units.f
+SOURCES    = $(INTERFACES) \
+	         $(shell find units -name '*.f' $(patsubst %, ! -path %, $(CLASSES)) | sed 's/^\.\///' | sort) \
+	         $(CLASSES)
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
 LIBRARY    = \#Unit.dlyb
 EXECUTABLE = \@Unit

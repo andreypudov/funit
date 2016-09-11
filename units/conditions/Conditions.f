@@ -24,17 +24,44 @@
 ! THE SOFTWARE.
 !
 
-program Units
+module Conditions
 
-    use Conditions
+    use Unit
+    use TrueCondition
 
     implicit none
 
-    type(ConditionsSuite) :: conditionsUnitSuite
+    type, extends(UnitSuite), public :: ConditionsSuite
+    private
+    contains
+        procedure, pass :: init
+        procedure, pass :: clean
+    end type
+contains
+    subroutine init(self)
+        class(ConditionsSuite), intent(in out) :: self
 
-    print *, 'start testing'
+        type(TrueConditionCase), target :: trueCase
+        type(TrueConditionCase), allocatable, target :: trueCase1
+        class(UnitCase), pointer        :: trueCasePointer
 
-    call conditionsUnitSuite%init()
-    print *, 'run testing'
-    call conditionsUnitSuite%run()
-end program
+        call self%UnitSuite%init()
+
+        print *, 'init conditions suite'
+
+        !trueCasePointer => trueCase
+        allocate(trueCase1)
+        trueCasePointer => trueCase1
+
+        !call trueCase%init()
+        !call trueCase%run()
+        !call trueCase%clean()
+
+        call self%add(trueCasePointer)
+    end subroutine
+
+    subroutine clean(self)
+        class(ConditionsSuite), intent(in out) :: self
+        call self%UnitSuite%clean()
+    end subroutine
+end module

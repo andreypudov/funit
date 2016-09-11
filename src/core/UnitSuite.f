@@ -24,22 +24,20 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) UnitCase
+submodule (Unit) UnitSuite
 contains
-    module subroutine init_case(self)
-        class(UnitCase), intent(in out) :: self
+    module subroutine init_suite(self)
+        class(UnitSuite), intent(in out) :: self
 
         self%list => null()
         self%last => null()
 
-        print *, 'init default case'
+        print '(/a)', 'init default suite'
     end subroutine
 
-    module subroutine clean_case(self)
-        class(UnitCase), intent(in out)   :: self
-        type(UnitProcedureEntry), pointer :: entry
-
-        print *, 'clean default case'
+    module subroutine clean_suite(self)
+        class(UnitSuite), intent(in out) :: self
+        type(UnitCaseEntry), pointer     :: entry
 
         do while (associated(self%list))
             entry => self%list
@@ -49,18 +47,23 @@ contains
         end do
     end subroutine
 
-    module subroutine add_case(self, procedure)
-        class(UnitCase), intent(in out)               :: self
-        procedure(UnitProcedure), pointer, intent(in) :: procedure
+    module subroutine add_suite(self, case)
+        class(UnitSuite), intent(in out)     :: self
+        class(UnitCase), pointer, intent(in) :: case
 
-        type(UnitProcedureEntry), pointer :: entry
-        type(UnitProcedureEntry), pointer :: previous
+        type(UnitCaseEntry), pointer :: entry
+        type(UnitCaseEntry), pointer :: previous
 
-        print *, 'add default case'
+        print *, 'add default suite'
 
         allocate(entry)
-        entry%next      => null()
-        entry%procedure => procedure
+        entry%next => null()
+        entry%case => case
+
+        print *, 'INIT CASES'
+
+        call entry%case%init()
+        !call case%init()
 
         if (.not. associated(self%last)) then
             self%list => entry
@@ -72,15 +75,14 @@ contains
         self%last => entry
     end subroutine
 
-    module subroutine run_case(self)
-        class(UnitCase), intent(in out)   :: self
-        type(UnitProcedureEntry), pointer :: entry
+    module subroutine run_suite(self)
+        class(UnitSuite), intent(in) :: self
+        type(UnitCaseEntry), pointer :: entry
 
         entry => self%list
-        print '(/a)', 'run default case'
 
         do while (associated(entry))
-            call entry%procedure(self)
+            call entry%case%run()
 
             entry => entry%next
         end do

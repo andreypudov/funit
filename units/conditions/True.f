@@ -41,19 +41,22 @@ module TrueCondition
 contains
     subroutine init(self)
         class(TrueConditionCase), intent(in out) :: self
-        call self%unitcase%init()
+        call self%UnitCase%init()
 
-        call self%addCase(true)
+        print *, 'init true case'
+        call self%add(true)
     end subroutine
 
     subroutine clean(self)
         class(TrueConditionCase), intent(in out) :: self
-        call self%unitcase%clean()
+        call self%UnitCase%clean()
+
+        print *, 'clean true case'
     end subroutine
 
     subroutine true(self)
         class(UnitCase), intent(in out) :: self
 
-        print *, 'true'
+        print *, 'TRUE'
     end subroutine
 end module

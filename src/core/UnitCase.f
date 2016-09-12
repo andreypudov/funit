@@ -29,11 +29,20 @@ submodule (Unit) UnitCase
     implicit none
 
 contains
-    module subroutine init_case(self)
-        class(UnitCase), intent(in out) :: self
+    module subroutine init_case(self, name)
+        class(UnitCase), intent(in out)        :: self
+        character(len=*), optional, intent(in) :: name
 
         self%list => null()
         self%last => null()
+
+        if (present(name)) then
+            allocate(character(len(name)) :: self%name)
+            self%name = name
+        else
+            allocate(character(1) :: self%name)
+            self%name = ''
+        end if
     end subroutine
 
     module subroutine clean_case(self)
@@ -47,11 +56,14 @@ contains
             ! TODO - FIX COMPILRER ERROR
             !deallocate(entry)
         end do
+
+        deallocate(self%name)
     end subroutine
 
-    module subroutine add_case(self, procedure)
+    module subroutine add_case(self, procedure, name)
         class(UnitCase), intent(in out)               :: self
         procedure(UnitProcedure), pointer, intent(in) :: procedure
+        character(len=*),        optional, intent(in) :: name
 
         type(UnitProcedureEntry), pointer :: entry
         type(UnitProcedureEntry), pointer :: previous
@@ -59,6 +71,14 @@ contains
         allocate(entry)
         entry%next      => null()
         entry%procedure => procedure
+
+        if (present(name)) then
+            allocate(character(len(name)) :: entry%name)
+            entry%name = name
+        else
+            allocate(character(1) :: entry%name)
+            entry%name = ''
+        end if
 
         if (.not. associated(self%last)) then
             self%list => entry
@@ -77,6 +97,7 @@ contains
         entry => self%list
 
         do while (associated(entry))
+            print '(A)', self%name
             call entry%procedure(self)
 
             entry => entry%next

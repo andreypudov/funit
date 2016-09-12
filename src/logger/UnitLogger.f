@@ -1,9 +1,9 @@
 !
-! The Laboratory of Algorithms
+! A unit testing library for Fortran
 !
 ! The MIT License
 !
-! Copyright 2011-2015 Andrey Pudov.
+! Copyright 2011-2016 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,38 +24,29 @@
 ! THE SOFTWARE.
 !
 
-module MUReport
+submodule (Logger) UnitLogger
 
     implicit none
-    public
 
 contains
-    subroutine report(algorithm, version, sequence, start)
-        character(len=*), intent(in) :: algorithm
-        character(len=*), intent(in) :: version
-        character(len=*), intent(in) :: sequence
-        real, intent(in)             :: start
+    module subroutine init_unitLogger(self, suiteName)
+        class(UnitLogger), intent(in out) :: self
+        character(len=*),  intent(in)     :: suiteName
 
-        character(len=*), parameter :: format1 = '(t1, a14, a2, a14, a2, a8, a2, f6.3, a)'
-        character(len=*), parameter :: format2 = '(t1, a14, a2, a24, a0, a0, a2, f6.3, a)'
-        character(len=80) :: format
-        real finish
+        allocate(character(len(suiteName)) :: self%suiteName)
+        self%suiteName = suiteName
 
-        character(len=14) :: algorithm_
-        character(len=24) :: version_
-        character(len=8)  :: sequence_
-
-        format     = format1
-        algorithm_ = algorithm
-        version_   = version
-        sequence_  = sequence
-
-        ! increase version field in case sequence is empty
-        if (len(trim(sequence_)) == 0) then
-            format = format2
-        end if
-
-        call cpu_time(finish)
-        print format, algorithm_, ': ', version_, ' ',sequence_, ' ', finish - start, "s."
+        call cpu_time(self%start)
     end subroutine
-end module
+
+    module subroutine clean_unitLogger(self)
+        class(UnitLogger), intent(in out) :: self
+
+        deallocate(self%suiteName)
+    end subroutine
+
+    module subroutine log_unitLogger(self, message)
+        class(UnitLogger), intent(in) :: self
+        character(len=*),  intent(in) :: message
+    end subroutine
+end submodule

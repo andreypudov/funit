@@ -28,18 +28,48 @@ submodule (Logger) ConsoleLogger
 
     implicit none
 
+    integer, parameter :: TERMINAL_WIDTH = 80
+
 contains
-    module subroutine init_consoleLogger(self)
+    module subroutine init_consoleLogger(self, suiteName)
         class(ConsoleLogger), intent(in out) :: self
+        character(len=*),     intent(in)     :: suiteName
+
+        call self%UnitLogger%init(suiteName)
+
+        print '(A)', self%suiteName
+        call printSeparator()
     end subroutine
 
     module subroutine clean_consoleLogger(self)
         class(ConsoleLogger), intent(in out) :: self
+
+        character(len=16) buffer
+        real finish
+
+        call cpu_time(finish)
+
+        call printSeparator()
+        write (buffer, '(F12.3)') finish - self%start
+        print '(A,A,A)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds.'
+
+        call self%UnitLogger%clean()
     end subroutine
 
-    module subroutine log_consoleLogger(self, message, level)
+    module subroutine log_consoleLogger(self, message)
         class(ConsoleLogger), intent(in) :: self
         character(len=*), intent(in)     :: message
-        integer, optional, intent(in)    :: level
+
+        print '(A)', message
+    end subroutine
+
+    subroutine printSeparator()
+        integer index
+
+        do index = 1, TERMINAL_WIDTH
+            write (*, '(A)', advance = 'no') '-'
+        end do
+
+        print '(A)', ''
     end subroutine
 end submodule

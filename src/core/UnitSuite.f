@@ -29,11 +29,27 @@ submodule (Unit) UnitSuite
     implicit none
 
 contains
-    module subroutine init_suite(self)
-        class(UnitSuite), intent(in out) :: self
+    module subroutine init_suite(self, name)
+        class(UnitSuite), intent(in out)       :: self
+        character(len=*), optional, intent(in) :: name
+
+        type(ConsoleLogger), pointer :: logger
 
         self%list => null()
         self%last => null()
+
+        if (present(name)) then
+            allocate(character(len(name)) :: self%name)
+            self%name = name
+        else
+            allocate(character(1) :: self%name)
+            self%name = ''
+        end if
+
+        ! initialize logger
+        allocate(logger)
+        self%logger => logger
+        call self%logger%init(self%name)
     end subroutine
 
     module subroutine clean_suite(self)
@@ -48,6 +64,11 @@ contains
 
             deallocate(entry)
         end do
+
+        deallocate(self%name)
+
+        call self%logger%clean()
+        deallocate(self%logger)
     end subroutine
 
     module subroutine add_suite(self, case)

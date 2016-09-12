@@ -24,9 +24,10 @@
 ! THE SOFTWARE.
 !
 
-module TrueCondition
+module TrueConditionUnit
 
     use Unit
+    use Conditions
 
     implicit none
     private
@@ -38,11 +39,12 @@ module TrueCondition
         procedure, pass :: clean
     end type
 contains
-    subroutine init(self)
+    subroutine init(self, name)
         class(TrueConditionCase), intent(in out) :: self
-        call self%UnitCase%init()
+        character(len=*), optional, intent(in)   :: name
+        call self%UnitCase%init('True condition')
 
-        call self%add(true)
+        call self%add(true_normal, 'Normal values')
     end subroutine
 
     subroutine clean(self)
@@ -50,11 +52,12 @@ contains
         call self%UnitCase%clean()
     end subroutine
 
-    subroutine true(self)
+    subroutine true_normal(self)
         class(UnitCase), intent(in out) :: self
-
         type(Asserts) asserts
 
-        call asserts%true(.true.)
+        if (true(.true.)) then
+            call asserts%true(.true.)
+        end if
     end subroutine
 end module

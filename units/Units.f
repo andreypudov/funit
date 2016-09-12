@@ -26,7 +26,7 @@
 
 program Units
 
-    use Conditions
+    use ConditionsSuiteUnit
 
     implicit none
 

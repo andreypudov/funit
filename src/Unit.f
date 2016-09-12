@@ -26,6 +26,8 @@
 
 module Unit
 
+    use Logger
+
     implicit none
     private
 
@@ -123,19 +125,21 @@ module Unit
     end type
 
     type, private :: UnitProcedureEntry
-        procedure(UnitProcedure), pointer, nopass  :: procedure
-        type(UnitProcedureEntry), pointer          :: next
+        procedure(UnitProcedure), pointer, nopass  :: procedure => null()
+        type(UnitProcedureEntry), pointer          :: next      => null()
+        character(len=:),         pointer          :: name      => null()
     end type
 
     type, private :: UnitCaseEntry
-        class(UnitCase), pointer     :: case
-        type(UnitCaseEntry), pointer :: next
+        class(UnitCase),     pointer :: case => null()
+        type(UnitCaseEntry), pointer :: next => null()
     end type
 
     type, public :: UnitCase
     private
         type(UnitProcedureEntry), pointer :: list => null()
         type(UnitProcedureEntry), pointer :: last => null()
+        character(len=:),         pointer :: name => null()
     contains
         procedure, pass, public :: init  => init_case
         procedure, pass, public :: clean => clean_case
@@ -146,8 +150,10 @@ module Unit
 
     type, public :: UnitSuite
     private
-        type(UnitCaseEntry), pointer :: list => null()
-        type(UnitCaseEntry), pointer :: last => null()
+        type(UnitCaseEntry), pointer :: list   => null()
+        type(UnitCaseEntry), pointer :: last   => null()
+        class(UnitLogger),   pointer :: logger => null()
+        character(len=:),    pointer :: name   => null()
     contains
         procedure, pass, public :: init  => init_suite
         procedure, pass, public :: clean => clean_suite
@@ -429,17 +435,19 @@ module Unit
     end interface
 
     interface
-        module subroutine init_case(self)
-            class(UnitCase), intent(in out) :: self
+        module subroutine init_case(self, name)
+            class(UnitCase), intent(in out)        :: self
+            character(len=*), optional, intent(in) :: name
         end subroutine
 
         module subroutine clean_case(self)
             class(UnitCase), intent(in out) :: self
         end subroutine
 
-        module subroutine add_case(self, procedure)
+        module subroutine add_case(self, procedure, name)
             class(UnitCase), intent(in out)               :: self
             procedure(UnitProcedure), pointer, intent(in) :: procedure
+            character(len=*),        optional, intent(in) :: name
         end subroutine
 
         module subroutine run_case(self)
@@ -448,8 +456,9 @@ module Unit
     end interface
 
     interface
-        module subroutine init_suite(self)
-            class(UnitSuite), intent(in out) :: self
+        module subroutine init_suite(self, name)
+            class(UnitSuite), intent(in out)       :: self
+            character(len=*), optional, intent(in) :: name
         end subroutine
 
         module subroutine clean_suite(self)

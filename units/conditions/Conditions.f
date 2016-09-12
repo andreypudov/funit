@@ -24,38 +24,39 @@
 ! THE SOFTWARE.
 !
 
-module Conditions
+module ConditionsSuiteUnit
 
     use Unit
-    use TrueCondition
+    use TrueConditionUnit
 
     implicit none
 
     type, extends(UnitSuite), public :: ConditionsSuite
     private
-        type(TrueConditionCase), pointer :: trueCase
-
-        class(UnitCase), pointer :: trueCasePointer
+        class(UnitCase), pointer :: trueCase
     contains
         procedure, pass :: init
         procedure, pass :: clean
     end type
 contains
-    subroutine init(self)
+    subroutine init(self, name)
         class(ConditionsSuite), intent(in out) :: self
+        character(len=*), optional, intent(in) :: name
 
-        call self%UnitSuite%init()
+        ! a list of condition cases
+        type(TrueConditionCase), pointer :: trueCase
 
-        allocate(self%trueCase)
-        self%trueCasePointer => self%trueCase
+        call self%UnitSuite%init('A unit testing library for Fortran : Conditions')
 
-        call self%add(self%trueCasePointer)
+        allocate(trueCase)
+        self%trueCase => trueCase
+
+        call self%add(self%trueCase)
     end subroutine
 
     subroutine clean(self)
         class(ConditionsSuite), intent(in out) :: self
 
-        self%trueCasePointer => null()
         deallocate(self%trueCase)
 
         call self%UnitSuite%clean()

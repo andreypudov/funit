@@ -32,13 +32,17 @@ submodule (Logger) ConsoleLogger
 
 contains
     module subroutine init_consoleLogger(self, suiteName)
-        class(ConsoleLogger), intent(in out) :: self
+        class(ConsoleLogger), target, intent(in out) :: self
         character(len=*),     intent(in)     :: suiteName
 
-        call self%UnitLogger%init(suiteName)
+        if (.not. associated(consoleLoggerInstance)) then
+            call self%UnitLogger%init(suiteName)
 
-        print '(A)', self%suiteName
-        call printSeparator()
+            print '(A)', self%suiteName
+            call printSeparator()
+
+            consoleLoggerInstance => self
+        end if
     end subroutine
 
     module subroutine clean_consoleLogger(self)
@@ -54,6 +58,7 @@ contains
         print '(A,A,A)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds.'
 
         call self%UnitLogger%clean()
+        consoleLoggerInstance => null()
     end subroutine
 
     module subroutine log_consoleLogger(self, message)

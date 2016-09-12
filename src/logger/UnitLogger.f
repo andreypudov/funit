@@ -30,19 +30,24 @@ submodule (Logger) UnitLogger
 
 contains
     module subroutine init_unitLogger(self, suiteName)
-        class(UnitLogger), intent(in out) :: self
-        character(len=*),  intent(in)     :: suiteName
+        class(UnitLogger), target, intent(in out) :: self
+        character(len=*),  intent(in)             :: suiteName
 
-        allocate(character(len(suiteName)) :: self%suiteName)
-        self%suiteName = suiteName
+        if (.not. associated(unitLoggerInstance)) then
+            allocate(character(len(suiteName)) :: self%suiteName)
+            self%suiteName = suiteName
 
-        call cpu_time(self%start)
+            call cpu_time(self%start)
+
+            unitLoggerInstance => self
+        end if
     end subroutine
 
     module subroutine clean_unitLogger(self)
         class(UnitLogger), intent(in out) :: self
 
         deallocate(self%suiteName)
+        unitLoggerInstance => null()
     end subroutine
 
     module subroutine log_unitLogger(self, message)

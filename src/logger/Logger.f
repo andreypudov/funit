@@ -49,9 +49,12 @@ module Logger
         procedure, pass, public :: log => log_consoleLogger
     end type
 
+    type(UnitLogger),    pointer, private :: unitLoggerInstance
+    type(ConsoleLogger), pointer, private :: consoleLoggerInstance
+
     interface
         module subroutine init_unitLogger(self, suiteName)
-            class(UnitLogger), intent(in out) :: self
+            class(UnitLogger), target, intent(in out) :: self
             character(len=*),  intent(in)     :: suiteName
         end subroutine
 
@@ -67,7 +70,7 @@ module Logger
 
     interface
         module subroutine init_consoleLogger(self, suiteName)
-            class(ConsoleLogger), intent(in out) :: self
+            class(ConsoleLogger), target, intent(in out) :: self
             character(len=*),     intent(in)     :: suiteName
         end subroutine
 

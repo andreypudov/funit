@@ -94,10 +94,12 @@ contains
         class(UnitCase), intent(in out)   :: self
         type(UnitProcedureEntry), pointer :: entry
 
+        type(ConsoleLogger) logger
+
         entry => self%list
 
         do while (associated(entry))
-            print '(A)', self%name
+            call logger%log(self%name)
             call entry%procedure(self)
 
             entry => entry%next

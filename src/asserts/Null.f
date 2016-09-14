@@ -24,37 +24,37 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) Null
+submodule (Unit) NullAsserts
 
     implicit none
 
 contains
-    module subroutine null_character(pointer, message)
+    module subroutine null_assert_character(pointer, message)
         character(len=*), optional, intent(in) :: message
         character,        pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine null_complex(pointer, message)
+    module subroutine null_assert_complex(pointer, message)
         character(len=*), optional, intent(in) :: message
         complex,          pointer, intent(in)  :: pointer
     end subroutine
 
-    module subroutine null_double_precision(pointer, message)
+    module subroutine null_assert_double_precision(pointer, message)
         character(len=*), optional, intent(in) :: message
         double precision, pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine null_integer(pointer, message)
+    module subroutine null_assert_integer(pointer, message)
         character(len=*), optional, intent(in) :: message
         integer,          pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine null_logical(pointer, message)
+    module subroutine null_assert_logical(pointer, message)
         character(len=*), optional, intent(in) :: message
         logical,          pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine null_real(pointer, message)
+    module subroutine null_assert_real(pointer, message)
         character(len=*), optional, intent(in) :: message
         real,             pointer,  intent(in) :: pointer
     end subroutine

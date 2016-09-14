@@ -24,12 +24,12 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) False
+submodule (Unit) FalseAsserts
 
     implicit none
 
 contains
-    module subroutine false(condition, message)
+    module subroutine false_assert(condition, message)
         character(len=*), optional, intent(in) :: message
         logical, intent(in) :: condition
     end subroutine

@@ -24,12 +24,12 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) True
+submodule (Unit) TrueAsserts
 
     implicit none
 
 contains
-    module subroutine true(condition, message)
+    module subroutine true_assert(condition, message)
         character(len=*), optional, intent(in) :: message
         logical, intent(in) :: condition
     end subroutine

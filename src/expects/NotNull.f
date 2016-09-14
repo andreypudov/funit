@@ -24,44 +24,38 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) SameAsserts
+submodule (Unit) NotNullExpects
 
     implicit none
 
 contains
-    module subroutine same_assert_character(unexpected, actual, message)
+    module subroutine notNull_expect_character(pointer, message)
         character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: unexpected
-        character,        pointer,  intent(in) :: actual
+        character,        pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine same_assert_complex(unexpected, actual, message)
+    module subroutine notNull_expect_complex(pointer, message)
         character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: unexpected
-        complex,          pointer, intent(in)  :: actual
+        complex,          pointer, intent(in)  :: pointer
     end subroutine
 
-    module subroutine same_assert_double_precision(unexpected, actual, message)
+    module subroutine notNull_expect_double_precision(pointer, message)
         character(len=*), optional, intent(in) :: message
-        double precision, pointer,  intent(in) :: unexpected
-        double precision, pointer,  intent(in) :: actual
+        double precision, pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine same_assert_integer(unexpected, actual, message)
+    module subroutine notNull_expect_integer(pointer, message)
         character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: unexpected
-        integer,          pointer,  intent(in) :: actual
+        integer,          pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine same_assert_logical(unexpected, actual, message)
+    module subroutine notNull_expect_logical(pointer, message)
         character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: unexpected
-        logical,          pointer,  intent(in) :: actual
+        logical,          pointer,  intent(in) :: pointer
     end subroutine
 
-    module subroutine same_assert_real(unexpected, actual, message)
+    module subroutine notNull_expect_real(pointer, message)
         character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: unexpected
-        real,             pointer,  intent(in) :: actual
+        real,             pointer,  intent(in) :: pointer
     end subroutine
 end submodule

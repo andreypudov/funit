@@ -29,6 +29,10 @@ module Logger
     implicit none
     private
 
+    integer, parameter, public :: TYPE_SUITE     = 0
+    integer, parameter, public :: TYPE_CASE      = 1
+    integer, parameter, public :: TYPE_PROCEDURE = 2
+
     type, public :: UnitLogger
     private
         character(len=:), pointer :: suiteName
@@ -42,6 +46,8 @@ module Logger
 
     type, extends(UnitLogger), public :: ConsoleLogger
     private
+        integer :: case
+        integer :: procedure
     contains
         procedure, pass, public :: init  => init_consoleLogger
         procedure, pass, public :: clean => clean_consoleLogger
@@ -55,32 +61,34 @@ module Logger
     interface
         module subroutine init_unitLogger(self, suiteName)
             class(UnitLogger), target, intent(in out) :: self
-            character(len=*),  intent(in)     :: suiteName
+            character(len=*),          intent(in)     :: suiteName
         end subroutine
 
         module subroutine clean_unitLogger(self)
             class(UnitLogger), intent(in out) :: self
         end subroutine
 
-        module subroutine log_unitLogger(self, message)
-            class(UnitLogger), intent(in) :: self
-            character(len=*),  intent(in) :: message
+        module subroutine log_unitLogger(self, type, message)
+            class(UnitLogger), intent(in out) :: self
+            integer,           intent(in)     :: type
+            character(len=*),  intent(in)     :: message
         end subroutine
     end interface
 
     interface
         module subroutine init_consoleLogger(self, suiteName)
             class(ConsoleLogger), target, intent(in out) :: self
-            character(len=*),     intent(in)     :: suiteName
+            character(len=*),             intent(in)     :: suiteName
         end subroutine
 
         module subroutine clean_consoleLogger(self)
             class(ConsoleLogger), intent(in out) :: self
         end subroutine
 
-        module subroutine log_consoleLogger(self, message)
-            class(ConsoleLogger), intent(in) :: self
-            character(len=*),     intent(in) :: message
-        end subroutine
+       module subroutine log_consoleLogger(self, type, message)
+           class(ConsoleLogger), intent(in out) :: self
+           integer,              intent(in)     :: type
+           character(len=*),     intent(in)     :: message
+       end subroutine
     end interface
 end module

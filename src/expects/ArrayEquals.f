@@ -24,44 +24,53 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) SameAsserts
+submodule (Unit) ArrayEqualsExpects
 
     implicit none
 
 contains
-    module subroutine same_assert_character(unexpected, actual, message)
+    module subroutine arrayEquals_expect_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: unexpected
-        character,        pointer,  intent(in) :: actual
+
+        character, dimension(:), intent(in) :: expected
+        character, dimension(:), intent(in) :: actual
     end subroutine
 
-    module subroutine same_assert_complex(unexpected, actual, message)
+    module subroutine arrayEquals_expect_complex(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: unexpected
-        complex,          pointer, intent(in)  :: actual
+
+        complex, dimension(:), intent(in) :: expected
+        complex, dimension(:), intent(in) :: actual
+        real,                  intent(in) :: delta
     end subroutine
 
-    module subroutine same_assert_double_precision(unexpected, actual, message)
+    module subroutine arrayEquals_expect_double_precision(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
-        double precision, pointer,  intent(in) :: unexpected
-        double precision, pointer,  intent(in) :: actual
+
+        double precision, dimension(:), intent(in) :: expected
+        double precision, dimension(:), intent(in) :: actual
+        double precision,               intent(in) :: delta
     end subroutine
 
-    module subroutine same_assert_integer(unexpected, actual, message)
+    module subroutine arrayEquals_expect_integer(expected, actual, message)
         character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: unexpected
-        integer,          pointer,  intent(in) :: actual
+
+        integer, dimension(:), intent(in) :: expected
+        integer, dimension(:), intent(in) :: actual
     end subroutine
 
-    module subroutine same_assert_logical(unexpected, actual, message)
+    module subroutine arrayEquals_expect_logical(expected, actual, message)
         character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: unexpected
-        logical,          pointer,  intent(in) :: actual
+
+        logical, dimension(:), intent(in) :: expected
+        logical, dimension(:), intent(in) :: actual
     end subroutine
 
-    module subroutine same_assert_real(unexpected, actual, message)
+    module subroutine arrayEquals_expect_real(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: unexpected
-        real,             pointer,  intent(in) :: actual
+
+        real, dimension(:), intent(in) :: expected
+        real, dimension(:), intent(in) :: actual
+        real,               intent(in) :: delta
     end subroutine
 end submodule

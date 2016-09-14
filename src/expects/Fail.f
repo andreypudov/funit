@@ -24,12 +24,12 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) FailAsserts
+submodule (Unit) FailExpects
 
     implicit none
 
 contains
-    module subroutine fail_assert(message)
+    module subroutine fail_expect(message)
         character(len=*), optional, intent(in) :: message
     end subroutine
 end submodule

@@ -24,42 +24,42 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) NotSame
+submodule (Unit) NotSameAsserts
 
     implicit none
 
 contains
-    module subroutine notSame_character(unexpected, actual, message)
+    module subroutine notSame_assert_character(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
         character,        pointer,  intent(in) :: unexpected
         character,        pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine notSame_complex(unexpected, actual, message)
+    module subroutine notSame_assert_complex(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
         complex,          pointer, intent(in)  :: unexpected
         complex,          pointer, intent(in)  :: actual
     end subroutine
 
-    module subroutine notSame_double_precision(unexpected, actual, message)
+    module subroutine notSame_assert_double_precision(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
         double precision, pointer,  intent(in) :: unexpected
         double precision, pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine notSame_integer(unexpected, actual, message)
+    module subroutine notSame_assert_integer(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
         integer,          pointer,  intent(in) :: unexpected
         integer,          pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine notSame_logical(unexpected, actual, message)
+    module subroutine notSame_assert_logical(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
         logical,          pointer,  intent(in) :: unexpected
         logical,          pointer,  intent(in) :: actual
     end subroutine
 
-    module subroutine notSame_real(unexpected, actual, message)
+    module subroutine notSame_assert_real(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
         real,             pointer,  intent(in) :: unexpected
         real,             pointer,  intent(in) :: actual

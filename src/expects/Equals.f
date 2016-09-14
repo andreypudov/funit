@@ -24,44 +24,53 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) SameAsserts
+submodule (Unit) EqualsExpects
 
     implicit none
 
 contains
-    module subroutine same_assert_character(unexpected, actual, message)
+    module subroutine equals_expect_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: unexpected
-        character,        pointer,  intent(in) :: actual
+
+        character, intent(in) :: expected
+        character, intent(in) :: actual
     end subroutine
 
-    module subroutine same_assert_complex(unexpected, actual, message)
+    module subroutine equals_expect_complex(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: unexpected
-        complex,          pointer, intent(in)  :: actual
+
+        complex, intent(in) :: expected
+        complex, intent(in) :: actual
+        real,    intent(in) :: delta
     end subroutine
 
-    module subroutine same_assert_double_precision(unexpected, actual, message)
+    module subroutine equals_expect_double_precision(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
-        double precision, pointer,  intent(in) :: unexpected
-        double precision, pointer,  intent(in) :: actual
+
+        double precision, intent(in) :: expected
+        double precision, intent(in) :: actual
+        double precision, intent(in) :: delta
     end subroutine
 
-    module subroutine same_assert_integer(unexpected, actual, message)
+    module subroutine equals_expect_integer(expected, actual, message)
         character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: unexpected
-        integer,          pointer,  intent(in) :: actual
+
+        integer, intent(in) :: expected
+        integer, intent(in) :: actual
     end subroutine
 
-    module subroutine same_assert_logical(unexpected, actual, message)
+    module subroutine equals_expect_logical(expected, actual, message)
         character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: unexpected
-        logical,          pointer,  intent(in) :: actual
+
+        logical, intent(in) :: expected
+        logical, intent(in) :: actual
     end subroutine
 
-    module subroutine same_assert_real(unexpected, actual, message)
+    module subroutine equals_expect_real(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: unexpected
-        real,             pointer,  intent(in) :: actual
+
+        real, intent(in) :: expected
+        real, intent(in) :: actual
+        real, intent(in) :: delta
     end subroutine
 end submodule

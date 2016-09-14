@@ -1,9 +1,9 @@
 !
-! A unit testing library for Fortran.
+! A unit testing library for Fortran
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov.
+! Copyright 2011-2016 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,12 +24,13 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) FailAsserts
+submodule (Unit) TrueExpects
 
     implicit none
 
 contains
-    module subroutine fail_assert(message)
+    module subroutine true_expect(condition, message)
         character(len=*), optional, intent(in) :: message
+        logical, intent(in) :: condition
     end subroutine
 end submodule

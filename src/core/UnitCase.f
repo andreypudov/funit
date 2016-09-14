@@ -96,10 +96,11 @@ contains
 
         type(ConsoleLogger) logger
 
+        call logger%log(TYPE_CASE, self%name)
         entry => self%list
 
         do while (associated(entry))
-            call logger%log(self%name)
+            call logger%log(TYPE_PROCEDURE, entry%name)
             call entry%procedure(self)
 
             entry => entry%next

@@ -31,7 +31,7 @@ submodule (Logger) UnitLogger
 contains
     module subroutine init_unitLogger(self, suiteName)
         class(UnitLogger), target, intent(in out) :: self
-        character(len=*),  intent(in)             :: suiteName
+        character(len=*),          intent(in)     :: suiteName
 
         if (.not. associated(unitLoggerInstance)) then
             allocate(character(len(suiteName)) :: self%suiteName)
@@ -50,8 +50,9 @@ contains
         unitLoggerInstance => null()
     end subroutine
 
-    module subroutine log_unitLogger(self, message)
-        class(UnitLogger), intent(in) :: self
-        character(len=*),  intent(in) :: message
+    module subroutine log_unitLogger(self, type, message)
+        class(UnitLogger), intent(in out) :: self
+        integer,           intent(in)     :: type
+        character(len=*),  intent(in)     :: message
     end subroutine
 end submodule

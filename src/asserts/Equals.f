@@ -24,19 +24,19 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) Equals
+submodule (Unit) EqualsAsserts
 
     implicit none
 
 contains
-    module subroutine equals_character(expected, actual, message)
+    module subroutine equals_assert_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message
 
         character, intent(in) :: expected
         character, intent(in) :: actual
     end subroutine
 
-    module subroutine equals_complex(expected, actual, delta, message)
+    module subroutine equals_assert_complex(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
 
         complex, intent(in) :: expected
@@ -44,7 +44,7 @@ contains
         real,    intent(in) :: delta
     end subroutine
 
-    module subroutine equals_double_precision(expected, actual, delta, message)
+    module subroutine equals_assert_double_precision(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
 
         double precision, intent(in) :: expected
@@ -52,21 +52,21 @@ contains
         double precision, intent(in) :: delta
     end subroutine
 
-    module subroutine equals_integer(expected, actual, message)
+    module subroutine equals_assert_integer(expected, actual, message)
         character(len=*), optional, intent(in) :: message
 
         integer, intent(in) :: expected
         integer, intent(in) :: actual
     end subroutine
 
-    module subroutine equals_logical(expected, actual, message)
+    module subroutine equals_assert_logical(expected, actual, message)
         character(len=*), optional, intent(in) :: message
 
         logical, intent(in) :: expected
         logical, intent(in) :: actual
     end subroutine
 
-    module subroutine equals_real(expected, actual, delta, message)
+    module subroutine equals_assert_real(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
 
         real, intent(in) :: expected

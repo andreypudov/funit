@@ -24,19 +24,19 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) ArrayEquals
+submodule (Unit) ArrayEqualsAsserts
 
     implicit none
 
 contains
-    module subroutine arrayEquals_character(expected, actual, message)
+    module subroutine arrayEquals_assert_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message
 
         character, dimension(:), intent(in) :: expected
         character, dimension(:), intent(in) :: actual
     end subroutine
 
-    module subroutine arrayEquals_complex(expected, actual, delta, message)
+    module subroutine arrayEquals_assert_complex(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
 
         complex, dimension(:), intent(in) :: expected
@@ -44,7 +44,7 @@ contains
         real,                  intent(in) :: delta
     end subroutine
 
-    module subroutine arrayEquals_double_precision(expected, actual, delta, message)
+    module subroutine arrayEquals_assert_double_precision(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
 
         double precision, dimension(:), intent(in) :: expected
@@ -52,21 +52,21 @@ contains
         double precision,               intent(in) :: delta
     end subroutine
 
-    module subroutine arrayEquals_integer(expected, actual, message)
+    module subroutine arrayEquals_assert_integer(expected, actual, message)
         character(len=*), optional, intent(in) :: message
 
         integer, dimension(:), intent(in) :: expected
         integer, dimension(:), intent(in) :: actual
     end subroutine
 
-    module subroutine arrayEquals_logical(expected, actual, message)
+    module subroutine arrayEquals_assert_logical(expected, actual, message)
         character(len=*), optional, intent(in) :: message
 
         logical, dimension(:), intent(in) :: expected
         logical, dimension(:), intent(in) :: actual
     end subroutine
 
-    module subroutine arrayEquals_real(expected, actual, delta, message)
+    module subroutine arrayEquals_assert_real(expected, actual, delta, message)
         character(len=*), optional, intent(in) :: message
 
         real, dimension(:), intent(in) :: expected

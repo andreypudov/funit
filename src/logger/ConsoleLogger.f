@@ -33,12 +33,15 @@ submodule (Logger) ConsoleLogger
 contains
     module subroutine init_consoleLogger(self, suiteName)
         class(ConsoleLogger), target, intent(in out) :: self
-        character(len=*),     intent(in)     :: suiteName
+        character(len=*),             intent(in)     :: suiteName
 
         if (.not. associated(consoleLoggerInstance)) then
             call self%UnitLogger%init(suiteName)
 
-            print '(A)', self%suiteName
+            self%case      = 0
+            self%procedure = 0
+
+            call self%log(TYPE_SUITE, self%suiteName)
             call printSeparator()
 
             consoleLoggerInstance => self
@@ -61,11 +64,27 @@ contains
         consoleLoggerInstance => null()
     end subroutine
 
-    module subroutine log_consoleLogger(self, message)
-        class(ConsoleLogger), intent(in) :: self
-        character(len=*), intent(in)     :: message
+    module subroutine log_consoleLogger(self, type, message)
+        class(ConsoleLogger), intent(in out) :: self
+        integer,              intent(in)     :: type
+        character(len=*),     intent(in)     :: message
 
-        print '(A)', message
+        select case(type)
+        case(TYPE_SUITE)
+            self%case      = 0
+            self%procedure = 0
+
+            print '(A)', message
+        case(TYPE_CASE)
+            self%case      = self%case + 1
+            self%procedure = 0
+
+            print '(I1,1X,A)', self%case, message
+        case(TYPE_PROCEDURE)
+            self%procedure = self%procedure + 1
+
+            print '(4X,A)', message
+        end select
     end subroutine
 
     subroutine printSeparator()

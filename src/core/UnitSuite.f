@@ -26,6 +26,8 @@
 
 submodule (Unit) UnitSuite
 
+    use ifport
+
     implicit none
 
 contains
@@ -50,6 +52,9 @@ contains
         allocate(logger)
         self%logger => logger
         call self%logger%init(self%name)
+
+        ! initialize assertion handler
+        call setHandler()
     end subroutine
 
     module subroutine clean_suite(self)
@@ -94,9 +99,10 @@ contains
         self%last => entry
     end subroutine
 
-    module subroutine run_suite(self)
-        class(UnitSuite), intent(in) :: self
-        type(UnitCaseEntry), pointer :: entry
+    module subroutine run_suite(self, resume)
+        class(UnitSuite), intent(in)  :: self
+        logical, optional, intent(in) :: resume
+        type(UnitCaseEntry), pointer  :: entry
 
         entry => self%list
 
@@ -105,5 +111,28 @@ contains
 
             entry => entry%next
         end do
+    end subroutine
+
+    subroutine setHandler()
+        interface
+            subroutine handler(signo, siginfo)
+                integer, intent(in) :: signo
+                integer, intent(in) :: siginfo
+            end subroutine
+        end interface
+
+        integer result
+
+        result = ieee_handler('set', 'division', resume)
+        if (result /= 0) then
+            error stop 'Could not set assertion handler.'
+        end if
+    end subroutine
+
+    subroutine resume(signo, siginfo)
+        integer, intent(in) :: signo
+        integer, intent(in) :: siginfo
+
+        print '(A)', 'ASSERTION'
     end subroutine
 end submodule

@@ -31,5 +31,11 @@ submodule (Unit) FailAsserts
 contains
     module subroutine fail_assert(message)
         character(len=*), optional, intent(in) :: message
+
+        real a, b, c
+
+        a = 10
+        b = 0
+        c = a / b
     end subroutine
 end submodule

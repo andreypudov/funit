@@ -53,8 +53,7 @@ contains
             entry => self%list
             self%list => self%list%next
 
-            ! TODO - FIX COMPILRER ERROR
-            !deallocate(entry)
+            deallocate(entry)
         end do
 
         deallocate(self%name)

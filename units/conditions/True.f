@@ -40,8 +40,9 @@ module TrueConditionUnit
     end type
 contains
     subroutine init(self, name)
-        class(TrueConditionCase), intent(in out) :: self
-        character(len=*), optional, intent(in)   :: name
+        class(TrueConditionCase),   intent(in out) :: self
+        character(len=*), optional, intent(in)     :: name
+
         call self%UnitCase%init('True condition')
 
         call self%add(true_normal, 'Normal values')
@@ -50,6 +51,7 @@ contains
 
     subroutine clean(self)
         class(TrueConditionCase), intent(in out) :: self
+
         call self%UnitCase%clean()
     end subroutine
 

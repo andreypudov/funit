@@ -217,17 +217,6 @@ module Unit
                 same_expect_real
     end type
 
-    type, private :: UnitProcedureEntry
-        procedure(UnitProcedure), pointer, nopass  :: procedure => null()
-        type(UnitProcedureEntry), pointer          :: next      => null()
-        character(len=:),         pointer          :: name      => null()
-    end type
-
-    type, private :: UnitCaseEntry
-        class(UnitCase),     pointer :: case => null()
-        type(UnitCaseEntry), pointer :: next => null()
-    end type
-
     type, public :: UnitCase
     private
         type(UnitProcedureEntry), pointer :: list => null()
@@ -253,6 +242,26 @@ module Unit
 
         procedure, pass, public :: add => add_suite
         procedure, pass, public :: run => run_suite
+    end type
+
+    type, private :: UnitContext
+    private
+    contains
+        procedure, nopass, public :: getContext => getContext_context
+        procedure, pass,   public :: clean      => clean_context
+
+        procedure, pass,   public :: getLogger  => getLogger_context
+    end type
+
+    type, private :: UnitProcedureEntry
+        procedure(UnitProcedure), pointer, nopass  :: procedure => null()
+        type(UnitProcedureEntry), pointer          :: next      => null()
+        character(len=:),         pointer          :: name      => null()
+    end type
+
+    type, private :: UnitCaseEntry
+        class(UnitCase),     pointer :: case => null()
+        type(UnitCaseEntry), pointer :: next => null()
     end type
 
     interface
@@ -828,8 +837,24 @@ module Unit
             class(UnitCase), pointer, intent(in) :: case
         end subroutine
 
-        module subroutine run_suite(self)
-            class(UnitSuite), intent(in) :: self
+        module subroutine run_suite(self, resume)
+            class(UnitSuite), intent(in)  :: self
+            logical, optional, intent(in) :: resume
         end subroutine
+    end interface
+
+    interface
+        module function getContext_context() result(instance)
+            class(UnitContext), pointer :: instance
+        end function
+
+        module subroutine clean_context(self)
+            class(UnitContext), intent(in out) :: self
+        end subroutine
+
+        module function getLogger_context(self) result(value)
+            class(UnitContext), intent(in out) :: self
+            class(UnitLogger), pointer         :: value
+        end function
     end interface
 end module

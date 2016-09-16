@@ -24,16 +24,52 @@
 ! THE SOFTWARE.
 !
 
-submodule (Conditions) True
+module FalseConditionUnit
+
+    use Unit
+    use Conditions
 
     implicit none
+    private
 
+    type, extends(UnitCase), public :: FalseConditionCase
+    private
+    contains
+        procedure, pass :: init
+        procedure, pass :: clean
+    end type
 contains
-    module pure function true(condition) result(value)
-        logical, intent(in) :: condition
-        logical value
+    subroutine init(self, name)
+        class(FalseConditionCase),  intent(in out) :: self
+        character(len=*), optional, intent(in)     :: name
 
-        !value = condition
-        value = .not. condition
-    end function
-end submodule
+        call self%UnitCase%init('False condition')
+
+        call self%add(false_normal, 'Normal values')
+        call self%add(false_normal, 'Inverse values')
+    end subroutine
+
+    subroutine clean(self)
+        class(FalseConditionCase), intent(in out) :: self
+
+        call self%UnitCase%clean()
+    end subroutine
+
+    subroutine false_normal(self)
+        class(UnitCase), intent(in out) :: self
+        type(Asserts) asserts
+
+        if (false(.true.)) then
+            call asserts%fail()
+        end if
+    end subroutine
+
+    subroutine false_inverse(self)
+        class(UnitCase), intent(in out) :: self
+        type(Asserts) asserts
+
+        if (.not. false(.false.)) then
+            call asserts%fail()
+        end if
+    end subroutine
+end module

@@ -27,12 +27,14 @@
 module ConditionsSuiteUnit
 
     use Unit
+    use FalseConditionUnit
     use TrueConditionUnit
 
     implicit none
 
     type, extends(UnitSuite), public :: ConditionsSuite
     private
+        class(UnitCase), pointer :: falseCase
         class(UnitCase), pointer :: trueCase
     contains
         procedure, pass :: init
@@ -44,21 +46,27 @@ contains
         character(len=*), optional, intent(in) :: name
 
         ! a list of condition cases
-        type(TrueConditionCase), pointer :: trueCase
+        type(FalseConditionCase), pointer :: falseCase
+        type(TrueConditionCase),  pointer :: trueCase
 
         call self%UnitSuite%init('A unit testing library for Fortran : Conditions')
 
+        allocate(falseCase)
         allocate(trueCase)
-        self%trueCase => trueCase
 
+        self%falseCase => falseCase
+        self%trueCase  => trueCase
+
+        call self%add(self%falseCase)
         call self%add(self%trueCase)
     end subroutine
 
     subroutine clean(self)
         class(ConditionsSuite), intent(in out) :: self
 
-        deallocate(self%trueCase)
-
         call self%UnitSuite%clean()
+
+        deallocate(self%falseCase)
+        deallocate(self%trueCase)
     end subroutine
 end module

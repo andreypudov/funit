@@ -30,21 +30,22 @@ submodule (Logger) ConsoleLogger
 
     integer, parameter :: TERMINAL_WIDTH = 80
 
+    type(ConsoleLogger), pointer :: instance
+
 contains
     module subroutine init_consoleLogger(self, suiteName)
-        class(ConsoleLogger), target, intent(in out) :: self
-        character(len=*),             intent(in)     :: suiteName
+        class(ConsoleLogger), intent(in out) :: self
+        character(len=*),     intent(in)     :: suiteName
 
-        if (.not. associated(consoleLoggerInstance)) then
-            call self%UnitLogger%init(suiteName)
+        if (.not. associated(instance)) then
+            allocate(instance)
+            call instance%UnitLogger%init(suiteName)
 
-            self%case      = 0
-            self%procedure = 0
+            instance%case      = 0
+            instance%procedure = 0
 
-            call self%log(TYPE_SUITE, self%suiteName)
+            call instance%log(TYPE_SUITE, instance%suiteName)
             call printSeparator()
-
-            consoleLoggerInstance => self
         end if
     end subroutine
 
@@ -57,31 +58,33 @@ contains
         call cpu_time(finish)
 
         call printSeparator()
-        write (buffer, '(F12.3)') finish - self%start
+        write (buffer, '(F12.3)') finish - instance%start
         print '(A,A,A)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds.'
 
-        call self%UnitLogger%clean()
-        consoleLoggerInstance => null()
+        call instance%UnitLogger%clean()
+
+        deallocate(instance)
+        instance => null()
     end subroutine
 
     module subroutine log_consoleLogger(self, type, message)
-        class(ConsoleLogger), intent(in out) :: self
-        integer,              intent(in)     :: type
-        character(len=*),     intent(in)     :: message
+        class(ConsoleLogger), intent(in) :: self
+        integer,              intent(in) :: type
+        character(len=*),     intent(in) :: message
 
         select case(type)
         case(TYPE_SUITE)
-            self%case      = 0
-            self%procedure = 0
+            instance%case      = 0
+            instance%procedure = 0
 
             print '(A)', message
         case(TYPE_CASE)
-            self%case      = self%case + 1
-            self%procedure = 0
+            instance%case      = instance%case + 1
+            instance%procedure = 0
 
-            print '(I1,1X,A)', self%case, message
+            print '(I1,1X,A)', instance%case, message
         case(TYPE_PROCEDURE)
-            self%procedure = self%procedure + 1
+            instance%procedure = instance%procedure + 1
 
             print '(4X,A)', message
         end select

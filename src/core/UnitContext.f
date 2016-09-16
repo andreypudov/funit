@@ -24,16 +24,33 @@
 ! THE SOFTWARE.
 !
 
-submodule (Conditions) True
+submodule (Unit) UnitContext
 
     implicit none
 
-contains
-    module pure function true(condition) result(value)
-        logical, intent(in) :: condition
-        logical value
+    type(UnitContext), pointer :: instance
 
-        !value = condition
-        value = .not. condition
+contains
+    module function getContext_context() result(value)
+        class(UnitContext), pointer :: value
+
+        if (.not. associated(instance)) then
+            allocate(instance)
+        end if
+
+        value => instance
+    end function
+
+    module subroutine clean_context(self)
+        class(UnitContext), intent(in out) :: self
+
+        if (.not. associated(instance)) then
+            deallocate(instance)
+        end if
+    end subroutine
+
+    module function getLogger_context(self) result(value)
+        class(UnitContext), intent(in out) :: self
+        class(UnitLogger), pointer         :: value
     end function
 end submodule

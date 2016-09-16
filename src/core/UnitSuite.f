@@ -35,8 +35,6 @@ contains
         class(UnitSuite), intent(in out)       :: self
         character(len=*), optional, intent(in) :: name
 
-        type(ConsoleLogger), pointer :: logger
-
         self%list => null()
         self%last => null()
 
@@ -48,11 +46,6 @@ contains
             self%name = ''
         end if
 
-        ! initialize logger
-        allocate(logger)
-        self%logger => logger
-        call self%logger%init(self%name)
-
         ! initialize assertion handler
         call setHandler()
     end subroutine
@@ -60,6 +53,8 @@ contains
     module subroutine clean_suite(self)
         class(UnitSuite), intent(in out) :: self
         type(UnitCaseEntry), pointer     :: entry
+
+        type(UnitContext) context
 
         do while (associated(self%list))
             entry => self%list
@@ -71,9 +66,7 @@ contains
         end do
 
         deallocate(self%name)
-
-        call self%logger%clean()
-        deallocate(self%logger)
+        call context%clean()
     end subroutine
 
     module subroutine add_suite(self, case)
@@ -102,7 +95,13 @@ contains
     module subroutine run_suite(self, resume)
         class(UnitSuite), intent(in)  :: self
         logical, optional, intent(in) :: resume
+
         type(UnitCaseEntry), pointer  :: entry
+        class(UnitLogger),   pointer  :: logger
+        type(UnitContext) context
+
+        logger => context%getLogger()
+        call logger%log(TYPE_SUITE, self%name)
 
         entry => self%list
 

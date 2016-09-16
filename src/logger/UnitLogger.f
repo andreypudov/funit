@@ -29,13 +29,8 @@ submodule (Logger) UnitLogger
     implicit none
 
 contains
-    module subroutine init_unitLogger(self, suiteName)
+    module subroutine init_unitLogger(self)
         class(UnitLogger), intent(in out) :: self
-        character(len=*),  intent(in)     :: suiteName
-
-
-        allocate(character(len(suiteName)) :: self%suiteName)
-        self%suiteName = suiteName
 
         call cpu_time(self%start)
     end subroutine
@@ -47,8 +42,8 @@ contains
     end subroutine
 
     module subroutine log_unitLogger(self, type, message)
-        class(UnitLogger), intent(in) :: self
-        integer,           intent(in) :: type
-        character(len=*),  intent(in) :: message
+        class(UnitLogger), intent(in out) :: self
+        integer,           intent(in)     :: type
+        character(len=*),  intent(in)     :: message
     end subroutine
 end submodule

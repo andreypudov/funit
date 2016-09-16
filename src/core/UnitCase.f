@@ -91,11 +91,14 @@ contains
 
     module subroutine run_case(self)
         class(UnitCase), intent(in out)   :: self
+
         type(UnitProcedureEntry), pointer :: entry
+        class(UnitLogger),        pointer :: logger
+        type(UnitContext) context
 
-        type(ConsoleLogger) logger
-
+        logger => context%getLogger()
         call logger%log(TYPE_CASE, self%name)
+
         entry => self%list
 
         do while (associated(entry))

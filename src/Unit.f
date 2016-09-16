@@ -234,7 +234,7 @@ module Unit
     private
         type(UnitCaseEntry), pointer :: list   => null()
         type(UnitCaseEntry), pointer :: last   => null()
-        class(UnitLogger),   pointer :: logger => null()
+        !class(UnitLogger),   pointer :: logger => null()
         character(len=:),    pointer :: name   => null()
     contains
         procedure, pass, public :: init  => init_suite
@@ -246,11 +246,12 @@ module Unit
 
     type, private :: UnitContext
     private
+        class(UnitLogger), pointer :: logger => null()
     contains
-        procedure, nopass, public :: getContext => getContext_context
-        procedure, pass,   public :: clean      => clean_context
+        procedure, nopass, public :: init  => init_context
+        procedure, nopass, public :: clean => clean_context
 
-        procedure, pass,   public :: getLogger  => getLogger_context
+        procedure, pass,   public :: getLogger => getLogger_context
     end type
 
     type, private :: UnitProcedureEntry
@@ -844,17 +845,15 @@ module Unit
     end interface
 
     interface
-        module function getContext_context() result(instance)
-            class(UnitContext), pointer :: instance
-        end function
+        module subroutine init_context()
+        end subroutine
 
-        module subroutine clean_context(self)
-            class(UnitContext), intent(in out) :: self
+        module subroutine clean_context()
         end subroutine
 
         module function getLogger_context(self) result(value)
-            class(UnitContext), intent(in out) :: self
-            class(UnitLogger), pointer         :: value
+            class(UnitContext), intent(in) :: self
+            class(UnitLogger), pointer     :: value
         end function
     end interface
 end module

@@ -31,26 +31,30 @@ submodule (Unit) UnitContext
     type(UnitContext), pointer :: instance
 
 contains
-    module function getContext_context() result(value)
-        class(UnitContext), pointer :: value
+    module subroutine init_context()
+        type(ConsoleLogger), pointer :: logger
 
         if (.not. associated(instance)) then
             allocate(instance)
+            allocate(logger)
+
+            call logger%init()
+            instance%logger => logger
         end if
+    end subroutine
 
-        value => instance
-    end function
-
-    module subroutine clean_context(self)
-        class(UnitContext), intent(in out) :: self
-
+    module subroutine clean_context()
         if (.not. associated(instance)) then
+            deallocate(instance%logger)
             deallocate(instance)
         end if
     end subroutine
 
     module function getLogger_context(self) result(value)
-        class(UnitContext), intent(in out) :: self
-        class(UnitLogger), pointer         :: value
+        class(UnitContext), intent(in) :: self
+        class(UnitLogger), pointer     :: value
+
+        call init_context()
+        value => instance%logger
     end function
 end submodule

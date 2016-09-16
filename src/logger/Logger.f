@@ -58,9 +58,8 @@ module Logger
     type(UnitLogger),    pointer, private :: unitLoggerInstance
 
     interface
-        module subroutine init_unitLogger(self, suiteName)
+        module subroutine init_unitLogger(self)
             class(UnitLogger), intent(in out) :: self
-            character(len=*),  intent(in)     :: suiteName
         end subroutine
 
         module subroutine clean_unitLogger(self)
@@ -68,16 +67,15 @@ module Logger
         end subroutine
 
         module subroutine log_unitLogger(self, type, message)
-            class(UnitLogger), intent(in) :: self
-            integer,           intent(in) :: type
-            character(len=*),  intent(in) :: message
+            class(UnitLogger), intent(in out) :: self
+            integer,           intent(in)     :: type
+            character(len=*),  intent(in)     :: message
         end subroutine
     end interface
 
     interface
-        module subroutine init_consoleLogger(self, suiteName)
+        module subroutine init_consoleLogger(self)
             class(ConsoleLogger), intent(in out) :: self
-            character(len=*),     intent(in)     :: suiteName
         end subroutine
 
         module subroutine clean_consoleLogger(self)
@@ -85,9 +83,9 @@ module Logger
         end subroutine
 
        module subroutine log_consoleLogger(self, type, message)
-           class(ConsoleLogger), intent(in) :: self
-           integer,              intent(in) :: type
-           character(len=*),     intent(in) :: message
+           class(ConsoleLogger), intent(in out) :: self
+           integer,              intent(in)     :: type
+           character(len=*),     intent(in)     :: message
        end subroutine
     end interface
 end module

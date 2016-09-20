@@ -62,6 +62,8 @@ contains
         if (.not. true(.true.)) then
             call asserts%fail()
         end if
+
+        call asserts%fail()
     end subroutine
 
     subroutine true_inverse(self)

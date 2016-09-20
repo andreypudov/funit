@@ -93,23 +93,57 @@ contains
     end subroutine
 
     module subroutine run_suite(self, resume)
-        class(UnitSuite), intent(in)  :: self
-        logical, optional, intent(in) :: resume
+        class(UnitSuite), target, intent(in) :: self
+        logical,        optional, intent(in) :: resume
 
-        type(UnitCaseEntry), pointer  :: entry
-        class(UnitLogger),   pointer  :: logger
+        type(UnitCaseEntry), pointer :: entry
+        class(UnitSuite),    pointer :: suite
+        class(UnitCase),     pointer :: case
+        class(UnitLogger),   pointer :: logger
+
         type(UnitContext) context
+        logical           resuming
+        logical           processed
 
+        suite  => self
         logger => context%getLogger()
-        call logger%log(TYPE_SUITE, self%name)
 
-        entry => self%list
+        ! set resume option
+        if (present(resume)) then
+            resuming = resume
+        else
+            call context%setSuite(suite)
+            call logger%log(TYPE_SUITE, self%name)
+
+            resuming = .false.
+        end if
+
+        entry     => self%list
+        processed =  .false.
 
         do while (associated(entry))
-            call entry%case%run()
+            case => context%getCase()
+            if ((resuming)) then
+                if (associated(case, entry%case)) then
+                    processed = .true.
+                    entry => entry%next
+                    cycle
+                else
+                    if (.not. processed) then
+                        entry => entry%next
+                        cycle
+                    else
+                        call context%setCase(case)
+                    end if
+                end if
+            end if
+
+            call entry%case%run(resuming)
 
             entry => entry%next
         end do
+
+        call logger%log(TYPE_CASE, 'FINISH')
     end subroutine
 
     subroutine setHandler()
@@ -132,6 +166,14 @@ contains
         integer, intent(in) :: signo
         integer, intent(in) :: siginfo
 
-        print '(A)', 'ASSERTION'
+        class(UnitSuite), pointer :: suite
+        type(UnitContext) context
+
+        ! initialize assertion handler
+        call setHandler()
+
+        ! resume unit running
+        suite => context%getSuite()
+        call suite%run(.true.)
     end subroutine
 end submodule

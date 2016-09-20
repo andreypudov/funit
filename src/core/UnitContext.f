@@ -50,11 +50,46 @@ contains
         end if
     end subroutine
 
-    module function getLogger_context(self) result(value)
-        class(UnitContext), intent(in) :: self
-        class(UnitLogger), pointer     :: value
+    module function getLogger_context() result(value)
+        class(UnitLogger),  pointer :: value
 
         call init_context()
         value => instance%logger
     end function
+
+    module function getSuite_context() result(value)
+        class(UnitSuite), pointer :: value
+
+        value => instance%suite
+    end function
+
+    module function getCase_context() result(value)
+        class(UnitCase), pointer :: value
+
+        value => instance%case
+    end function
+
+    module function getProcedure_context() result(value)
+        class(UnitProcedureEntry), pointer :: value
+
+        value => instance%procedure
+    end function
+
+    module subroutine setSuite_context(suite)
+        class(UnitSuite), pointer, intent(in) :: suite
+
+        instance%suite => suite
+    end subroutine
+
+    module subroutine setCase_context(case)
+        class(UnitCase), pointer, intent(in) :: case
+
+        instance%case => case
+    end subroutine
+
+    module subroutine setProcedure_context(procedure)
+        class(UnitProcedureEntry), pointer, intent(in) :: procedure
+
+        instance%procedure => procedure
+    end subroutine
 end submodule

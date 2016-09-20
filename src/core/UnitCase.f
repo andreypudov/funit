@@ -89,19 +89,54 @@ contains
         self%last => entry
     end subroutine
 
-    module subroutine run_case(self)
-        class(UnitCase), intent(in out)   :: self
+    module subroutine run_case(self, resume)
+        class(UnitCase), target, intent(in out) :: self
+        logical,       optional, intent(in)     :: resume
 
-        type(UnitProcedureEntry), pointer :: entry
-        class(UnitLogger),        pointer :: logger
+        type(UnitProcedureEntry),  pointer :: entry
+        class(UnitCase),           pointer :: case
+        class(UnitProcedureEntry), pointer :: procedure
+        class(UnitProcedureEntry), pointer :: procedureOld
+        class(UnitLogger),         pointer :: logger
+
         type(UnitContext) context
+        logical           resuming
+        logical           processed
 
+        ! set resume option
+        if (present(resume)) then
+            resuming = resume
+        else
+            resuming = .false.
+        end if
+
+        case   => self
         logger => context%getLogger()
+
+        call context%setCase(case)
         call logger%log(TYPE_CASE, self%name)
 
-        entry => self%list
+        entry     => self%list
+        processed =  .false.
 
         do while (associated(entry))
+            procedure    => entry
+            procedureOld => context%getProcedure()
+            if ((resuming)) then
+                if (associated(procedureOld, procedure)) then
+                    processed = .true.
+                    entry => entry%next
+                    cycle
+                else
+                    if (.not. processed) then
+                        entry => entry%next
+                        cycle
+                    else
+                        call context%setProcedure(procedure)
+                    end if
+                end if
+            end if
+
             call logger%log(TYPE_PROCEDURE, entry%name)
             call entry%procedure(self)
 

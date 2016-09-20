@@ -33,7 +33,6 @@ contains
         logical, intent(in) :: condition
         logical value
 
-        !value = condition
-        value = .not. condition
+        value = condition
     end function
 end submodule

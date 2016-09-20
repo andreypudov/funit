@@ -219,9 +219,9 @@ module Unit
 
     type, public :: UnitCase
     private
-        type(UnitProcedureEntry), pointer :: list => null()
-        type(UnitProcedureEntry), pointer :: last => null()
-        character(len=:),         pointer :: name => null()
+        class(UnitProcedureEntry), pointer :: list => null()
+        class(UnitProcedureEntry), pointer :: last => null()
+        character(len=:),          pointer :: name => null()
     contains
         procedure, pass, public :: init  => init_case
         procedure, pass, public :: clean => clean_case
@@ -232,10 +232,9 @@ module Unit
 
     type, public :: UnitSuite
     private
-        type(UnitCaseEntry), pointer :: list   => null()
-        type(UnitCaseEntry), pointer :: last   => null()
-        !class(UnitLogger),   pointer :: logger => null()
-        character(len=:),    pointer :: name   => null()
+        class(UnitCaseEntry), pointer :: list   => null()
+        class(UnitCaseEntry), pointer :: last   => null()
+        character(len=:),     pointer :: name   => null()
     contains
         procedure, pass, public :: init  => init_suite
         procedure, pass, public :: clean => clean_suite
@@ -247,11 +246,21 @@ module Unit
     type, private :: UnitContext
     private
         class(UnitLogger), pointer :: logger => null()
+        class(UnitSuite),  pointer :: suite  => null()
+        class(UnitCase),   pointer :: case   => null()
+        class(UnitProcedureEntry), pointer :: procedure => null()
     contains
         procedure, nopass, public :: init  => init_context
         procedure, nopass, public :: clean => clean_context
 
-        procedure, pass,   public :: getLogger => getLogger_context
+        procedure, nopass, public :: getLogger => getLogger_context
+        procedure, nopass, public :: getSuite  => getSuite_context
+        procedure, nopass, public :: getCase   => getCase_context
+        procedure, nopass, public :: getProcedure => getProcedure_context
+
+        procedure, nopass, public :: setSuite  => setSuite_context
+        procedure, nopass, public :: setCase   => setCase_context
+        procedure, nopass, public :: setProcedure  => setProcedure_context
     end type
 
     type, private :: UnitProcedureEntry
@@ -261,8 +270,8 @@ module Unit
     end type
 
     type, private :: UnitCaseEntry
-        class(UnitCase),     pointer :: case => null()
-        type(UnitCaseEntry), pointer :: next => null()
+        class(UnitCase),      pointer :: case => null()
+        class(UnitCaseEntry), pointer :: next => null()
     end type
 
     interface
@@ -818,8 +827,9 @@ module Unit
             character(len=*),        optional, intent(in) :: name
         end subroutine
 
-        module subroutine run_case(self)
-            class(UnitCase), intent(in out) :: self
+        module subroutine run_case(self, resume)
+            class(UnitCase), target, intent(in out) :: self
+            logical,       optional, intent(in)     :: resume
         end subroutine
     end interface
 
@@ -839,8 +849,8 @@ module Unit
         end subroutine
 
         module subroutine run_suite(self, resume)
-            class(UnitSuite), intent(in)  :: self
-            logical, optional, intent(in) :: resume
+            class(UnitSuite), target, intent(in) :: self
+            logical,        optional, intent(in) :: resume
         end subroutine
     end interface
 
@@ -851,9 +861,32 @@ module Unit
         module subroutine clean_context()
         end subroutine
 
-        module function getLogger_context(self) result(value)
-            class(UnitContext), intent(in) :: self
-            class(UnitLogger), pointer     :: value
+        module function getLogger_context() result(value)
+            class(UnitLogger),  pointer :: value
         end function
+
+        module function getSuite_context() result(value)
+            class(UnitSuite), pointer :: value
+        end function
+
+        module function getCase_context() result(value)
+            class(UnitCase), pointer :: value
+        end function
+
+        module function getProcedure_context() result(value)
+            class(UnitProcedureEntry), pointer :: value
+        end function
+
+        module subroutine setSuite_context(suite)
+            class(UnitSuite), pointer, intent(in) :: suite
+        end subroutine
+
+        module subroutine setCase_context(case)
+            class(UnitCase), pointer, intent(in) :: case
+        end subroutine
+
+        module subroutine setProcedure_context(procedure)
+            class(UnitProcedureEntry), pointer, intent(in) :: procedure
+        end subroutine
     end interface
 end module

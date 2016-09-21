@@ -36,8 +36,9 @@ contains
 
         call self%UnitLogger%init()
 
-        self%case      = 0
-        self%procedure = 0
+        self%case    = 0
+        self%success = 0
+        self%failure = 0
     end subroutine
 
     module subroutine clean_consoleLogger(self)
@@ -58,35 +59,38 @@ contains
 
         select case(type)
         case(TYPE_SUITE)
-            self%case      = 0
-            self%procedure = 0
+            self%case    = 0
+            self%success = 0
+            self%failure = 0
 
             print '(A)', message
             call printSeparator()
         case(TYPE_CASE)
-            self%case      = self%case + 1
-            self%procedure = 0
+            self%case = self%case + 1
 
-            print '(I1,1X,A)', self%case, message
+            print '(I0,1X,A)', self%case, message
         case(TYPE_PROCEDURE)
-            self%procedure = self%procedure + 1
-
             ! TODO add error handling
             if (status) then
+                self%success = self%success + 1
                 buffer = 'OK'
             else
-                buffer = 'FAIL'
+                self%failure = self%failure + 1
+                buffer = 'FAILED'
             end if
 
             name = message
 
-            print '(4X,A72,A4)', name, trim(adjustl(buffer))
+            print '(4X,A70,A6)', name, trim(adjustl(buffer))
         case(TYPE_RESULT)
             call cpu_time(finish)
 
             call printSeparator()
             write (buffer, '(F12.3)') finish - self%start
-            print '(A,A,A)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds.'
+            print '(A,A,A,A,I0,A,I0,A,I0)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds. ', &
+                'Total: ', (self%success + self%failure), &
+                    ', success: ', self%success, &
+                    ', failed: ',  self%failure
         end select
     end subroutine
 

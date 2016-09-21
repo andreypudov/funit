@@ -36,7 +36,10 @@ module Logger
 
     type, public :: UnitLogger
     private
-        character(len=:), pointer :: suiteName
+        integer :: case
+        integer :: success
+        integer :: failure
+
         real :: start = 0.0
     contains
         procedure, pass, public :: init  => init_unitLogger
@@ -47,8 +50,6 @@ module Logger
 
     type, extends(UnitLogger), public :: ConsoleLogger
     private
-        integer :: case
-        integer :: procedure
     contains
         procedure, pass, public :: init  => init_consoleLogger
         procedure, pass, public :: clean => clean_consoleLogger

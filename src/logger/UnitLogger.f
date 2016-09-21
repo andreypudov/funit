@@ -37,8 +37,6 @@ contains
 
     module subroutine clean_unitLogger(self)
         class(UnitLogger), intent(in out) :: self
-
-        deallocate(self%suiteName)
     end subroutine
 
     module subroutine log_unitLogger(self, type, message, status)

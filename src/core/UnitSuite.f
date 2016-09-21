@@ -103,7 +103,6 @@ contains
 
         type(UnitContext) context
         logical           resuming
-        logical           processed
 
         suite  => self
         logger => context%getLogger()
@@ -118,24 +117,13 @@ contains
             resuming = .false.
         end if
 
-        entry     => self%list
-        processed =  .false.
+        entry => self%list
 
         do while (associated(entry))
             case => context%getCase()
-            if ((resuming)) then
-                if (associated(case, entry%case)) then
-                    processed = .true.
-                    entry => entry%next
-                    cycle
-                else
-                    if (.not. processed) then
-                        entry => entry%next
-                        cycle
-                    else
-                        call context%setCase(case)
-                    end if
-                end if
+            if ((resuming) .and. (.not. associated(case, entry%case))) then
+                entry => entry%next
+                cycle
             end if
 
             call entry%case%run(resuming)
@@ -143,7 +131,7 @@ contains
             entry => entry%next
         end do
 
-        call logger%log(TYPE_CASE, 'FINISH')
+        call logger%log(TYPE_RESULT, '')
     end subroutine
 
     subroutine setHandler()
@@ -166,11 +154,19 @@ contains
         integer, intent(in) :: signo
         integer, intent(in) :: siginfo
 
-        class(UnitSuite), pointer :: suite
+        class(UnitSuite),          pointer :: suite
+        class(UnitProcedureEntry), pointer :: procedure
+        class(UnitLogger),         pointer :: logger
+
         type(UnitContext) context
 
         ! initialize assertion handler
         call setHandler()
+
+        logger    => context%getLogger()
+        procedure => context%getProcedure()
+
+        call logger%log(TYPE_PROCEDURE, procedure%name, .false.)
 
         ! resume unit running
         suite => context%getSuite()

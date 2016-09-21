@@ -49,7 +49,7 @@ contains
         type(FalseConditionCase), pointer :: falseCase
         type(TrueConditionCase),  pointer :: trueCase
 
-        call self%UnitSuite%init('A unit testing library for Fortran : Conditions')
+        call self%UnitSuite%init('A unit testing library for Fortran')
 
         allocate(falseCase)
         allocate(trueCase)

@@ -45,8 +45,8 @@ contains
 
         call self%UnitCase%init('True condition')
 
-        call self%add(true_normal, 'Normal values')
-        call self%add(true_normal, 'Inverse values')
+        call self%add(true_normal,  'Normal values')
+        call self%add(true_inverse, 'Inverse values')
     end subroutine
 
     subroutine clean(self)
@@ -73,5 +73,7 @@ contains
         if (true(.false.)) then
             call asserts%fail()
         end if
+
+        !call asserts%fail()
     end subroutine
 end module

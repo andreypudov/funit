@@ -43,22 +43,18 @@ contains
     module subroutine clean_consoleLogger(self)
         class(ConsoleLogger), intent(in out) :: self
 
-        character(len=16) buffer
-        real finish
-
-        call cpu_time(finish)
-
-        call printSeparator()
-        write (buffer, '(F12.3)') finish - self%start
-        print '(A,A,A)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds.'
-
         call self%UnitLogger%clean()
     end subroutine
 
-    module subroutine log_consoleLogger(self, type, message)
+    module subroutine log_consoleLogger(self, type, message, status)
         class(ConsoleLogger), intent(in out) :: self
         integer,              intent(in)     :: type
         character(len=*),     intent(in)     :: message
+        logical, optional,    intent(in)     :: status
+
+        character(len=16)  buffer
+        character(len=128) name
+        real finish
 
         select case(type)
         case(TYPE_SUITE)
@@ -75,7 +71,22 @@ contains
         case(TYPE_PROCEDURE)
             self%procedure = self%procedure + 1
 
-            print '(4X,A)', message
+            ! TODO add error handling
+            if (status) then
+                buffer = 'OK'
+            else
+                buffer = 'FAIL'
+            end if
+
+            name = message
+
+            print '(4X,A72,A4)', name, trim(adjustl(buffer))
+        case(TYPE_RESULT)
+            call cpu_time(finish)
+
+            call printSeparator()
+            write (buffer, '(F12.3)') finish - self%start
+            print '(A,A,A)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds.'
         end select
     end subroutine
 

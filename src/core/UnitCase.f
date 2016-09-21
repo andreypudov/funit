@@ -103,6 +103,9 @@ contains
         logical           resuming
         logical           processed
 
+        case   => self
+        logger => context%getLogger()
+
         ! set resume option
         if (present(resume)) then
             resuming = resume
@@ -110,11 +113,10 @@ contains
             resuming = .false.
         end if
 
-        case   => self
-        logger => context%getLogger()
-
         call context%setCase(case)
-        call logger%log(TYPE_CASE, self%name)
+        if (.not. resuming) then
+            call logger%log(TYPE_CASE, self%name)
+        end if
 
         entry     => self%list
         processed =  .false.
@@ -131,14 +133,13 @@ contains
                     if (.not. processed) then
                         entry => entry%next
                         cycle
-                    else
-                        call context%setProcedure(procedure)
                     end if
                 end if
             end if
 
-            call logger%log(TYPE_PROCEDURE, entry%name)
+            call context%setProcedure(procedure)
             call entry%procedure(self)
+            call logger%log(TYPE_PROCEDURE, entry%name, .true.)
 
             entry => entry%next
         end do

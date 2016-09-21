@@ -41,9 +41,10 @@ contains
         deallocate(self%suiteName)
     end subroutine
 
-    module subroutine log_unitLogger(self, type, message)
+    module subroutine log_unitLogger(self, type, message, status)
         class(UnitLogger), intent(in out) :: self
         integer,           intent(in)     :: type
         character(len=*),  intent(in)     :: message
+        logical, optional, intent(in)     :: status
     end subroutine
 end submodule

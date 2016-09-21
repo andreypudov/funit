@@ -32,6 +32,7 @@ module Logger
     integer, parameter, public :: TYPE_SUITE     = 0
     integer, parameter, public :: TYPE_CASE      = 1
     integer, parameter, public :: TYPE_PROCEDURE = 2
+    integer, parameter, public :: TYPE_RESULT    = 3
 
     type, public :: UnitLogger
     private
@@ -66,10 +67,11 @@ module Logger
             class(UnitLogger), intent(in out) :: self
         end subroutine
 
-        module subroutine log_unitLogger(self, type, message)
+        module subroutine log_unitLogger(self, type, message, status)
             class(UnitLogger), intent(in out) :: self
             integer,           intent(in)     :: type
             character(len=*),  intent(in)     :: message
+            logical, optional, intent(in)     :: status
         end subroutine
     end interface
 
@@ -82,10 +84,11 @@ module Logger
             class(ConsoleLogger), intent(in out) :: self
         end subroutine
 
-       module subroutine log_consoleLogger(self, type, message)
+       module subroutine log_consoleLogger(self, type, message, status)
            class(ConsoleLogger), intent(in out) :: self
            integer,              intent(in)     :: type
            character(len=*),     intent(in)     :: message
+           logical, optional,    intent(in)     :: status
        end subroutine
     end interface
 end module

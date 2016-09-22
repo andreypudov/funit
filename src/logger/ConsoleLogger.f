@@ -36,13 +36,17 @@ contains
 
         call self%UnitLogger%init()
 
-        self%case    = 0
-        self%success = 0
-        self%failure = 0
+        allocate(character(TERMINAL_WIDTH) :: self%reason)
+
+        self%case   = 0
+        self%passed = 0
+        self%failed = 0
     end subroutine
 
     module subroutine clean_consoleLogger(self)
         class(ConsoleLogger), intent(in out) :: self
+
+        deallocate(self%reason)
 
         call self%UnitLogger%clean()
     end subroutine
@@ -59,9 +63,9 @@ contains
 
         select case(type)
         case(TYPE_SUITE)
-            self%case    = 0
-            self%success = 0
-            self%failure = 0
+            self%case   = 0
+            self%passed = 0
+            self%failed = 0
 
             print '(A)', message
             call printSeparator()
@@ -72,25 +76,28 @@ contains
         case(TYPE_PROCEDURE)
             ! TODO add error handling
             if (status) then
-                self%success = self%success + 1
+                self%passed = self%passed + 1
+                self%reason = ''
+                name   = message
                 buffer = 'OK'
             else
-                self%failure = self%failure + 1
+                self%failed = self%failed + 1
+                name   = message // ' [' // trim(adjustl(self%reason)) // ']'
                 buffer = 'FAILED'
             end if
 
-            name = message
-
             print '(4X,A70,A6)', name, trim(adjustl(buffer))
+        case(TYPE_REASON)
+            self%reason = message
         case(TYPE_RESULT)
             call cpu_time(finish)
 
             call printSeparator()
             write (buffer, '(F12.3)') finish - self%start
             print '(A,A,A,A,I0,A,I0,A,I0)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds. ', &
-                'Total: ', (self%success + self%failure), &
-                    ', success: ', self%success, &
-                    ', failed: ',  self%failure
+                'Total: ', (self%passed + self%failed), &
+                    ', passed: ', self%passed, &
+                    ', failed: ',  self%failed
         end select
     end subroutine
 

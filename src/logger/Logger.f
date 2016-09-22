@@ -32,13 +32,14 @@ module Logger
     integer, parameter, public :: TYPE_SUITE     = 0
     integer, parameter, public :: TYPE_CASE      = 1
     integer, parameter, public :: TYPE_PROCEDURE = 2
-    integer, parameter, public :: TYPE_RESULT    = 3
+    integer, parameter, public :: TYPE_REASON    = 3
+    integer, parameter, public :: TYPE_RESULT    = 4
 
     type, public :: UnitLogger
     private
         integer :: case
-        integer :: success
-        integer :: failure
+        integer :: passed
+        integer :: failed
 
         real :: start = 0.0
     contains
@@ -50,6 +51,7 @@ module Logger
 
     type, extends(UnitLogger), public :: ConsoleLogger
     private
+        character(len=:), pointer :: reason => null()
     contains
         procedure, pass, public :: init  => init_consoleLogger
         procedure, pass, public :: clean => clean_consoleLogger

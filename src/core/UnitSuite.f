@@ -127,6 +127,7 @@ contains
             end if
 
             call entry%case%run(resuming)
+            resuming = .false.
 
             entry => entry%next
         end do

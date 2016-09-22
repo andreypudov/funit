@@ -45,8 +45,8 @@ contains
 
         call self%UnitCase%init('True condition')
 
-        call self%add(true_normal,  'Normal values')
-        call self%add(true_inverse, 'Inverse values')
+        call self%add(true_normal,   'Normal case')
+        call self%add(true_negative, 'Negative case')
     end subroutine
 
     subroutine clean(self)
@@ -62,18 +62,14 @@ contains
         if (.not. true(.true.)) then
             call asserts%fail()
         end if
-
-        call asserts%fail()
     end subroutine
 
-    subroutine true_inverse(self)
+    subroutine true_negative(self)
         class(UnitCase), intent(in out) :: self
         type(Asserts) asserts
 
         if (true(.false.)) then
             call asserts%fail()
         end if
-
-        !call asserts%fail()
     end subroutine
 end module

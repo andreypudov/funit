@@ -32,6 +32,16 @@ contains
     module subroutine fail_assert(message)
         character(len=*), optional, intent(in) :: message
 
+        class(UnitLogger), pointer :: logger
+        type(UnitContext) context
+
+        logger => context%getLogger()
+        call logger%log(TYPE_REASON, message)
+
+        call throw()
+    end subroutine
+
+    subroutine throw()
         real a, b, c
 
         a = 10

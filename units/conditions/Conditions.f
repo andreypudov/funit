@@ -24,7 +24,7 @@
 ! THE SOFTWARE.
 !
 
-module ConditionsSuiteUnit
+module ConditionsRunnerUnit
 
     use Unit
 
@@ -34,44 +34,44 @@ module ConditionsSuiteUnit
 
     implicit none
 
-    type, extends(UnitSuite), public :: ConditionsSuite
+    type, extends(UnitRunner), public :: ConditionsRunner
         private
-        class(UnitCase), pointer :: arrayEqualsCase
-        class(UnitCase), pointer :: falseCase
-        class(UnitCase), pointer :: trueCase
+        class(UnitSuite), pointer :: arrayEqualsSuite
+        class(UnitSuite), pointer :: falseSuite
+        class(UnitSuite), pointer :: trueSuite
     contains
         procedure, pass :: init
         procedure, pass :: clean
     end type
 contains
     subroutine init(self, name)
-        class(ConditionsSuite), intent(in out) :: self
-        character(len=*), optional, intent(in) :: name
+        class(ConditionsRunner), intent(in out) :: self
+        character(len=*), optional, intent(in)  :: name
 
         ! a list of condition cases
-        type(ArrayEqualsConditionCase), pointer :: arrayEqualsCase
-        type(FalseConditionCase),       pointer :: falseCase
-        type(TrueConditionCase),        pointer :: trueCase
+        type(ArrayEqualsConditionSuite), pointer :: arrayEqualsSuite
+        type(FalseConditionSuite),       pointer :: falseSuite
+        type(TrueConditionSuite),        pointer :: trueSuite
 
-        call self%UnitSuite%init('A unit testing library for Fortran')
+        call self%UnitRunner%init('A unit testing library for Fortran')
 
-        allocate(arrayEqualsCase)
-        allocate(falseCase)
-        allocate(trueCase)
+        allocate(arrayEqualsSuite)
+        allocate(falseSuite)
+        allocate(trueSuite)
 
-        self%arrayEqualsCase => arrayEqualsCase
-        self%falseCase       => falseCase
-        self%trueCase        => trueCase
+        self%arrayEqualsSuite => arrayEqualsSuite
+        self%falseSuite       => falseSuite
+        self%trueSuite        => trueSuite
 
-        call self%add(self%arrayEqualsCase)
-        call self%add(self%falseCase)
-        call self%add(self%trueCase)
+        call self%add(self%arrayEqualsSuite)
+        call self%add(self%falseSuite)
+        call self%add(self%trueSuite)
     end subroutine
 
     subroutine clean(self)
-        class(ConditionsSuite), intent(in out) :: self
+        class(ConditionsRunner), intent(in out) :: self
 
         ! deallocates unit cases
-        call self%UnitSuite%clean()
+        call self%UnitRunner%clean()
     end subroutine
 end module

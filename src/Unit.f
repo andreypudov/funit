@@ -217,24 +217,11 @@ module Unit
                 same_expect_real
     end type
 
-    type, public :: UnitCase
-    private
-        class(UnitProcedureEntry), pointer :: list => null()
-        class(UnitProcedureEntry), pointer :: last => null()
-        character(len=:),          pointer :: name => null()
-    contains
-        procedure, pass, public :: init  => init_case
-        procedure, pass, public :: clean => clean_case
-
-        procedure, pass, public :: add => add_case
-        procedure, pass, public :: run => run_case
-    end type
-
     type, public :: UnitSuite
     private
-        class(UnitCaseEntry), pointer :: list   => null()
-        class(UnitCaseEntry), pointer :: last   => null()
-        character(len=:),     pointer :: name   => null()
+        class(UnitCaseEntry), pointer :: list => null()
+        class(UnitCaseEntry), pointer :: last => null()
+        character(len=:),     pointer :: name => null()
     contains
         procedure, pass, public :: init  => init_suite
         procedure, pass, public :: clean => clean_suite
@@ -243,35 +230,48 @@ module Unit
         procedure, pass, public :: run => run_suite
     end type
 
+    type, public :: UnitRunner
+    private
+        class(UnitSuiteEntry), pointer :: list   => null()
+        class(UnitSuiteEntry), pointer :: last   => null()
+        character(len=:),      pointer :: name   => null()
+    contains
+        procedure, pass, public :: init  => init_runner
+        procedure, pass, public :: clean => clean_runner
+
+        procedure, pass, public :: add => add_runner
+        procedure, pass, public :: run => run_runner
+    end type
+
     type, private :: UnitContext
     private
-        class(UnitLogger), pointer :: logger => null()
-        class(UnitSuite),  pointer :: suite  => null()
-        class(UnitCase),   pointer :: case   => null()
-        class(UnitProcedureEntry), pointer :: procedure => null()
+        class(UnitLogger),    pointer :: logger => null()
+        class(UnitRunner),    pointer :: runner => null()
+        class(UnitSuite),     pointer :: suite  => null()
+        class(UnitCaseEntry), pointer :: case    => null()
     contains
         procedure, nopass, public :: init  => init_context
         procedure, nopass, public :: clean => clean_context
 
         procedure, nopass, public :: getLogger => getLogger_context
+        procedure, nopass, public :: getRunner => getRunner_context
         procedure, nopass, public :: getSuite  => getSuite_context
         procedure, nopass, public :: getCase   => getCase_context
-        procedure, nopass, public :: getProcedure => getProcedure_context
 
+        procedure, nopass, public :: setRunner => setRunner_context
         procedure, nopass, public :: setSuite  => setSuite_context
         procedure, nopass, public :: setCase   => setCase_context
-        procedure, nopass, public :: setProcedure  => setProcedure_context
-    end type
-
-    type, private :: UnitProcedureEntry
-        procedure(UnitProcedure), pointer, nopass  :: procedure => null()
-        type(UnitProcedureEntry), pointer          :: next      => null()
-        character(len=:),         pointer          :: name      => null()
     end type
 
     type, private :: UnitCaseEntry
-        class(UnitCase),      pointer :: case => null()
-        class(UnitCaseEntry), pointer :: next => null()
+        procedure(UnitCase), pointer, nopass :: case => null()
+        type(UnitCaseEntry), pointer         :: next      => null()
+        character(len=:),    pointer         :: name      => null()
+    end type
+
+    type, private :: UnitSuiteEntry
+        class(UnitSuite),      pointer :: suite => null()
+        class(UnitSuiteEntry), pointer :: next  => null()
     end type
 
     interface
@@ -805,31 +805,9 @@ module Unit
     end interface
 
     abstract interface
-        subroutine UnitProcedure(self)
-            import UnitCase
-            class(UnitCase), intent(in out) :: self
-        end subroutine
-    end interface
-
-    interface
-        module subroutine init_case(self, name)
-            class(UnitCase), intent(in out)        :: self
-            character(len=*), optional, intent(in) :: name
-        end subroutine
-
-        module subroutine clean_case(self)
-            class(UnitCase), intent(in out) :: self
-        end subroutine
-
-        module subroutine add_case(self, procedure, name)
-            class(UnitCase), intent(in out)               :: self
-            procedure(UnitProcedure), pointer, intent(in) :: procedure
-            character(len=*),        optional, intent(in) :: name
-        end subroutine
-
-        module subroutine run_case(self, resume)
-            class(UnitCase), target, intent(in out) :: self
-            logical,       optional, intent(in)     :: resume
+        subroutine UnitCase(self)
+            import UnitSuite
+            class(UnitSuite), intent(in out) :: self
         end subroutine
     end interface
 
@@ -843,14 +821,36 @@ module Unit
             class(UnitSuite), intent(in out) :: self
         end subroutine
 
-        module subroutine add_suite(self, case)
-            class(UnitSuite), intent(in out)     :: self
-            class(UnitCase), pointer, intent(in) :: case
+        module subroutine add_suite(self, case, name)
+            class(UnitSuite), intent(in out)         :: self
+            procedure(UnitCase), pointer, intent(in) :: case
+            character(len=*),   optional, intent(in) :: name
         end subroutine
 
         module subroutine run_suite(self, resume)
-            class(UnitSuite), target, intent(in) :: self
-            logical,        optional, intent(in) :: resume
+            class(UnitSuite), target, intent(in out) :: self
+            logical,        optional, intent(in)     :: resume
+        end subroutine
+    end interface
+
+    interface
+        module subroutine init_runner(self, name)
+            class(UnitRunner), intent(in out)      :: self
+            character(len=*), optional, intent(in) :: name
+        end subroutine
+
+        module subroutine clean_runner(self)
+            class(UnitRunner), intent(in out) :: self
+        end subroutine
+
+        module subroutine add_runner(self, suite)
+            class(UnitRunner), intent(in out)     :: self
+            class(UnitSuite), pointer, intent(in) :: suite
+        end subroutine
+
+        module subroutine run_runner(self, resume)
+            class(UnitRunner), target, intent(in) :: self
+            logical,         optional, intent(in) :: resume
         end subroutine
     end interface
 
@@ -865,28 +865,28 @@ module Unit
             class(UnitLogger),  pointer :: value
         end function
 
+        module function getRunner_context() result(value)
+            class(UnitRunner), pointer :: value
+        end function
+
         module function getSuite_context() result(value)
             class(UnitSuite), pointer :: value
         end function
 
         module function getCase_context() result(value)
-            class(UnitCase), pointer :: value
+            class(UnitCaseEntry), pointer :: value
         end function
 
-        module function getProcedure_context() result(value)
-            class(UnitProcedureEntry), pointer :: value
-        end function
+        module subroutine setRunner_context(runner)
+            class(UnitRunner), pointer, intent(in) :: runner
+        end subroutine
 
         module subroutine setSuite_context(suite)
             class(UnitSuite), pointer, intent(in) :: suite
         end subroutine
 
         module subroutine setCase_context(case)
-            class(UnitCase), pointer, intent(in) :: case
-        end subroutine
-
-        module subroutine setProcedure_context(procedure)
-            class(UnitProcedureEntry), pointer, intent(in) :: procedure
+            class(UnitCaseEntry), pointer, intent(in) :: case
         end subroutine
     end interface
 end module

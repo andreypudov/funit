@@ -29,9 +29,9 @@ module Logger
     implicit none
     private
 
-    integer, parameter, public :: TYPE_SUITE     = 0
-    integer, parameter, public :: TYPE_CASE      = 1
-    integer, parameter, public :: TYPE_PROCEDURE = 2
+    integer, parameter, public :: TYPE_RUNNER    = 0
+    integer, parameter, public :: TYPE_SUITE     = 1
+    integer, parameter, public :: TYPE_CASE      = 2
     integer, parameter, public :: TYPE_REASON    = 3
     integer, parameter, public :: TYPE_RESULT    = 4
 

@@ -26,13 +26,13 @@
 
 program Units
 
-    use ConditionsSuiteUnit
+    use ConditionsRunnerUnit
 
     implicit none
 
-    type(ConditionsSuite) :: conditionsUnitSuite
+    type(ConditionsRunner) :: conditionsUnitRunner
 
-    call conditionsUnitSuite%init()
-    call conditionsUnitSuite%run()
-    call conditionsUnitSuite%clean()
+    call conditionsUnitRunner%init()
+    call conditionsUnitRunner%run()
+    call conditionsUnitRunner%clean()
 end program

@@ -32,7 +32,7 @@ module FalseConditionUnit
     implicit none
     private
 
-    type, extends(UnitCase), public :: FalseConditionCase
+    type, extends(UnitSuite), public :: FalseConditionSuite
     private
     contains
         procedure, pass :: init
@@ -40,23 +40,23 @@ module FalseConditionUnit
     end type
 contains
     subroutine init(self, name)
-        class(FalseConditionCase),  intent(in out) :: self
+        class(FalseConditionSuite),  intent(in out) :: self
         character(len=*), optional, intent(in)     :: name
 
-        call self%UnitCase%init('False condition')
+        call self%UnitSuite%init('False condition')
 
         call self%add(false_normal,   'Normal case')
         call self%add(false_negative, 'Negative case')
     end subroutine
 
     subroutine clean(self)
-        class(FalseConditionCase), intent(in out) :: self
+        class(FalseConditionSuite), intent(in out) :: self
 
-        call self%UnitCase%clean()
+        call self%UnitSuite%clean()
     end subroutine
 
     subroutine false_normal(self)
-        class(UnitCase), intent(in out) :: self
+        class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
         if (false(.true.)) then
@@ -65,7 +65,7 @@ contains
     end subroutine
 
     subroutine false_negative(self)
-        class(UnitCase), intent(in out) :: self
+        class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
         if (.not. false(.false.)) then

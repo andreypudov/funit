@@ -57,6 +57,12 @@ contains
         value => instance%logger
     end function
 
+    module function getRunner_context() result(value)
+        class(UnitRunner), pointer :: value
+
+        value => instance%runner
+    end function
+
     module function getSuite_context() result(value)
         class(UnitSuite), pointer :: value
 
@@ -64,16 +70,16 @@ contains
     end function
 
     module function getCase_context() result(value)
-        class(UnitCase), pointer :: value
+        class(UnitCaseEntry), pointer :: value
 
         value => instance%case
     end function
 
-    module function getProcedure_context() result(value)
-        class(UnitProcedureEntry), pointer :: value
+    module subroutine setRunner_context(runner)
+        class(UnitRunner), pointer, intent(in) :: runner
 
-        value => instance%procedure
-    end function
+        instance%runner => runner
+    end subroutine
 
     module subroutine setSuite_context(suite)
         class(UnitSuite), pointer, intent(in) :: suite
@@ -82,14 +88,8 @@ contains
     end subroutine
 
     module subroutine setCase_context(case)
-        class(UnitCase), pointer, intent(in) :: case
+        class(UnitCaseEntry), pointer, intent(in) :: case
 
         instance%case => case
-    end subroutine
-
-    module subroutine setProcedure_context(procedure)
-        class(UnitProcedureEntry), pointer, intent(in) :: procedure
-
-        instance%procedure => procedure
     end subroutine
 end submodule

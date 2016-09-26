@@ -26,8 +26,6 @@
 
 submodule (Unit) UnitSuite
 
-    use ifport
-
     implicit none
 
 contains
@@ -45,33 +43,26 @@ contains
             allocate(character(1) :: self%name)
             self%name = ''
         end if
-
-        ! initialize assertion handler
-        call setHandler()
     end subroutine
 
     module subroutine clean_suite(self)
-        class(UnitSuite), intent(in out) :: self
-        type(UnitCaseEntry), pointer     :: entry
-
-        type(UnitContext) context
+        class(UnitSuite), intent(in out)  :: self
+        type(UnitCaseEntry), pointer      :: entry
 
         do while (associated(self%list))
             entry => self%list
             self%list => self%list%next
 
-            call entry%case%clean()
-
             deallocate(entry)
         end do
 
         deallocate(self%name)
-        call context%clean()
     end subroutine
 
-    module subroutine add_suite(self, case)
-        class(UnitSuite), intent(in out)     :: self
-        class(UnitCase), pointer, intent(in) :: case
+    module subroutine add_suite(self, case, name)
+        class(UnitSuite), intent(in out)         :: self
+        procedure(UnitCase), pointer, intent(in) :: case
+        character(len=*),   optional, intent(in) :: name
 
         type(UnitCaseEntry), pointer :: entry
         type(UnitCaseEntry), pointer :: previous
@@ -80,7 +71,13 @@ contains
         entry%next => null()
         entry%case => case
 
-        call entry%case%init()
+        if (present(name)) then
+            allocate(character(len(name)) :: entry%name)
+            entry%name = name
+        else
+            allocate(character(1) :: entry%name)
+            entry%name = ''
+        end if
 
         if (.not. associated(self%last)) then
             self%list => entry
@@ -93,16 +90,18 @@ contains
     end subroutine
 
     module subroutine run_suite(self, resume)
-        class(UnitSuite), target, intent(in) :: self
-        logical,        optional, intent(in) :: resume
+        class(UnitSuite), target, intent(in out) :: self
+        logical,        optional, intent(in)     :: resume
 
-        type(UnitCaseEntry), pointer :: entry
-        class(UnitSuite),    pointer :: suite
-        class(UnitCase),     pointer :: case
-        class(UnitLogger),   pointer :: logger
+        type(UnitCaseEntry),  pointer :: entry
+        class(UnitSuite),      pointer :: suite
+        class(UnitCaseEntry), pointer :: case
+        class(UnitCaseEntry), pointer :: caseOld
+        class(UnitLogger),    pointer :: logger
 
         type(UnitContext) context
         logical           resuming
+        logical           processed
 
         suite  => self
         logger => context%getLogger()
@@ -111,66 +110,39 @@ contains
         if (present(resume)) then
             resuming = resume
         else
-            call context%setSuite(suite)
-            call logger%log(TYPE_SUITE, self%name)
-
             resuming = .false.
         end if
 
-        entry => self%list
+        call context%setSuite(suite)
+        if (.not. resuming) then
+            call logger%log(TYPE_SUITE, self%name)
+        end if
+
+        entry     => self%list
+        processed =  .false.
 
         do while (associated(entry))
-            case => context%getCase()
-            if ((resuming) .and. (.not. associated(case, entry%case))) then
-                entry => entry%next
-                cycle
+            case    => entry
+            caseOld => context%getCase()
+
+            if ((resuming)) then
+                if (associated(caseOld, case)) then
+                    processed = .true.
+                    entry => entry%next
+                    cycle
+                else
+                    if (.not. processed) then
+                        entry => entry%next
+                        cycle
+                    end if
+                end if
             end if
 
-            call entry%case%run(resuming)
-            resuming = .false.
+            call context%setCase(case)
+            call entry%case(self)
+            call logger%log(TYPE_CASE, entry%name, .true.)
 
             entry => entry%next
         end do
-
-        call logger%log(TYPE_RESULT, '')
-    end subroutine
-
-    subroutine setHandler()
-        interface
-            subroutine handler(signo, siginfo)
-                integer, intent(in) :: signo
-                integer, intent(in) :: siginfo
-            end subroutine
-        end interface
-
-        integer result
-
-        result = ieee_handler('set', 'division', resume)
-        if (result /= 0) then
-            error stop 'Could not set assertion handler.'
-        end if
-    end subroutine
-
-    subroutine resume(signo, siginfo)
-        integer, intent(in) :: signo
-        integer, intent(in) :: siginfo
-
-        class(UnitSuite),          pointer :: suite
-        class(UnitProcedureEntry), pointer :: procedure
-        class(UnitLogger),         pointer :: logger
-
-        type(UnitContext) context
-
-        ! initialize assertion handler
-        call setHandler()
-
-        logger    => context%getLogger()
-        procedure => context%getProcedure()
-
-        call logger%log(TYPE_PROCEDURE, procedure%name, .false.)
-
-        ! resume unit running
-        suite => context%getSuite()
-        call suite%run(.true.)
     end subroutine
 end submodule

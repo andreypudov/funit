@@ -32,7 +32,7 @@ module TrueConditionUnit
     implicit none
     private
 
-    type, extends(UnitCase), public :: TrueConditionCase
+    type, extends(UnitSuite), public :: TrueConditionSuite
     private
     contains
         procedure, pass :: init
@@ -40,23 +40,23 @@ module TrueConditionUnit
     end type
 contains
     subroutine init(self, name)
-        class(TrueConditionCase),   intent(in out) :: self
+        class(TrueConditionSuite),   intent(in out) :: self
         character(len=*), optional, intent(in)     :: name
 
-        call self%UnitCase%init('True condition')
+        call self%UnitSuite%init('True condition')
 
         call self%add(true_normal,   'Normal case')
         call self%add(true_negative, 'Negative case')
     end subroutine
 
     subroutine clean(self)
-        class(TrueConditionCase), intent(in out) :: self
+        class(TrueConditionSuite), intent(in out) :: self
 
-        call self%UnitCase%clean()
+        call self%UnitSuite%clean()
     end subroutine
 
     subroutine true_normal(self)
-        class(UnitCase), intent(in out) :: self
+        class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
         if (.not. true(.true.)) then
@@ -65,7 +65,7 @@ contains
     end subroutine
 
     subroutine true_negative(self)
-        class(UnitCase), intent(in out) :: self
+        class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
         if (true(.false.)) then

@@ -62,18 +62,18 @@ contains
         real finish
 
         select case(type)
-        case(TYPE_SUITE)
+        case(TYPE_RUNNER)
             self%case   = 0
             self%passed = 0
             self%failed = 0
 
             print '(A)', message
             call printSeparator()
-        case(TYPE_CASE)
+        case(TYPE_SUITE)
             self%case = self%case + 1
 
             print '(I0,1X,A)', self%case, message
-        case(TYPE_PROCEDURE)
+        case(TYPE_CASE)
             ! TODO add error handling
             if (status) then
                 self%passed = self%passed + 1

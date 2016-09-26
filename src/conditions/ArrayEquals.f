@@ -55,7 +55,7 @@ contains
             return
         end if
 
-        value = (all(abs(real(expected) - real(actual)) < delta) .or. &
+        value = (all(abs(real(expected) - real(actual)) < delta) .and. &
                 all(abs(aimag(expected) - aimag(actual)) < delta))
     end function
 

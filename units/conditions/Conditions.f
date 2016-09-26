@@ -29,6 +29,7 @@ module ConditionsRunnerUnit
     use Unit
 
     use ArrayEqualsConditionUnit
+    use EqualsConditionUnit
     use FalseConditionUnit
     use TrueConditionUnit
 
@@ -37,6 +38,7 @@ module ConditionsRunnerUnit
     type, extends(UnitRunner), public :: ConditionsRunner
         private
         class(UnitSuite), pointer :: arrayEqualsSuite
+        class(UnitSuite), pointer :: equalsSuite
         class(UnitSuite), pointer :: falseSuite
         class(UnitSuite), pointer :: trueSuite
     contains
@@ -50,20 +52,24 @@ contains
 
         ! a list of condition cases
         type(ArrayEqualsConditionSuite), pointer :: arrayEqualsSuite
+        type(EqualsConditionSuite),      pointer :: equalsSuite
         type(FalseConditionSuite),       pointer :: falseSuite
         type(TrueConditionSuite),        pointer :: trueSuite
 
         call self%UnitRunner%init('A unit testing library for Fortran')
 
         allocate(arrayEqualsSuite)
+        allocate(equalsSuite)
         allocate(falseSuite)
         allocate(trueSuite)
 
         self%arrayEqualsSuite => arrayEqualsSuite
+        self%equalsSuite      => equalsSuite
         self%falseSuite       => falseSuite
         self%trueSuite        => trueSuite
 
         call self%add(self%arrayEqualsSuite)
+        call self%add(self%equalsSuite)
         call self%add(self%falseSuite)
         call self%add(self%trueSuite)
     end subroutine

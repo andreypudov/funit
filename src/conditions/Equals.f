@@ -45,7 +45,7 @@ contains
 
         logical value
 
-        value = ((abs(real(expected) - real(actual)) < delta) .or. &
+        value = ((abs(real(expected) - real(actual)) < delta) .and. &
                 (abs(aimag(expected) - aimag(actual)) < delta))
     end function
 

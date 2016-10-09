@@ -26,6 +26,8 @@
 
 submodule (Unit) ArrayEqualsAsserts
 
+    use Conditions
+
     implicit none
 
 contains
@@ -34,6 +36,10 @@ contains
 
         character, dimension(:), intent(in) :: expected
         character, dimension(:), intent(in) :: actual
+
+        if (.not. arrayEquals(expected, actual)) then
+            call fail_assert(message)
+        end if
     end subroutine
 
     module subroutine arrayEquals_assert_complex(expected, actual, delta, message)
@@ -42,6 +48,10 @@ contains
         complex, dimension(:), intent(in) :: expected
         complex, dimension(:), intent(in) :: actual
         real,                  intent(in) :: delta
+
+        if (.not. arrayEquals(expected, actual, delta)) then
+            call fail_assert(message)
+        end if
     end subroutine
 
     module subroutine arrayEquals_assert_double_precision(expected, actual, delta, message)
@@ -50,6 +60,10 @@ contains
         double precision, dimension(:), intent(in) :: expected
         double precision, dimension(:), intent(in) :: actual
         double precision,               intent(in) :: delta
+
+        if (.not. arrayEquals(expected, actual, delta)) then
+            call fail_assert(message)
+        end if
     end subroutine
 
     module subroutine arrayEquals_assert_integer(expected, actual, message)
@@ -57,6 +71,10 @@ contains
 
         integer, dimension(:), intent(in) :: expected
         integer, dimension(:), intent(in) :: actual
+
+        if (.not. arrayEquals(expected, actual)) then
+            call fail_assert(message)
+        end if
     end subroutine
 
     module subroutine arrayEquals_assert_logical(expected, actual, message)
@@ -64,6 +82,10 @@ contains
 
         logical, dimension(:), intent(in) :: expected
         logical, dimension(:), intent(in) :: actual
+
+        if (.not. arrayEquals(expected, actual)) then
+            call fail_assert(message)
+        end if
     end subroutine
 
     module subroutine arrayEquals_assert_real(expected, actual, delta, message)
@@ -72,5 +94,9 @@ contains
         real, dimension(:), intent(in) :: expected
         real, dimension(:), intent(in) :: actual
         real,               intent(in) :: delta
+
+        if (.not. arrayEquals(expected, actual, delta)) then
+            call fail_assert(message)
+        end if
     end subroutine
 end submodule

@@ -57,8 +57,8 @@ contains
         character(len=*),     intent(in)     :: message
         logical, optional,    intent(in)     :: status
 
-        character(len=16)  buffer
-        character(len=128) name
+        character(len=16) buffer
+        character(len=80) name
         real finish
 
         select case(type)
@@ -78,12 +78,16 @@ contains
             if (status) then
                 self%passed = self%passed + 1
                 self%reason = ''
-                name   = message
-                buffer = 'OK'
+                buffer      = 'OK'
+                name        = message
             else
                 self%failed = self%failed + 1
-                name   = message // ' [' // trim(adjustl(self%reason)) // ']'
-                buffer = 'FAILED'
+                buffer      = 'FAILED'
+                name        = message
+
+                if (len(trim(self%reason)) > 0) then
+                    name  = message // ' [' // trim(adjustl(self%reason)) // ']'
+                end if
             end if
 
             print '(4X,A70,A6)', name, trim(adjustl(buffer))

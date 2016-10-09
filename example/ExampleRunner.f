@@ -1,9 +1,9 @@
 !
-! A unit testing library for Fortran.
+! A unit testing library for Fortran
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov.
+! Copyright 2011-2016 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,28 +24,41 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) FailAsserts
+module ExampleRunnerUnit
+
+    use Unit
+
+    use ExampleUnit
 
     implicit none
 
+    type, extends(UnitRunner), public :: ExampleRunner
+    private
+        class(UnitSuite), pointer :: exampleSuite
+    contains
+        procedure, pass :: init
+        procedure, pass :: clean
+    end type
 contains
-    module subroutine fail_assert(message)
-        character(len=*), optional, intent(in) :: message
+    subroutine init(self, name)
+        class(ExampleRunner), intent(in out)   :: self
+        character(len=*), optional, intent(in) :: name
 
-        class(UnitLogger), pointer :: logger
-        type(UnitContext) context
+        type(ExampleSuite), pointer :: exampleSuite
 
-        logger => context%getLogger()
-        call logger%log(TYPE_REASON, message)
+        call self%UnitRunner%init('An example for Unit testing library')
 
-        call throw()
+        allocate(exampleSuite)
+
+        self%exampleSuite => exampleSuite
+
+        call self%add(self%exampleSuite)
     end subroutine
 
-    subroutine throw()
-        real a, b, c
+    subroutine clean(self)
+        class(ExampleRunner), intent(in out) :: self
 
-        a = 17031989.0
-        b = 0.0
-        c = a / b
+        ! deallocates unit cases
+        call self%UnitRunner%clean()
     end subroutine
-end submodule
+end module

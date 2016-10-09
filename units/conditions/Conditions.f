@@ -58,7 +58,7 @@ contains
         class(ConditionsRunner), intent(in out) :: self
         character(len=*), optional, intent(in)  :: name
 
-        ! a list of condition cases
+        ! a list of condition suites
         type(ArrayEqualsConditionSuite), pointer :: arrayEqualsSuite
         type(EqualsConditionSuite),      pointer :: equalsSuite
         type(FalseConditionSuite),       pointer :: falseSuite

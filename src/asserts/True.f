@@ -26,11 +26,17 @@
 
 submodule (Unit) TrueAsserts
 
+    use Conditions
+
     implicit none
 
 contains
     module subroutine true_assert(condition, message)
         character(len=*), optional, intent(in) :: message
         logical, intent(in) :: condition
+
+        if (.not. true(condition)) then
+            call fail_assert(message)
+        end if
     end subroutine
 end submodule

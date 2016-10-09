@@ -136,6 +136,8 @@ contains
     end subroutine
 
     subroutine setHandler()
+        use, intrinsic :: IEEE_EXCEPTIONS
+
         interface
             subroutine handler(signo, siginfo)
                 integer, intent(in) :: signo
@@ -144,6 +146,11 @@ contains
         end interface
 
         integer result
+        result = 0
+
+        if (.not. ieee_support_flag(IEEE_DIVIDE_BY_ZERO)) then
+            error stop 'Could not set assertion handler.'
+        end if
 
         result = ieee_handler('set', 'division', resume)
         if (result /= 0) then

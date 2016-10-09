@@ -59,7 +59,7 @@ contains
         class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
-        if (false(.true.)) then
+        if (.not. false(.false.)) then
             call asserts%fail()
         end if
     end subroutine
@@ -68,7 +68,7 @@ contains
         class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
-        if (.not. false(.false.)) then
+        if (false(.true.)) then
             call asserts%fail()
         end if
     end subroutine

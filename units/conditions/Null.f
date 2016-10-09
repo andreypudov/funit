@@ -73,27 +73,28 @@ contains
         logical1   => null()
         real1      => null()
 
-        if (.not. notNull(character1)) then
+        if (.not. null(character1)) then
+            print *, null(character1)
             call asserts%fail('character value is not null')
         end if
 
-        if (.not. notNull(complex1)) then
+        if (.not. null(complex1)) then
             call asserts%fail('complex value is not null')
         end if
 
-        if (.not. notNull(dbleprcsn1)) then
+        if (.not. null(dbleprcsn1)) then
             call asserts%fail('double precision value is not null')
         end if
 
-        if (.not. notNull(integer1)) then
+        if (.not. null(integer1)) then
             call asserts%fail('integer value is not null')
         end if
 
-        if (.not. notNull(logical1)) then
+        if (.not. null(logical1)) then
             call asserts%fail('logical value is not null')
         end if
 
-        if (.not. notNull(real1)) then
+        if (.not. null(real1)) then
             call asserts%fail('real value is not null')
         end if
     end subroutine
@@ -130,27 +131,27 @@ contains
         logical1   => logical2
         real1      => real2
 
-        if (notNull(character1)) then
+        if (null(character1)) then
             call asserts%fail('character value is null')
         end if
 
-        if (notNull(complex1)) then
+        if (null(complex1)) then
             call asserts%fail('complex value is null')
         end if
 
-        if (notNull(dbleprcsn1)) then
+        if (null(dbleprcsn1)) then
             call asserts%fail('double precision value is null')
         end if
 
-        if (notNull(integer1)) then
+        if (null(integer1)) then
             call asserts%fail('integer value is null')
         end if
 
-        if (notNull(logical1)) then
+        if (null(logical1)) then
             call asserts%fail('logical value is null')
         end if
 
-        if (notNull(real1)) then
+        if (null(real1)) then
             call asserts%fail('real value is null')
         end if
     end subroutine

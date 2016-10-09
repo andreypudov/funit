@@ -33,41 +33,41 @@ contains
         character, pointer,  intent(in) :: pointer
         logical value
 
-        value = (.not. associated(pointer))
+        value = associated(pointer)
     end function
 
     module pure function notNull_complex(pointer) result(value)
         complex, pointer, intent(in)  :: pointer
         logical value
 
-        value = (.not. associated(pointer))
+        value = associated(pointer)
     end function
 
     module pure function notNull_double_precision(pointer) result(value)
         double precision, pointer,  intent(in) :: pointer
         logical value
 
-        value = (.not. associated(pointer))
+        value = associated(pointer)
     end function
 
     module pure function notNull_integer(pointer) result(value)
         integer, pointer,  intent(in) :: pointer
         logical value
 
-        value = (.not. associated(pointer))
+        value = associated(pointer)
     end function
 
     module pure function notNull_logical(pointer) result(value)
         logical, pointer,  intent(in) :: pointer
         logical value
 
-        value = (.not. associated(pointer))
+        value = associated(pointer)
     end function
 
     module pure function notNull_real(pointer) result(value)
         real, pointer,  intent(in) :: pointer
         logical value
 
-        value = (.not. associated(pointer))
+        value = associated(pointer)
     end function
 end submodule

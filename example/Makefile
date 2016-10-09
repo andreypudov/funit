@@ -25,26 +25,25 @@
 #
 
 FC      = ifort
-FFLAGS  = -O0 -xHost -c -module modules -free -std15 -standard-semantics
-LDFLAGS = -dynamiclib -save-temps
+FFLAGS  = -module ../modules -free -std15 -standard-semantics
+LDFLAGS = -save-temps ../out/Unit.dlyb
 
-INTERFACES = src/logger/Logger.f src/Unit.f src/conditions/Conditions.f
-SOURCES    = $(INTERFACES) $(shell find src -name '*.f' | sed 's/^\.\///' | sort)
-OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
-EXECUTABLE = Unit.dlyb
+SOURCES    = ExampleSuite.f ExampleRunner.f Example.f
+OBJECTS    = $(patsubst %.f, %.o, $(SOURCES))
+EXECUTABLE = Example
+
+# DYLD_LIBRARY_PATH=../out:$DYLD_LIBRARY_PATH ./Example
 
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	@echo 'Linking to $@...'
-	@$(FC) $(LDFLAGS) $(OBJECTS) -o out/$@
+	@$(FC) $(LDFLAGS) $(OBJECTS) -o $@
 
-out/%.o: %.f
+%.o: %.f
 	@echo 'Compiling $@...'
-	@mkdir -p modules
-	@mkdir -p $(dir $@)
 	@$(FC) $(FFLAGS) -c $< -o $@
 
 clean:
 	@echo "Cleaning..."
-	@rm -rf modules out $(EXECUTABLE)
+	@rm -rf *.o $(EXECUTABLE)

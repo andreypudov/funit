@@ -26,11 +26,19 @@
 
 submodule (Unit) TrueExpects
 
+    use Conditions
+
     implicit none
+
+    character(len=*), parameter :: default = 'True condition'
 
 contains
     module subroutine true_expect(condition, message)
         character(len=*), optional, intent(in) :: message
         logical, intent(in) :: condition
+
+        if (.not. true(condition)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 end submodule

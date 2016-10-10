@@ -26,7 +26,11 @@
 
 submodule (Unit) EqualsExpects
 
+    use Conditions
+
     implicit none
+
+    character(len=*), parameter :: default = 'Equals condition'
 
 contains
     module subroutine equals_expect_character(expected, actual, message)
@@ -34,6 +38,10 @@ contains
 
         character, intent(in) :: expected
         character, intent(in) :: actual
+
+        if (.not. equals(expected, actual)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 
     module subroutine equals_expect_complex(expected, actual, delta, message)
@@ -42,6 +50,10 @@ contains
         complex, intent(in) :: expected
         complex, intent(in) :: actual
         real,    intent(in) :: delta
+
+        if (.not. equals(expected, actual, delta)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 
     module subroutine equals_expect_double_precision(expected, actual, delta, message)
@@ -50,6 +62,10 @@ contains
         double precision, intent(in) :: expected
         double precision, intent(in) :: actual
         double precision, intent(in) :: delta
+
+        if (.not. equals(expected, actual, delta)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 
     module subroutine equals_expect_integer(expected, actual, message)
@@ -57,6 +73,10 @@ contains
 
         integer, intent(in) :: expected
         integer, intent(in) :: actual
+
+        if (.not. equals(expected, actual)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 
     module subroutine equals_expect_logical(expected, actual, message)
@@ -64,6 +84,10 @@ contains
 
         logical, intent(in) :: expected
         logical, intent(in) :: actual
+
+        if (.not. equals(expected, actual)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 
     module subroutine equals_expect_real(expected, actual, delta, message)
@@ -72,5 +96,9 @@ contains
         real, intent(in) :: expected
         real, intent(in) :: actual
         real, intent(in) :: delta
+
+        if (.not. equals(expected, actual, delta)) then
+            call fail_expect(message, default)
+        end if
     end subroutine
 end submodule

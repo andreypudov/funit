@@ -30,6 +30,8 @@ submodule (Unit) SameAsserts
 
     implicit none
 
+    character(len=*), parameter :: default = 'Same condition'
+
 contains
     module subroutine same_assert_character(unexpected, actual, message)
         character(len=*), optional, intent(in) :: message
@@ -37,7 +39,7 @@ contains
         character,        pointer,  intent(in) :: actual
 
         if (.not. same(unexpected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -47,7 +49,7 @@ contains
         complex,          pointer, intent(in)  :: actual
 
         if (.not. same(unexpected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -57,7 +59,7 @@ contains
         double precision, pointer,  intent(in) :: actual
 
         if (.not. same(unexpected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -67,7 +69,7 @@ contains
         integer,          pointer,  intent(in) :: actual
 
         if (.not. same(unexpected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -77,7 +79,7 @@ contains
         logical,          pointer,  intent(in) :: actual
 
         if (.not. same(unexpected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -87,7 +89,7 @@ contains
         real,             pointer,  intent(in) :: actual
 
         if (.not. same(unexpected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 end submodule

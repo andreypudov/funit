@@ -30,13 +30,15 @@ submodule (Unit) NullAsserts
 
     implicit none
 
+    character(len=*), parameter :: default = 'Null condition'
+
 contains
     module subroutine null_assert_character(pointer, message)
         character(len=*), optional, intent(in) :: message
         character,        pointer,  intent(in) :: pointer
 
         if (.not. null(pointer)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -45,7 +47,7 @@ contains
         complex,          pointer, intent(in)  :: pointer
 
         if (.not. null(pointer)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -54,7 +56,7 @@ contains
         double precision, pointer,  intent(in) :: pointer
 
         if (.not. null(pointer)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -63,7 +65,7 @@ contains
         integer,          pointer,  intent(in) :: pointer
 
         if (.not. null(pointer)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -72,7 +74,7 @@ contains
         logical,          pointer,  intent(in) :: pointer
 
         if (.not. null(pointer)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -81,7 +83,7 @@ contains
         real,             pointer,  intent(in) :: pointer
 
         if (.not. null(pointer)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 end submodule

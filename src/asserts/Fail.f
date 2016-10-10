@@ -29,14 +29,23 @@ submodule (Unit) FailAsserts
     implicit none
 
 contains
-    module subroutine fail_assert(message)
+    module subroutine fail_assert(message, default)
         character(len=*), optional, intent(in) :: message
+        character(len=*), optional, intent(in) :: default
 
-        class(UnitLogger), pointer :: logger
+        class(UnitCaseEntry), pointer :: case
+        class(UnitLogger),    pointer :: logger
         type(UnitContext) context
 
+        case   => context%getCase()
         logger => context%getLogger()
-        call logger%log(TYPE_REASON, message)
+
+        case%status = .false.
+        if (present(message)) then
+            call logger%log(type = TYPE_CASE, name = case%name, details = message, status = case%status)
+        else
+            call logger%log(type = TYPE_CASE, name = case%name, details = default, status = case%status)
+        end if
 
         call throw()
     end subroutine

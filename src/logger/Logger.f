@@ -32,8 +32,7 @@ module Logger
     integer, parameter, public :: TYPE_RUNNER    = 0
     integer, parameter, public :: TYPE_SUITE     = 1
     integer, parameter, public :: TYPE_CASE      = 2
-    integer, parameter, public :: TYPE_REASON    = 3
-    integer, parameter, public :: TYPE_RESULT    = 4
+    integer, parameter, public :: TYPE_RESULT    = 3
 
     type, public :: UnitLogger
     private
@@ -51,7 +50,6 @@ module Logger
 
     type, extends(UnitLogger), public :: ConsoleLogger
     private
-        character(len=:), pointer :: reason => null()
     contains
         procedure, pass, public :: init  => init_consoleLogger
         procedure, pass, public :: clean => clean_consoleLogger
@@ -70,11 +68,12 @@ module Logger
             class(UnitLogger), intent(in out) :: self
         end subroutine
 
-        module subroutine log_unitLogger(self, type, message, status)
-            class(UnitLogger), intent(in out) :: self
-            integer,           intent(in)     :: type
-            character(len=*),  intent(in)     :: message
-            logical, optional, intent(in)     :: status
+        module subroutine log_unitLogger(self, type, name, details, status)
+            class(UnitLogger),          intent(in out) :: self
+            integer,                    intent(in)     :: type
+            character(len=*),           intent(in)     :: name
+            character(len=*), optional, intent(in)     :: details
+            logical,          optional, intent(in)     :: status
         end subroutine
     end interface
 
@@ -87,11 +86,12 @@ module Logger
             class(ConsoleLogger), intent(in out) :: self
         end subroutine
 
-       module subroutine log_consoleLogger(self, type, message, status)
-           class(ConsoleLogger), intent(in out) :: self
-           integer,              intent(in)     :: type
-           character(len=*),     intent(in)     :: message
-           logical, optional,    intent(in)     :: status
+       module subroutine log_consoleLogger(self, type, name, details, status)
+           class(ConsoleLogger),       intent(in out) :: self
+           integer,                    intent(in)     :: type
+           character(len=*),           intent(in)     :: name
+           character(len=*), optional, intent(in)     :: details
+           logical,          optional, intent(in)     :: status
        end subroutine
     end interface
 end module

@@ -57,18 +57,21 @@ contains
     subroutine true_normal(self)
         class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
+        type(Expects) expects
 
         ! succesfull assert call
         call asserts%true(.true.)
 
+        call expects%true(.false.)
+
         ! failure assert call
-        call asserts%true(.false.)
+        call asserts%true(.false., 'True condition')
     end subroutine
 
     subroutine true_negative(self)
         class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
-        call asserts%false(.true.)
+        call asserts%false(.false.)
     end subroutine
 end module

@@ -39,10 +39,11 @@ contains
         class(UnitLogger), intent(in out) :: self
     end subroutine
 
-    module subroutine log_unitLogger(self, type, message, status)
-        class(UnitLogger), intent(in out) :: self
-        integer,           intent(in)     :: type
-        character(len=*),  intent(in)     :: message
-        logical, optional, intent(in)     :: status
+    module subroutine log_unitLogger(self, type, name, details, status)
+        class(UnitLogger),          intent(in out) :: self
+        integer,                    intent(in)     :: type
+        character(len=*),           intent(in)     :: name
+        character(len=*), optional, intent(in)     :: details
+        logical,          optional, intent(in)     :: status
     end subroutine
 end submodule

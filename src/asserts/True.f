@@ -30,13 +30,15 @@ submodule (Unit) TrueAsserts
 
     implicit none
 
+    character(len=*), parameter :: default = 'True condition'
+
 contains
     module subroutine true_assert(condition, message)
         character(len=*), optional, intent(in) :: message
         logical, intent(in) :: condition
 
         if (.not. true(condition)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 end submodule

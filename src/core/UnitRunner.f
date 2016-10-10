@@ -162,22 +162,14 @@ contains
         integer, intent(in) :: signo
         integer, intent(in) :: siginfo
 
-        class(UnitRunner),    pointer :: runner
-        class(UnitCaseEntry), pointer :: case
-        class(UnitLogger),    pointer :: logger
-
+        class(UnitRunner), pointer :: runner
         type(UnitContext) context
 
         ! initialize assertion handler
         call setHandler()
 
-        logger => context%getLogger()
-        case   => context%getCase()
-
-        call logger%log(TYPE_CASE, case%name, .false.)
-
         ! resume unit running
         runner => context%getRunner()
-        call runner%run(.true.)
+        call runner%run(resume = .true.)
     end subroutine
 end submodule

@@ -30,6 +30,8 @@ submodule (Unit) EqualsAsserts
 
     implicit none
 
+    character(len=*), parameter :: default = 'Equals condition'
+
 contains
     module subroutine equals_assert_character(expected, actual, message)
         character(len=*), optional, intent(in) :: message
@@ -38,7 +40,7 @@ contains
         character, intent(in) :: actual
 
         if (.not. equals(expected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -50,7 +52,7 @@ contains
         real,    intent(in) :: delta
 
         if (.not. equals(expected, actual, delta)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -62,7 +64,7 @@ contains
         double precision, intent(in) :: delta
 
         if (.not. equals(expected, actual, delta)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -73,7 +75,7 @@ contains
         integer, intent(in) :: actual
 
         if (.not. equals(expected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -84,7 +86,7 @@ contains
         logical, intent(in) :: actual
 
         if (.not. equals(expected, actual)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 
@@ -96,7 +98,7 @@ contains
         real, intent(in) :: delta
 
         if (.not. equals(expected, actual, delta)) then
-            call fail_assert(message)
+            call fail_assert(message, default)
         end if
     end subroutine
 end submodule

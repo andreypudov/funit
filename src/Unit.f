@@ -248,7 +248,7 @@ module Unit
         class(UnitLogger),    pointer :: logger => null()
         class(UnitRunner),    pointer :: runner => null()
         class(UnitSuite),     pointer :: suite  => null()
-        class(UnitCaseEntry), pointer :: case    => null()
+        class(UnitCaseEntry), pointer :: case   => null()
     contains
         procedure, nopass, public :: init  => init_context
         procedure, nopass, public :: clean => clean_context
@@ -265,8 +265,9 @@ module Unit
 
     type, private :: UnitCaseEntry
         procedure(UnitCase), pointer, nopass :: case => null()
-        type(UnitCaseEntry), pointer         :: next      => null()
-        character(len=:),    pointer         :: name      => null()
+        type(UnitCaseEntry), pointer         :: next => null()
+        character(len=:),    pointer         :: name => null()
+        logical                              :: status = .false.
     end type
 
     type, private :: UnitSuiteEntry
@@ -534,8 +535,9 @@ module Unit
         !
         ! Fail - fails a test with the given message.
         !
-        module subroutine fail_assert(message)
+        module subroutine fail_assert(message, default)
             character(len=*), optional, intent(in) :: message
+            character(len=*), optional, intent(in) :: default
         end subroutine
     end interface
 
@@ -799,8 +801,9 @@ module Unit
         !
         ! Fail - fails a test with the given message.
         !
-        module subroutine fail_expect(message)
+        module subroutine fail_expect(message, default)
             character(len=*), optional, intent(in) :: message
+            character(len=*), optional, intent(in) :: default
         end subroutine
     end interface
 

@@ -94,7 +94,7 @@ contains
         logical,        optional, intent(in)     :: resume
 
         type(UnitCaseEntry),  pointer :: entry
-        class(UnitSuite),      pointer :: suite
+        class(UnitSuite),     pointer :: suite
         class(UnitCaseEntry), pointer :: case
         class(UnitCaseEntry), pointer :: caseOld
         class(UnitLogger),    pointer :: logger
@@ -125,6 +125,7 @@ contains
             case    => entry
             caseOld => context%getCase()
 
+            ! find a first unit case to run by skipping already executed
             if ((resuming)) then
                 if (associated(caseOld, case)) then
                     processed = .true.
@@ -138,9 +139,14 @@ contains
                 end if
             end if
 
+            ! set case default status to success
+            case%status = .true.
+
             call context%setCase(case)
             call entry%case(self)
-            call logger%log(TYPE_CASE, entry%name, .true.)
+            if (case%status) then
+                call logger%log(type = TYPE_CASE, name = entry%name, status = case%status)
+            end if
 
             entry => entry%next
         end do

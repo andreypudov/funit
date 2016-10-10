@@ -36,8 +36,6 @@ contains
 
         call self%UnitLogger%init()
 
-        allocate(character(TERMINAL_WIDTH) :: self%reason)
-
         self%case   = 0
         self%passed = 0
         self%failed = 0
@@ -46,19 +44,18 @@ contains
     module subroutine clean_consoleLogger(self)
         class(ConsoleLogger), intent(in out) :: self
 
-        deallocate(self%reason)
-
         call self%UnitLogger%clean()
     end subroutine
 
-    module subroutine log_consoleLogger(self, type, message, status)
-        class(ConsoleLogger), intent(in out) :: self
-        integer,              intent(in)     :: type
-        character(len=*),     intent(in)     :: message
-        logical, optional,    intent(in)     :: status
+    module subroutine log_consoleLogger(self, type, name, details, status)
+        class(ConsoleLogger),       intent(in out) :: self
+        integer,                    intent(in)     :: type
+        character(len=*),           intent(in)     :: name
+        character(len=*), optional, intent(in)     :: details
+        logical,          optional, intent(in)     :: status
 
         character(len=16) buffer
-        character(len=80) name
+        character(len=80) title
         real finish
 
         select case(type)
@@ -67,32 +64,29 @@ contains
             self%passed = 0
             self%failed = 0
 
-            print '(A)', message
+            print '(A)', name
             call printSeparator()
         case(TYPE_SUITE)
             self%case = self%case + 1
 
-            print '(I0,1X,A)', self%case, message
+            print '(I0,1X,A)', self%case, name
         case(TYPE_CASE)
             ! TODO add error handling
             if (status) then
                 self%passed = self%passed + 1
-                self%reason = ''
                 buffer      = 'OK'
-                name        = message
+                title       = name
             else
                 self%failed = self%failed + 1
                 buffer      = 'FAILED'
-                name        = message
+                title       = name
 
-                if (len(trim(self%reason)) > 0) then
-                    name  = message // ' [' // trim(adjustl(self%reason)) // ']'
+                if (len(trim(details)) > 0) then
+                    title  = name // ' [' // trim(adjustl(details)) // ']'
                 end if
             end if
 
-            print '(4X,A70,A6)', name, trim(adjustl(buffer))
-        case(TYPE_REASON)
-            self%reason = message
+            print '(4X,A70,A6)', title, trim(adjustl(buffer))
         case(TYPE_RESULT)
             call cpu_time(finish)
 

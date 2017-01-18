@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2017 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -30,9 +30,9 @@ program Units
 
     implicit none
 
-    type(ConditionsRunner) :: runner
+    type(ConditionsRunner) :: conditions
 
-    call runner%init()
-    call runner%run()
-    call runner%clean()
+    call conditions%init()
+    call conditions%run()
+    call conditions%clean()
 end program

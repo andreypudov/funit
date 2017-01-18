@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2017 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -76,6 +76,9 @@ contains
                 self%passed = self%passed + 1
                 buffer      = 'OK'
                 title       = name
+
+                ! no output for success cases
+                return
             else
                 self%failed = self%failed + 1
                 buffer      = 'FAILED'
@@ -92,7 +95,8 @@ contains
 
             call printSeparator()
             write (buffer, '(F12.3)') finish - self%start
-            print '(A,A,A,A,I0,A,I0,A,I0)', 'Tests completed in ', trim(adjustl(buffer)), ' seconds. ', &
+            print '(A,A,A,A,I0,A,I0,A,I0)', &
+                'Tests completed in ', trim(adjustl(buffer)), ' seconds. ', &
                 'Total: ', (self%passed + self%failed), &
                     ', passed: ', self%passed, &
                     ', failed: ',  self%failed

@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2017 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -44,7 +44,7 @@ module ArrayEqualsConditionUnit
 contains
     subroutine init(self, name)
         class(ArrayEqualsConditionSuite), intent(in out) :: self
-        character(len=*), optional,      intent(in)     :: name
+        character(len=*), optional,       intent(in)     :: name
 
         call self%UnitSuite%init('ArrayEquals condition')
 

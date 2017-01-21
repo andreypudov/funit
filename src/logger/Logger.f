@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2017 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -40,7 +40,8 @@ module Logger
         integer :: passed
         integer :: failed
 
-        real :: start = 0.0
+        real :: start  = 0.0 ! suite execution time
+        real :: finish = 0.0 ! case execution time
     contains
         procedure, pass, public :: init  => init_unitLogger
         procedure, pass, public :: clean => clean_unitLogger
@@ -57,7 +58,14 @@ module Logger
         procedure, pass, public :: log => log_consoleLogger
     end type
 
-    type(UnitLogger),    pointer, private :: unitLoggerInstance
+    type, extends(UnitLogger), public :: JSONLogger
+    private
+    contains
+        procedure, pass, public :: init  => init_JSONLogger
+        procedure, pass, public :: clean => clean_JSONLogger
+
+        procedure, pass, public :: log => log_JSONLogger
+    end type
 
     interface
         module subroutine init_unitLogger(self)
@@ -88,6 +96,24 @@ module Logger
 
        module subroutine log_consoleLogger(self, type, name, details, status)
            class(ConsoleLogger),       intent(in out) :: self
+           integer,                    intent(in)     :: type
+           character(len=*),           intent(in)     :: name
+           character(len=*), optional, intent(in)     :: details
+           logical,          optional, intent(in)     :: status
+       end subroutine
+   end interface
+
+   interface
+        module subroutine init_JSONLogger(self)
+            class(JSONLogger), intent(in out) :: self
+        end subroutine
+
+        module subroutine clean_JSONLogger(self)
+            class(JSONLogger), intent(in out) :: self
+        end subroutine
+
+       module subroutine log_JSONLogger(self, type, name, details, status)
+           class(JSONLogger),       intent(in out) :: self
            integer,                    intent(in)     :: type
            character(len=*),           intent(in)     :: name
            character(len=*), optional, intent(in)     :: details

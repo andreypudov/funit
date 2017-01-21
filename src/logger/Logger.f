@@ -113,7 +113,7 @@ module Logger
         end subroutine
 
        module subroutine log_JSONLogger(self, type, name, details, status)
-           class(JSONLogger),       intent(in out) :: self
+           class(JSONLogger),          intent(in out) :: self
            integer,                    intent(in)     :: type
            character(len=*),           intent(in)     :: name
            character(len=*), optional, intent(in)     :: details

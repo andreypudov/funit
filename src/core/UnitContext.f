@@ -32,9 +32,13 @@ submodule (Unit) UnitContext
 
 contains
     module subroutine init_context()
-        type(ConsoleLogger), pointer :: logger
+        type(ConsoleLogger),   pointer :: logger
+
+        type(ArgumentsParser) :: parser
 
         if (.not. associated(instance)) then
+            call parser%parse()
+
             allocate(instance)
             allocate(logger)
 
@@ -60,36 +64,42 @@ contains
     module function getRunner_context() result(value)
         class(UnitRunner), pointer :: value
 
+        call init_context()
         value => instance%runner
     end function
 
     module function getSuite_context() result(value)
         class(UnitSuite), pointer :: value
 
+        call init_context()
         value => instance%suite
     end function
 
     module function getCase_context() result(value)
         class(UnitCaseEntry), pointer :: value
 
+        call init_context()
         value => instance%case
     end function
 
     module subroutine setRunner_context(runner)
         class(UnitRunner), pointer, intent(in) :: runner
 
+        call init_context()
         instance%runner => runner
     end subroutine
 
     module subroutine setSuite_context(suite)
         class(UnitSuite), pointer, intent(in) :: suite
 
+        call init_context()
         instance%suite => suite
     end subroutine
 
     module subroutine setCase_context(case)
         class(UnitCaseEntry), pointer, intent(in) :: case
 
+        call init_context()
         instance%case => case
     end subroutine
 end submodule

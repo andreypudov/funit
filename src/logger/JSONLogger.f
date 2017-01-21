@@ -56,7 +56,8 @@ contains
 
         character(len=16) buffer
         character(len=80) title
-        real finish
+
+        real now
 
         select case(type)
         case(TYPE_RUNNER)
@@ -66,10 +67,18 @@ contains
 
             print '(A)', name
             call printSeparator()
+
+            call cpu_time(self%finish)
         case(TYPE_SUITE)
+            call cpu_time(now)
             self%case = self%case + 1
 
-            print '(I0,1X,A)', self%case, name
+            write (buffer, '(F12.3)') now - self%finish
+            write (title, '(I0,1X,A)') self%case, name
+            write (*, '(A72,1X,A,A,A)') adjustl(title), &
+                '[', trim(adjustl(buffer)), ']'
+
+            self%finish = now
         case(TYPE_CASE)
             ! TODO add error handling
             if (status) then
@@ -91,10 +100,10 @@ contains
 
             print '(4X,A70,A6)', title, trim(adjustl(buffer))
         case(TYPE_RESULT)
-            call cpu_time(finish)
+            call cpu_time(self%finish)
 
             call printSeparator()
-            write (buffer, '(F12.3)') finish - self%start
+            write (buffer, '(F12.3)') self%finish - self%start
             print '(A,A,A,A,I0,A,I0,A,I0)', &
                 'Tests completed in ', trim(adjustl(buffer)), ' seconds. ', &
                 'Total: ', (self%passed + self%failed), &

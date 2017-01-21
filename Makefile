@@ -28,7 +28,7 @@ FC      = ifort
 FFLAGS  = -O0 -xHost -c -module modules -free -std15 -standard-semantics
 LDFLAGS = -dynamiclib -save-temps
 
-INTERFACES = src/logger/Logger.f src/Unit.f src/conditions/Conditions.f
+INTERFACES = src/utils/Arguments.f src/logger/Logger.f src/Unit.f src/conditions/Conditions.f
 SOURCES    = $(INTERFACES) $(shell find src -name '*.f' | sed 's/^\.\///' | sort)
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
 EXECUTABLE = Unit.dlyb

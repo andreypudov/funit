@@ -26,6 +26,7 @@
 
 module Unit
 
+    use Arguments
     use Logger
 
     implicit none

@@ -32,18 +32,29 @@ submodule (Unit) UnitContext
 
 contains
     module subroutine init_context()
-        type(ConsoleLogger),   pointer :: logger
+        type(ConsoleLogger), pointer :: console
+        type(JSONLogger),    pointer :: json
 
-        type(ArgumentsParser) :: parser
+        type(ArgumentsParser) parser
+        character(len=128)    filename
 
         if (.not. associated(instance)) then
+            allocate(instance)
             call parser%parse()
 
-            allocate(instance)
-            allocate(logger)
+            select case(parser%getLoggerType())
+            case (LOGGER_JSON)
+                filename = parser%getLoggerFile()
+                allocate(json)
 
-            call logger%init()
-            instance%logger => logger
+                call json%init()
+                instance%logger => json
+            case default
+                allocate(console)
+
+                call console%init()
+                instance%logger => console
+            end select
         end if
     end subroutine
 

@@ -30,7 +30,7 @@ program Units
 
     implicit none
 
-    type(ConditionsRunner) :: conditions
+    type(ConditionsRunner) conditions
 
     call conditions%init()
     call conditions%run()

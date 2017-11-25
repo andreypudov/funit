@@ -37,20 +37,30 @@ module Arguments
         character(len=256) :: file
         integer :: type
     contains
-        procedure, pass, public :: parse => parse_parser
+        procedure, pass, public :: parse
+
+        procedure, pass, public :: getLoggerType
+        procedure, pass, public :: getLoggerFile
     end type
 contains
-    subroutine parse_parser(self)
+    subroutine parse(self)
         class(ArgumentsParser), intent(in out) :: self
 
         character(len=80), dimension(:), allocatable :: arguments
-        integer :: count
-        integer :: index
+        logical skip
+        integer count
+        integer index
 
         count = command_argument_count()
+        skip  = .false.
         allocate(arguments(count))
 
         do index = 1, count
+            if (skip) then
+                skip = .false.
+                cycle
+            end if
+
             call get_command_argument(index, arguments(index))
 
             select case(arguments(index))
@@ -63,8 +73,11 @@ contains
                     call help()
                 end if
 
+                call get_command_argument(index, arguments(index + 1))
                 self%type = LOGGER_JSON
                 self%file = arguments(index + 1)
+
+                skip = .true.
             case default
                 call help()
             end select
@@ -72,6 +85,20 @@ contains
 
         deallocate(arguments)
     end subroutine
+
+    function getLoggerType(self) result(value)
+        class(ArgumentsParser), intent(in) :: self
+        integer value
+
+        value = self%type
+    end function
+
+    function getLoggerFile(self) result(value)
+        class(ArgumentsParser), intent(in) :: self
+        character(len=256) value
+
+        value = self%file
+    end function
 
     subroutine help()
         print '(A)', 'Unit. A unit testing library for Fortran.'
@@ -82,7 +109,7 @@ contains
         print '(A)', 'Options:'
         print '(TR2,A,TR8,A)', '-h, --help',    'display this help message and exit'
         print '(TR2,A,TR5,A)', '-v, --version', 'display version information and exit'
-        print '(TR2,A,TR5,A)', '--json file',   'output unit results to the JSON file'
+        print '(TR2,A,TR7,A)', '--json file',   'output unit results to the JSON file'
         print '(A)', ''
 
         stop

@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,26 +24,18 @@
 ! THE SOFTWARE.
 !
 
-submodule (Logger) UnitLogger
+module Parameters
 
     implicit none
+    public
 
-contains
-    module subroutine init_unitLogger(self)
-        class(UnitLogger), intent(in out) :: self
+    character(len=*), parameter :: DEFAULT_ARRAY_EQUALS = 'Array equals condition'
+    character(len=*), parameter :: DEFAULT_EQUALS       = 'Equals condition'
+    character(len=*), parameter :: DEFAULT_FALSE        = 'False condition'
+    character(len=*), parameter :: DEFAULT_NOT_NULL     = 'Not null condition'
+    character(len=*), parameter :: DEFAULT_NOT_SAME     = 'Not same condition'
+    character(len=*), parameter :: DEFAULT_NULL         = 'Null condition'
+    character(len=*), parameter :: DEFAULT_SAME         = 'Same condition'
+    character(len=*), parameter :: DEFAULT_TRUE         = 'True condition'
 
-        call cpu_time(self%start)
-    end subroutine
-
-    module subroutine clean_unitLogger(self)
-        class(UnitLogger), intent(in out) :: self
-    end subroutine
-
-    module subroutine log_unitLogger(self, type, name, details, status)
-        class(UnitLogger),          intent(in out) :: self
-        integer,                    intent(in)     :: type
-        character(len=*),           intent(in)     :: name
-        character(len=*), optional, intent(in)     :: details
-        logical,          optional, intent(in)     :: status
-    end subroutine
-end submodule
+end module

@@ -1,12 +1,12 @@
-## Project build directory
+## project build directory
 modules/
 out/
 
-## Compiled source 
+## compiled source 
 *.mod
 *.o
 
-## System files 
+## system files 
 .DS_Store
 .DS_Store?
 ._*

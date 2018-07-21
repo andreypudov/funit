@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,96 +24,90 @@
 ! THE SOFTWARE.
 !
 
-submodule (Conditions) ArrayEquals
+pure function arrayEquals_character(expected, actual) result(value)
+    character, dimension(:), intent(in) :: expected
+    character, dimension(:), intent(in) :: actual
 
-    implicit none
+    logical value
 
-contains
-    module pure function arrayEquals_character(expected, actual) result(value)
-        character, dimension(:), intent(in) :: expected
-        character, dimension(:), intent(in) :: actual
+    if (size(expected) /= size(actual)) then
+        value = .false.
+        return
+    end if
 
-        logical value
+    value = all(expected == actual)
+end function
 
-        if (size(expected) /= size(actual)) then
-            value = .false.
-            return
-        end if
+pure function arrayEquals_complex(expected, actual, delta) result(value)
+    complex, dimension(:), intent(in) :: expected
+    complex, dimension(:), intent(in) :: actual
+    real,                  intent(in) :: delta
 
-        value = all(expected == actual)
-    end function
+    logical value
 
-    module pure function arrayEquals_complex(expected, actual, delta) result(value)
-        complex, dimension(:), intent(in) :: expected
-        complex, dimension(:), intent(in) :: actual
-        real,                  intent(in) :: delta
+    if (size(expected) /= size(actual)) then
+        value = .false.
+        return
+    end if
 
-        logical value
+    value = (all(abs(real(expected) - real(actual)) < delta) .and. &
+             all(abs(aimag(expected) - aimag(actual)) < delta))
+end function
 
-        if (size(expected) /= size(actual)) then
-            value = .false.
-            return
-        end if
+pure function arrayEquals_double_precision(expected, actual, delta) result(value)
+    double precision, dimension(:), intent(in) :: expected
+    double precision, dimension(:), intent(in) :: actual
+    double precision,               intent(in) :: delta
 
-        value = (all(abs(real(expected) - real(actual)) < delta) .and. &
-                all(abs(aimag(expected) - aimag(actual)) < delta))
-    end function
+    logical value
 
-    module pure function arrayEquals_double_precision(expected, actual, delta) result(value)
-        double precision, dimension(:), intent(in) :: expected
-        double precision, dimension(:), intent(in) :: actual
-        double precision,               intent(in) :: delta
+    if (size(expected) /= size(actual)) then
+        value = .false.
+        return
+    end if
 
-        logical value
+    value = all(dabs(expected - actual) < delta)
+end function
 
-        if (size(expected) /= size(actual)) then
-            value = .false.
-            return
-        end if
+pure function arrayEquals_integer(expected, actual) result(value)
+    integer, dimension(:), intent(in) :: expected
+    integer, dimension(:), intent(in) :: actual
 
-        value = all(dabs(expected - actual) < delta)
-    end function
+    logical value
 
-    module pure function arrayEquals_integer(expected, actual) result(value)
-        integer, dimension(:), intent(in) :: expected
-        integer, dimension(:), intent(in) :: actual
+    if (size(expected) /= size(actual)) then
+        value = .false.
+        return
+    end if
 
-        logical value
+    value = all(expected == actual)
+end function
 
-        if (size(expected) /= size(actual)) then
-            value = .false.
-            return
-        end if
+pure function arrayEquals_logical(expected, actual) result(value)
+    logical, dimension(:), intent(in) :: expected
+    logical, dimension(:), intent(in) :: actual
 
-        value = all(expected == actual)
-    end function
+    logical value
 
-    module pure function arrayEquals_logical(expected, actual) result(value)
-        logical, dimension(:), intent(in) :: expected
-        logical, dimension(:), intent(in) :: actual
+    if (size(expected) /= size(actual)) then
+        value = .false.
+        return
+    end if
 
-        logical value
+    value = all(expected .eqv. actual)
+end function
 
-        if (size(expected) /= size(actual)) then
-            value = .false.
-            return
-        end if
+pure function arrayEquals_real(expected, actual, delta) result(value)
+    real, dimension(:), intent(in) :: expected
+    real, dimension(:), intent(in) :: actual
+    real,               intent(in) :: delta
 
-        value = all(expected .eqv. actual)
-    end function
+    logical value
 
-    module pure function arrayEquals_real(expected, actual, delta) result(value)
-        real, dimension(:), intent(in) :: expected
-        real, dimension(:), intent(in) :: actual
-        real,               intent(in) :: delta
+    if (size(expected) /= size(actual)) then
+        value = .false.
+        return
+    end if
 
-        logical value
-
-        if (size(expected) /= size(actual)) then
-            value = .false.
-            return
-        end if
-
-        value = all(abs(expected - actual) < delta)
-    end function
-end submodule
+    value = all(abs(expected - actual) < delta)
+end function

@@ -3,7 +3,7 @@
 #
 # The MIT License
 #
-# Copyright 2011-2016 Andrey Pudov
+# Copyright 2011-2018 Andrey Pudov
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -25,11 +25,13 @@
 #
 
 FC      = ifort
-FFLAGS  = -O0 -xHost -c -module modules -free -std15 -standard-semantics
+FFLAGS  = -O2 -c -module modules -free -std95 -standard-semantics -warn all -warn errors 
 LDFLAGS = -dynamiclib -save-temps
 
-INTERFACES = src/utils/Arguments.f src/logger/Logger.f src/Unit.f src/conditions/Conditions.f
-SOURCES    = $(INTERFACES) $(shell find src -name '*.f' | sed 's/^\.\///' | sort)
+ENTRYPOINT = src/Unit.f
+INTERFACES = src/utils/Logger.f src/conditions/Conditions.f
+INCLUDES   = src/asserts/% src/conditions/% src/expects/% $(ENTRYPOINT)
+SOURCES    = $(sort $(INTERFACES) $(filter-out $(INCLUDES), $(shell find src -name '*.f' | sed 's/^\.\///'))) $(ENTRYPOINT)
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
 EXECUTABLE = Unit.dlyb
 

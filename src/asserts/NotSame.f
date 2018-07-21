@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,72 +24,80 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) NotSameAsserts
-
+subroutine assert_notSame_character(unexpected, actual, message)
     use Conditions
+    use Parameters
 
-    implicit none
+    character(len=*), optional, intent(in) :: message
+    character, pointer :: unexpected
+    character, pointer :: actual
 
-    character(len=*), parameter :: default = 'Not same condition'
+    if (.not. notSame(unexpected, actual)) then
+        call fail_assert(message, DEFAULT_NOT_SAME)
+    end if
+end subroutine
 
-contains
-    module subroutine notSame_assert_character(unexpected, actual, message)
-        character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: unexpected
-        character,        pointer,  intent(in) :: actual
+subroutine assert_notSame_complex(unexpected, actual, message)
+    use Conditions
+    use Parameters
 
-        if (.not. notSame(unexpected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    character(len=*), optional, intent(in) :: message
+    complex, pointer :: unexpected
+    complex, pointer :: actual
 
-    module subroutine notSame_assert_complex(unexpected, actual, message)
-        character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: unexpected
-        complex,          pointer, intent(in)  :: actual
+    if (.not. notSame(unexpected, actual)) then
+        call fail_assert(message, DEFAULT_NOT_SAME)
+    end if
+end subroutine
 
-        if (.not. notSame(unexpected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+subroutine assert_notSame_double_precision(unexpected, actual, message)
+    use Conditions
+    use Parameters
 
-    module subroutine notSame_assert_double_precision(unexpected, actual, message)
-        character(len=*), optional, intent(in) :: message
-        double precision, pointer,  intent(in) :: unexpected
-        double precision, pointer,  intent(in) :: actual
+    character(len=*), optional, intent(in) :: message
+    double precision, pointer :: unexpected
+    double precision, pointer :: actual
 
-        if (.not. notSame(unexpected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    if (.not. notSame(unexpected, actual)) then
+        call fail_assert(message, DEFAULT_NOT_SAME)
+    end if
+end subroutine
 
-    module subroutine notSame_assert_integer(unexpected, actual, message)
-        character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: unexpected
-        integer,          pointer,  intent(in) :: actual
+subroutine assert_notSame_integer(unexpected, actual, message)
+    use Conditions
+    use Parameters
 
-        if (.not. notSame(unexpected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    character(len=*), optional, intent(in) :: message
+    integer, pointer :: unexpected
+    integer, pointer :: actual
 
-    module subroutine notSame_assert_logical(unexpected, actual, message)
-        character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: unexpected
-        logical,          pointer,  intent(in) :: actual
+    if (.not. notSame(unexpected, actual)) then
+        call fail_assert(message, DEFAULT_NOT_SAME)
+    end if
+end subroutine
 
-        if (.not. notSame(unexpected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+subroutine assert_notSame_logical(unexpected, actual, message)
+    use Conditions
+    use Parameters
 
-    module subroutine notSame_assert_real(unexpected, actual, message)
-        character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: unexpected
-        real,             pointer,  intent(in) :: actual
+    character(len=*), optional, intent(in) :: message
+    logical, pointer :: unexpected
+    logical,  pointer :: actual
 
-        if (.not. notSame(unexpected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
-end submodule
+    if (.not. notSame(unexpected, actual)) then
+        call fail_assert(message, DEFAULT_NOT_SAME)
+    end if
+end subroutine
+
+subroutine assert_notSame_real(unexpected, actual, message)
+    use Conditions
+    use Parameters
+
+    character(len=*), optional, intent(in) :: message
+    real, pointer :: unexpected
+    real, pointer :: actual
+
+    if (.not. notSame(unexpected, actual)) then
+        call fail_assert(message, DEFAULT_NOT_SAME)
+    end if
+end subroutine

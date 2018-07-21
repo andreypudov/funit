@@ -24,44 +24,12 @@
 ! THE SOFTWARE.
 !
 
-pure function notNull_character(pointer) result(value)
-    character, pointer :: pointer
-    logical value
-
-    value = associated(pointer)
-end function
-
-pure function notNull_complex(pointer) result(value)
-    complex, pointer :: pointer
-    logical value
-
-    value = associated(pointer)
-end function
-
-pure function notNull_double_precision(pointer) result(value)
-    double precision, pointer :: pointer
-    logical value
-
-    value = associated(pointer)
-end function
-
-pure function notNull_integer(pointer) result(value)
-    integer, pointer :: pointer
-    logical value
-
-    value = associated(pointer)
-end function
-
-pure function notNull_logical(pointer) result(value)
-    logical, pointer :: pointer
-    logical value
-
-    value = associated(pointer)
-end function
-
-pure function notNull_real(pointer) result(value)
-    real, pointer :: pointer
-    logical value
-
-    value = associated(pointer)
-end function
+include 'src/expects/ArrayEquals.f'
+include 'src/expects/Equals.f'
+include 'src/expects/Fail.f'
+include 'src/expects/False.f'
+include 'src/expects/NotNull.f'
+include 'src/expects/NotSame.f'
+include 'src/expects/Null.f'
+include 'src/expects/Same.f'
+include 'src/expects/True.f'

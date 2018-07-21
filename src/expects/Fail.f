@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov.
+! Copyright 2011-2018 Andrey Pudov.
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,27 +24,15 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) FailExpects
+subroutine fail_expect(message, default)
+    use Logger
 
-    implicit none
+    character(len=*), optional, intent(in) :: message
+    character(len=*), optional, intent(in) :: default
 
-contains
-    module subroutine fail_expect(message, default)
-        character(len=*), optional, intent(in) :: message
-        character(len=*), optional, intent(in) :: default
-
-        class(UnitCaseEntry), pointer :: case
-        class(UnitLogger),    pointer :: logger
-        type(UnitContext) context
-
-        case   => context%getCase()
-        logger => context%getLogger()
-
-        case%status = .false.
-        if (present(message)) then
-            call logger%log(type = TYPE_CASE, name = case%name, details = message, status = case%status)
-        else
-            call logger%log(type = TYPE_CASE, name = case%name, details = default, status = case%status)
-        end if
-    end subroutine
-end submodule
+    if (present(message)) then
+        call log(type = TYPE_CASE, name = 'case%name', details = message, status = .false.)
+    else if (present(default)) then
+        call log(type = TYPE_CASE, name = 'case%name', details = default, status = .false.)
+    end if
+end subroutine

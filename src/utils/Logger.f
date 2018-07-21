@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2017 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,41 +24,29 @@
 ! THE SOFTWARE.
 !
 
-module ExampleRunnerUnit
-
-    use Unit
-
-    use ExampleUnit
+module Logger
 
     implicit none
-
-    type, extends(UnitRunner), public :: ExampleRunner
+    public log
     private
-        class(UnitSuite), pointer :: exampleSuite
-    contains
-        procedure, pass :: init
-        procedure, pass :: clean
-    end type
+
+    integer, parameter, public :: TYPE_RUNNER = 0
+    integer, parameter, public :: TYPE_SUITE  = 1
+    integer, parameter, public :: TYPE_CASE   = 2
+    integer, parameter, public :: TYPE_RESULT = 3
+
+    integer, parameter, private :: TERMINAL_WIDTH = 80
+
 contains
-    subroutine init(self, name)
-        class(ExampleRunner), intent(in out)   :: self
-        character(len=*), optional, intent(in) :: name
+    subroutine log(type, name, details, status)
+        integer,                    intent(in)     :: type
+        character(len=*),           intent(in)     :: name
+        character(len=*), optional, intent(in)     :: details
+        logical,          optional, intent(in)     :: status
 
-        type(ExampleSuite), pointer :: exampleSuite
-
-        call self%UnitRunner%init('An example for Unit testing library')
-
-        allocate(exampleSuite)
-
-        self%exampleSuite => exampleSuite
-
-        call self%add(self%exampleSuite)
-    end subroutine
-
-    subroutine clean(self)
-        class(ExampleRunner), intent(in out) :: self
-
-        ! deallocates unit cases
-        call self%UnitRunner%clean()
+        select case(type)
+        case(TYPE_CASE)
+            print '(A)', name
+        end select
     end subroutine
 end module

@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov.
+! Copyright 2011-2018 Andrey Pudov.
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,50 +24,44 @@
 ! THE SOFTWARE.
 !
 
-submodule (Conditions) Null
+pure function null_character(pointer) result(value)
+    character, pointer :: pointer
+    logical value
 
-    implicit none
+    value = (.not. associated(pointer))
+end function
 
-contains
-    module pure function null_character(pointer) result(value)
-        character, pointer,  intent(in) :: pointer
-        logical value
+pure function null_complex(pointer) result(value)
+    complex, pointer :: pointer
+    logical value
 
-        value = (.not. associated(pointer))
-    end function
+    value = (.not. associated(pointer))
+end function
 
-    module pure function null_complex(pointer) result(value)
-        complex, pointer, intent(in)  :: pointer
-        logical value
+pure function null_double_precision(pointer) result(value)
+    double precision, pointer :: pointer
+    logical value
 
-        value = (.not. associated(pointer))
-    end function
+    value = (.not. associated(pointer))
+end function
 
-    module pure function null_double_precision(pointer) result(value)
-        double precision, pointer,  intent(in) :: pointer
-        logical value
+pure function null_integer(pointer) result(value)
+    integer, pointer :: pointer
+    logical value
 
-        value = (.not. associated(pointer))
-    end function
+    value = (.not. associated(pointer))
+end function
 
-    module pure function null_integer(pointer) result(value)
-        integer, pointer,  intent(in) :: pointer
-        logical value
+pure function null_logical(pointer) result(value)
+    logical, pointer :: pointer
+    logical value
 
-        value = (.not. associated(pointer))
-    end function
+    value = (.not. associated(pointer))
+end function
 
-    module pure function null_logical(pointer) result(value)
-        logical, pointer,  intent(in) :: pointer
-        logical value
+pure function null_real(pointer) result(value)
+    real, pointer :: pointer
+    logical value
 
-        value = (.not. associated(pointer))
-    end function
-
-    module pure function null_real(pointer) result(value)
-        real, pointer,  intent(in) :: pointer
-        logical value
-
-        value = (.not. associated(pointer))
-    end function
-end submodule
+    value = (.not. associated(pointer))
+end function

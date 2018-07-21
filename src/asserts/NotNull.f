@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,66 +24,74 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) NotNullAsserts
-
+subroutine assert_notNull_character(pointer, message)
     use Conditions
+    use Parameters
 
-    implicit none
+    character(len=*), optional, intent(in) :: message
+    character, pointer :: pointer
 
-    character(len=*), parameter :: default = 'Not null condition'
+    if (.not. notNull(pointer)) then
+        call fail_assert(message, DEFAULT_NOT_NULL)
+    end if
+end subroutine
 
-contains
-    module subroutine notNull_assert_character(pointer, message)
-        character(len=*), optional, intent(in) :: message
-        character,        pointer,  intent(in) :: pointer
+subroutine assert_notNull_complex(pointer, message)
+    use Conditions
+    use Parameters
 
-        if (.not. notNull(pointer)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    character(len=*), optional, intent(in) :: message
+    complex, pointer :: pointer
 
-    module subroutine notNull_assert_complex(pointer, message)
-        character(len=*), optional, intent(in) :: message
-        complex,          pointer, intent(in)  :: pointer
+    if (.not. notNull(pointer)) then
+        call fail_assert(message, DEFAULT_NOT_NULL)
+    end if
+end subroutine
 
-        if (.not. notNull(pointer)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+subroutine assert_notNull_double_precision(pointer, message)
+    use Conditions
+    use Parameters
 
-    module subroutine notNull_assert_double_precision(pointer, message)
-        character(len=*), optional, intent(in) :: message
-        double precision, pointer,  intent(in) :: pointer
+    character(len=*), optional, intent(in) :: message
+    double precision, pointer :: pointer
 
-        if (.not. notNull(pointer)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    if (.not. notNull(pointer)) then
+        call fail_assert(message, DEFAULT_NOT_NULL)
+    end if
+end subroutine
 
-    module subroutine notNull_assert_integer(pointer, message)
-        character(len=*), optional, intent(in) :: message
-        integer,          pointer,  intent(in) :: pointer
+subroutine assert_notNull_integer(pointer, message)
+    use Conditions
+    use Parameters
 
-        if (.not. notNull(pointer)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    character(len=*), optional, intent(in) :: message
+    integer, pointer :: pointer
 
-    module subroutine notNull_assert_logical(pointer, message)
-        character(len=*), optional, intent(in) :: message
-        logical,          pointer,  intent(in) :: pointer
+    if (.not. notNull(pointer)) then
+        call fail_assert(message, DEFAULT_NOT_NULL)
+    end if
+end subroutine
 
-        if (.not. notNull(pointer)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+subroutine assert_notNull_logical(pointer, message)
+    use Conditions
+    use Parameters
 
-    module subroutine notNull_assert_real(pointer, message)
-        character(len=*), optional, intent(in) :: message
-        real,             pointer,  intent(in) :: pointer
+    character(len=*), optional, intent(in) :: message
+    logical, pointer :: pointer
 
-        if (.not. notNull(pointer)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
-end submodule
+    if (.not. notNull(pointer)) then
+        call fail_assert(message, DEFAULT_NOT_NULL)
+    end if
+end subroutine
+
+subroutine assert_notNull_real(pointer, message)
+    use Conditions
+    use Parameters
+
+    character(len=*), optional, intent(in) :: message
+    real, pointer :: pointer
+
+    if (.not. notNull(pointer)) then
+        call fail_assert(message, DEFAULT_NOT_NULL)
+    end if
+end subroutine

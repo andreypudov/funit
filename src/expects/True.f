@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,21 +24,14 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) TrueExpects
-
+subroutine expect_true(condition, message)
     use Conditions
+    use Parameters
+    
+    character(len=*), optional, intent(in) :: message
+    logical, intent(in) :: condition
 
-    implicit none
-
-    character(len=*), parameter :: default = 'True condition'
-
-contains
-    module subroutine true_expect(condition, message)
-        character(len=*), optional, intent(in) :: message
-        logical, intent(in) :: condition
-
-        if (.not. true(condition)) then
-            call fail_expect(message, default)
-        end if
-    end subroutine
-end submodule
+    if (.not. true(condition)) then
+        call fail_expect(message, DEFAULT_TRUE)
+    end if
+end subroutine

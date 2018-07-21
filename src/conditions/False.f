@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,15 +24,9 @@
 ! THE SOFTWARE.
 !
 
-submodule (Conditions) False
+pure function false(condition) result(value)
+    logical, intent(in) :: condition
+    logical value
 
-    implicit none
-
-contains
-    module pure function false(condition) result(value)
-        logical, intent(in) :: condition
-        logical value
-
-        value = (.not. condition)
-    end function
-end submodule
+    value = (.not. condition)
+end function

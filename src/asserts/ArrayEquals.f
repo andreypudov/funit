@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,81 +24,89 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) ArrayEqualsAsserts
-
+subroutine assert_arrayEquals_character(expected, actual, message)
     use Conditions
+    use Parameters
 
-    implicit none
+    character(len=*), optional, intent(in) :: message
 
-    character(len=*), parameter :: default = 'Array equals condition'
+    character, dimension(:), intent(in) :: expected
+    character, dimension(:), intent(in) :: actual
 
-contains
-    module subroutine arrayEquals_assert_character(expected, actual, message)
-        character(len=*), optional, intent(in) :: message
+    if (.not. arrayEquals(expected, actual)) then
+        call fail_assert(message, DEFAULT_ARRAY_EQUALS)
+    end if
+end subroutine
 
-        character, dimension(:), intent(in) :: expected
-        character, dimension(:), intent(in) :: actual
+subroutine assert_arrayEquals_complex(expected, actual, delta, message)
+    use Conditions
+    use Parameters
 
-        if (.not. arrayEquals(expected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    character(len=*), optional, intent(in) :: message
 
-    module subroutine arrayEquals_assert_complex(expected, actual, delta, message)
-        character(len=*), optional, intent(in) :: message
+    complex, dimension(:), intent(in) :: expected
+    complex, dimension(:), intent(in) :: actual
+    real,                  intent(in) :: delta
 
-        complex, dimension(:), intent(in) :: expected
-        complex, dimension(:), intent(in) :: actual
-        real,                  intent(in) :: delta
+    if (.not. arrayEquals(expected, actual, delta)) then
+        call fail_assert(message, DEFAULT_ARRAY_EQUALS)
+    end if
+end subroutine
 
-        if (.not. arrayEquals(expected, actual, delta)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+subroutine assert_arrayEquals_double(expected, actual, delta, message)
+    use Conditions
+    use Parameters
 
-    module subroutine arrayEquals_assert_double_precision(expected, actual, delta, message)
-        character(len=*), optional, intent(in) :: message
+    character(len=*), optional, intent(in) :: message
 
-        double precision, dimension(:), intent(in) :: expected
-        double precision, dimension(:), intent(in) :: actual
-        double precision,               intent(in) :: delta
+    double precision, dimension(:), intent(in) :: expected
+    double precision, dimension(:), intent(in) :: actual
+    double precision,               intent(in) :: delta
 
-        if (.not. arrayEquals(expected, actual, delta)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    if (.not. arrayEquals(expected, actual, delta)) then
+        call fail_assert(message, DEFAULT_ARRAY_EQUALS)
+    end if
+end subroutine
 
-    module subroutine arrayEquals_assert_integer(expected, actual, message)
-        character(len=*), optional, intent(in) :: message
+subroutine assert_arrayEquals_integer(expected, actual, message)
+    use Conditions
+    use Parameters
 
-        integer, dimension(:), intent(in) :: expected
-        integer, dimension(:), intent(in) :: actual
+    character(len=*), optional, intent(in) :: message
 
-        if (.not. arrayEquals(expected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    integer, dimension(:), intent(in) :: expected
+    integer, dimension(:), intent(in) :: actual
 
-    module subroutine arrayEquals_assert_logical(expected, actual, message)
-        character(len=*), optional, intent(in) :: message
+    if (.not. arrayEquals(expected, actual)) then
+        call fail_assert(message, DEFAULT_ARRAY_EQUALS)
+    end if
+end subroutine
 
-        logical, dimension(:), intent(in) :: expected
-        logical, dimension(:), intent(in) :: actual
+subroutine assert_arrayEquals_logical(expected, actual, message)
+    use Conditions
+    use Parameters
 
-        if (.not. arrayEquals(expected, actual)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
+    character(len=*), optional, intent(in) :: message
 
-    module subroutine arrayEquals_assert_real(expected, actual, delta, message)
-        character(len=*), optional, intent(in) :: message
+    logical, dimension(:), intent(in) :: expected
+    logical, dimension(:), intent(in) :: actual
 
-        real, dimension(:), intent(in) :: expected
-        real, dimension(:), intent(in) :: actual
-        real,               intent(in) :: delta
+    if (.not. arrayEquals(expected, actual)) then
+        call fail_assert(message, DEFAULT_ARRAY_EQUALS)
+    end if
+end subroutine
 
-        if (.not. arrayEquals(expected, actual, delta)) then
-            call fail_assert(message, default)
-        end if
-    end subroutine
-end submodule
+subroutine assert_arrayEquals_real(expected, actual, delta, message)
+    use Conditions
+    use Parameters
+
+    character(len=*), optional, intent(in) :: message
+
+    real, dimension(:), intent(in) :: expected
+    real, dimension(:), intent(in) :: actual
+    real,               intent(in) :: delta
+
+    if (.not. arrayEquals(expected, actual, delta)) then
+        call fail_assert(message, DEFAULT_ARRAY_EQUALS)
+    end if
+end subroutine

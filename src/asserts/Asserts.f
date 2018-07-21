@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,15 +24,12 @@
 ! THE SOFTWARE.
 !
 
-program Example
-
-    use ExampleRunnerUnit
-
-    implicit none
-
-    type(ExampleRunner) :: runner
-
-    call runner%init()
-    call runner%run()
-    call runner%clean()
-end program
+include 'src/asserts/ArrayEquals.f'
+include 'src/asserts/Equals.f'
+include 'src/asserts/Fail.f'
+include 'src/asserts/False.f'
+include 'src/asserts/NotNull.f'
+include 'src/asserts/NotSame.f'
+include 'src/asserts/Null.f'
+include 'src/asserts/Same.f'
+include 'src/asserts/True.f'

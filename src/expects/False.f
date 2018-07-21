@@ -24,21 +24,14 @@
 ! THE SOFTWARE.
 !
 
-submodule (Unit) FalseExpects
-
+subroutine expect_false(condition, message)
     use Conditions
+    use Parameters
 
-    implicit none
+    character(len=*), optional, intent(in) :: message
+    logical, intent(in) :: condition
 
-    character(len=*), parameter :: default = 'False condition'
-
-contains
-    module subroutine false_expect(condition, message)
-        character(len=*), optional, intent(in) :: message
-        logical, intent(in) :: condition
-
-        if (.not. false(condition)) then
-            call fail_expect(message, default)
-        end if
-    end subroutine
-end submodule
+    if (.not. false(condition)) then
+        call fail_expect(message, DEFAULT_FALSE)
+    end if
+end subroutine

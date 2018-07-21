@@ -25,7 +25,7 @@
 #
 
 FC      = ifort
-FFLAGS  = -O0 -xHost -c -g3 -debug all -ftrapuv -module modules -check all -free -std15 -standard-semantics -warn all -warn nounused -WB -Winline -gen-interfaces -warn interfaces -traceback -fstack-security-check -fstack-protector-all
+FFLAGS  = -O0 -xHost -c -g3 -debug all -ftrapuv -module modules -check all -free -std95 -standard-semantics -warn all -warn nounused -WB -Winline -gen-interfaces -warn interfaces -traceback -fstack-security-check -fstack-protector-all
 LDFLAGS = -save-temps out/\#Unit.dlyb
 
 INTERFACES =

@@ -3,7 +3,7 @@
 !
 ! The MIT License
 !
-! Copyright 2011-2016 Andrey Pudov
+! Copyright 2011-2018 Andrey Pudov
 !
 ! Permission is hereby granted, free of charge, to any person obtaining a copy
 ! of this software and associated documentation files (the 'Software'), to deal
@@ -24,66 +24,60 @@
 ! THE SOFTWARE.
 !
 
-submodule (Conditions) Equals
+pure function equals_character(expected, actual) result(value)
+    character, intent(in) :: expected
+    character, intent(in) :: actual
 
-    implicit none
+    logical value
 
-contains
-    module pure function equals_character(expected, actual) result(value)
-        character, intent(in) :: expected
-        character, intent(in) :: actual
+    value = (expected == actual)
+end function
 
-        logical value
+pure function equals_complex(expected, actual, delta) result(value)
+    complex, intent(in) :: expected
+    complex, intent(in) :: actual
+    real,    intent(in) :: delta
 
-        value = (expected == actual)
-    end function
+    logical value
 
-    module pure function equals_complex(expected, actual, delta) result(value)
-        complex, intent(in) :: expected
-        complex, intent(in) :: actual
-        real,    intent(in) :: delta
+    value = ((abs(real(expected) - real(actual)) < delta) .and. &
+             (abs(aimag(expected) - aimag(actual)) < delta))
+end function
 
-        logical value
+pure function equals_double_precision(expected, actual, delta) result(value)
+    double precision, intent(in) :: expected
+    double precision, intent(in) :: actual
+    double precision, intent(in) :: delta
 
-        value = ((abs(real(expected) - real(actual)) < delta) .and. &
-                (abs(aimag(expected) - aimag(actual)) < delta))
-    end function
+    logical value
 
-    module pure function equals_double_precision(expected, actual, delta) result(value)
-        double precision, intent(in) :: expected
-        double precision, intent(in) :: actual
-        double precision, intent(in) :: delta
+    value = (dabs(expected - actual) < delta)
+end function
 
-        logical value
+pure function equals_integer(expected, actual) result(value)
+    integer, intent(in) :: expected
+    integer, intent(in) :: actual
 
-        value = (dabs(expected - actual) < delta)
-    end function
+    logical value
 
-    module pure function equals_integer(expected, actual) result(value)
-        integer, intent(in) :: expected
-        integer, intent(in) :: actual
+    value = (expected == actual)
+end function
 
-        logical value
+pure function equals_logical(expected, actual) result(value)
+    logical, intent(in) :: expected
+    logical, intent(in) :: actual
 
-        value = (expected == actual)
-    end function
+    logical value
 
-    module pure function equals_logical(expected, actual) result(value)
-        logical, intent(in) :: expected
-        logical, intent(in) :: actual
+    value = (expected .eqv. actual)
+end function
 
-        logical value
+pure function equals_real(expected, actual, delta) result(value)
+    real, intent(in) :: expected
+    real, intent(in) :: actual
+    real, intent(in) :: delta
 
-        value = (expected .eqv. actual)
-    end function
+    logical value
 
-    module pure function equals_real(expected, actual, delta) result(value)
-        real, intent(in) :: expected
-        real, intent(in) :: actual
-        real, intent(in) :: delta
-
-        logical value
-
-        value = (abs(expected - actual) < delta)
-    end function
-end submodule
+    value = (abs(expected - actual) < delta)
+end function

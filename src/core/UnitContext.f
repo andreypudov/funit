@@ -1,27 +1,10 @@
 !
 ! A unit testing library for Fortran
 !
-! The MIT License
+! Copyright 2011-2022 Andrey Pudov. All Rights Reserved.
 !
-! Copyright 2011-2016 Andrey Pudov
-!
-! Permission is hereby granted, free of charge, to any person obtaining a copy
-! of this software and associated documentation files (the 'Software'), to deal
-! in the Software without restriction, including without limitation the rights
-! to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-! copies of the Software, and to permit persons to whom the Software is
-! furnished to do so, subject to the following conditions:
-!
-! The above copyright notice and this permission notice shall be included in
-! all copies or substantial portions of the Software.
-!
-! THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-! IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-! FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-! AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-! LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-! OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-! THE SOFTWARE.
+! Licensed under the Apache License, Version 2.0.
+! See LICENSE.txt in the project root for license information.
 !
 
 submodule (Unit) UnitContext
@@ -35,32 +18,32 @@ contains
         type(ConsoleLogger), pointer :: console
         type(JSONLogger),    pointer :: json
 
-        type(ArgumentsParser) parser
+        ! type(ArgumentsParser) parser
         character(len=128)    filename
 
         if (.not. associated(instance)) then
             allocate(instance)
-            call parser%parse()
+            ! call parser%parse()
 
-            select case(parser%getLoggerType())
-            case (LOGGER_JSON)
-                filename = parser%getLoggerFile()
-                allocate(json)
+            ! select case(parser%getLoggerType())
+            ! case (LOGGER_JSON)
+            !    filename = parser%getLoggerFile()
+            !    allocate(json)
 
-                call json%init()
-                instance%logger => json
-            case default
+            !    call json%init()
+            !    instance%logger => json
+            !case default
                 allocate(console)
 
                 call console%init()
                 instance%logger => console
-            end select
+            ! end select
         end if
     end subroutine
 
     module subroutine clean_context()
         if (.not. associated(instance)) then
-            deallocate(instance%logger)
+            ! deallocate(instance%logger)
             deallocate(instance)
         end if
     end subroutine

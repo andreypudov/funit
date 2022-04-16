@@ -1,37 +1,54 @@
 #
 # A unit testing library for Fortran
 #
-# The MIT License
+# Copyright 2011-2022 Andrey Pudov. All Rights Reserved.
 #
-# Copyright 2011-2016 Andrey Pudov
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the 'Software'), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# Licensed under the Apache License, Version 2.0.
+# See LICENSE.txt in the project root for license information.
 #
 
 FC      = ifort
-FFLAGS  = -O0 -xHost -c -module modules -free -std15 -standard-semantics
-LDFLAGS = -dynamiclib -save-temps
+FFLAGS  = -O0 -c -module modules -free -std18 -standard-semantics -fPIC
+LDFLAGS = -shared -save-temps # -dynamiclib
 
-INTERFACES = src/utils/Arguments.f src/logger/Logger.f src/Unit.f src/conditions/Conditions.f
-SOURCES    = $(INTERFACES) $(shell find src -name '*.f' | sed 's/^\.\///' | sort)
+SOURCES    = src/utils/Arguments.f \
+             src/logger/Logger.f \
+             src/Unit.f \
+             src/conditions/Conditions.f \
+             src/asserts/ArrayEquals.f \
+             src/asserts/Equals.f \
+             src/asserts/Fail.f \
+             src/asserts/False.f \
+             src/asserts/NotNull.f \
+             src/asserts/NotSame.f \
+             src/asserts/Null.f \
+             src/asserts/Same.f \
+             src/asserts/True.f \
+             src/conditions/ArrayEquals.f \
+             src/conditions/Equals.f \
+             src/conditions/False.f \
+             src/conditions/NotNull.f \
+             src/conditions/NotSame.f \
+             src/conditions/Null.f \
+             src/conditions/Same.f \
+             src/conditions/True.f \
+             src/core/UnitContext.f \
+             src/core/UnitRunner.f \
+             src/core/UnitSuite.f \
+             src/expects/ArrayEquals.f \
+             src/expects/Equals.f \
+             src/expects/Fail.f \
+             src/expects/False.f \
+             src/expects/NotNull.f \
+             src/expects/NotSame.f \
+             src/expects/Null.f \
+             src/expects/Same.f \
+             src/expects/True.f \
+             src/logger/ConsoleLogger.f \
+             src/logger/JSONLogger.f \
+             src/logger/UnitLogger.f
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
-EXECUTABLE = Unit.dlyb
+EXECUTABLE = libfunit.o # Unit.dlyb
 
 all: $(SOURCES) $(EXECUTABLE)
 

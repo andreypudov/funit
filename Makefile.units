@@ -8,13 +8,12 @@
 #
 
 FC      = ifort
-FFLAGS  = -O0 -xHost -c -g3 -debug all -ftrapuv -module modules -check all -free -std15 -standard-semantics -warn all -warn nounused -WB -Winline -gen-interfaces -warn interfaces -traceback -fstack-security-check -fstack-protector-all
-LDFLAGS = -save-temps out/\#Unit.dlyb
+FFLAGS  = -O0 -c -module modules -free -std18 -standard-semantics -fPIC \
+          -g3 -debug all -check all -warn all -warn nounused -WB -Winline -gen-interfaces -warn interfaces -traceback -fstack-security-check -fstack-protector-all -ftrapuv
+LDFLAGS = -save-temps out/\#libfunit.o # #Unit.dlyb
 
-INTERFACES =
 CLASSES    = units/conditions/Conditions.f units/Units.f
-SOURCES    = $(INTERFACES) \
-	         $(shell find units -name '*.f' $(patsubst %, ! -path %, $(CLASSES)) | sed 's/^\.\///' | sort) \
+SOURCES    = $(shell find units -name '*.f' $(patsubst %, ! -path %, $(CLASSES)) | sed 's/^\.\///' | sort) \
 	         $(CLASSES)
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
 LIBRARY    = \#Unit.dlyb

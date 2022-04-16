@@ -27,8 +27,10 @@ contains
 
         call self%UnitSuite%init('Example suite')
 
-        call self%add(true_normal,   'Normal case')
-        call self%add(true_negative, 'Negative case')
+        call self%add(assertTrue_trueConstant_true, 'Positive assert case')
+        call self%add(expectTrue_trueConstant_true, 'Positive expect case')
+        ! call self%add(assertTrue_trueConstant_fail, 'Failing assert case')
+        ! call self%add(expectTrue_trueConstant_fail, 'Failing expect case')
     end subroutine
 
     subroutine clean(self)
@@ -37,24 +39,35 @@ contains
         call self%UnitSuite%clean()
     end subroutine
 
-    subroutine true_normal(self)
+    subroutine assertTrue_trueConstant_true(self)
         class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
-        type(Expects) expects
 
         ! succesfull assert call
         call asserts%true(.true.)
-
-        call expects%true(.false.)
-
-        ! failure assert call
-        ! call asserts%true(.false., 'True condition')
     end subroutine
 
-    subroutine true_negative(self)
+    subroutine expectTrue_trueConstant_true(self)
+        class(UnitSuite), intent(in out) :: self
+        type(Expects) expects
+
+        ! succesfull expect call
+        call expects%true(.true.)
+    end subroutine expectTrue_trueConstant_true
+
+    subroutine assertTrue_trueConstant_fail(self)
         class(UnitSuite), intent(in out) :: self
         type(Asserts) asserts
 
-        call asserts%false(.false.)
+        ! failure assert call
+        call asserts%true(.false., 'True condition')
+    end subroutine assertTrue_trueConstant_fail
+
+    subroutine expectTrue_trueConstant_fail(self)
+        class(UnitSuite), intent(in out) :: self
+        type(Expects) expects
+
+        ! failure assert call
+        call expects%true(.false., 'True condition')
     end subroutine
 end module

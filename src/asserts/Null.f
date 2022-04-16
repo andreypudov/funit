@@ -7,7 +7,7 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-submodule (Unit) NullAsserts
+submodule (FUnit) NullAsserts
 
     use Conditions
 

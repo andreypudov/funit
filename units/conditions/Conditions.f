@@ -9,7 +9,7 @@
 
 module ConditionsRunnerUnit
 
-    use Unit
+    use FUnit
 
     use ArrayEqualsConditionUnit
     use EqualsConditionUnit

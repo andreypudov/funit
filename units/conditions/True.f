@@ -9,7 +9,7 @@
 
 module TrueConditionUnit
 
-    use Unit
+    use FUnit
     use Conditions
 
     implicit none

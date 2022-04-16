@@ -9,7 +9,7 @@
 
 module EqualsConditionUnit
 
-    use Unit
+    use FUnit
     use Conditions
 
     implicit none

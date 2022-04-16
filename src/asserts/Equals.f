@@ -7,7 +7,7 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-submodule (Unit) EqualsAsserts
+submodule (FUnit) EqualsAsserts
 
     use Conditions
 

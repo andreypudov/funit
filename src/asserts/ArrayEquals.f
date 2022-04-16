@@ -7,7 +7,7 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-submodule (Unit) ArrayEqualsAsserts
+submodule (FUnit) ArrayEqualsAsserts
 
     use Conditions
 

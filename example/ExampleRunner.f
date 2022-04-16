@@ -9,7 +9,7 @@
 
 module ExampleRunnerUnit
 
-    use Unit
+    use FUnit
 
     use ExampleUnit
 

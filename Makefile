@@ -13,7 +13,7 @@ LDFLAGS = -shared -save-temps # -dynamiclib
 
 SOURCES    = src/utils/Arguments.f \
              src/logger/Logger.f \
-             src/Unit.f \
+             src/FUnit.f \
              src/conditions/Conditions.f \
              src/asserts/ArrayEquals.f \
              src/asserts/Equals.f \
@@ -48,7 +48,7 @@ SOURCES    = src/utils/Arguments.f \
              src/logger/JSONLogger.f \
              src/logger/UnitLogger.f
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
-EXECUTABLE = libfunit.o # Unit.dlyb
+EXECUTABLE = libfunit.o # FUnit.dlyb
 
 all: $(SOURCES) $(EXECUTABLE)
 

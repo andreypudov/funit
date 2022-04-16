@@ -9,7 +9,7 @@
 
 module ExampleUnit
 
-    use Unit
+    use FUnit
 
     implicit none
     private
@@ -48,7 +48,7 @@ contains
         call expects%true(.false.)
 
         ! failure assert call
-        call asserts%true(.false., 'True condition')
+        ! call asserts%true(.false., 'True condition')
     end subroutine
 
     subroutine true_negative(self)

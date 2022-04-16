@@ -9,7 +9,7 @@
 
 module NullConditionUnit
 
-    use Unit
+    use FUnit
     use Conditions
 
     implicit none

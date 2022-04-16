@@ -7,7 +7,7 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-submodule (Unit) UnitSuite
+submodule (FUnit) UnitSuite
 
     implicit none
 

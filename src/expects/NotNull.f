@@ -7,7 +7,7 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-submodule (Unit) NotNullExpects
+submodule (FUnit) NotNullExpects
 
     use Conditions
 

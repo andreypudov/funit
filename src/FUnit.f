@@ -7,7 +7,7 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-module Unit
+module FUnit
 
     use Arguments
     use Logger

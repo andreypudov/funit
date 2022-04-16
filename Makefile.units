@@ -10,14 +10,14 @@
 FC      = ifort
 FFLAGS  = -O0 -c -module modules -free -std18 -standard-semantics -fPIC \
           -g3 -debug all -check all -warn all -warn nounused -WB -Winline -gen-interfaces -warn interfaces -traceback -fstack-security-check -fstack-protector-all -ftrapuv
-LDFLAGS = -save-temps out/\#libfunit.o # #Unit.dlyb
+LDFLAGS = -save-temps out/\#libfunit.o # out/\#FUnit.dlyb
 
 CLASSES    = units/conditions/Conditions.f units/Units.f
 SOURCES    = $(shell find units -name '*.f' $(patsubst %, ! -path %, $(CLASSES)) | sed 's/^\.\///' | sort) \
 	         $(CLASSES)
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
-LIBRARY    = \#Unit.dlyb
-EXECUTABLE = \@Unit
+LIBRARY    = \#libfunit.o # \#FUnit.dlyb
+EXECUTABLE = \@funit
 
 all: $(LIBRARY) $(SOURCES) $(EXECUTABLE)
 

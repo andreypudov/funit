@@ -14,7 +14,7 @@ LDFLAGS = -shared -save-temps # -dynamiclib
 
 SOURCES    = src/utils/Arguments.f \
              src/logger/Logger.f \
-             src/Unit.f \
+             src/FUnit.f \
              src/conditions/Conditions.f \
              src/asserts/ArrayEquals.f \
              src/asserts/Equals.f \

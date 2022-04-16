@@ -8,14 +8,14 @@
 #
 
 FC      = ifort
-FFLAGS  = -module ../modules -free -std15 -standard-semantics
-LDFLAGS = -save-temps ../out/Unit.dlyb
+FFLAGS  = -module ../modules -free -std18 -standard-semantics
+LDFLAGS = -save-temps ../out/libfunit.o # ../out/Unit.dlyb
 
 SOURCES    = ExampleSuite.f ExampleRunner.f Example.f
 OBJECTS    = $(patsubst %.f, %.o, $(SOURCES))
-EXECUTABLE = Example
+EXECUTABLE = example
 
-# DYLD_LIBRARY_PATH=../out:$DYLD_LIBRARY_PATH ./Example
+# DYLD_LIBRARY_PATH=../out:$DYLD_LIBRARY_PATH ./example
 
 all: $(SOURCES) $(EXECUTABLE)
 

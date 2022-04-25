@@ -7,6 +7,8 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
+#include "FUnit.f"
+
 module ExampleUnit
 
     use FUnit
@@ -19,11 +21,21 @@ module ExampleUnit
     contains
         procedure, pass :: init
         procedure, pass :: clean
+        final :: destructor1
     end type
+
+    interface ExampleSuite
+        procedure :: constructor
+    end interface
 contains
+    subroutine constructor(self)
+        type(ExampleSuite), intent(in out) :: self
+        print *, 'INIT / Examlpe'
+    end subroutine
+
     subroutine init(self, name)
-        class(ExampleSuite),   intent(in out) :: self
-        character(len=*), optional, intent(in)     :: name
+        class(ExampleSuite),    intent(in out) :: self
+        character(len=*), optional, intent(in) :: name
 
         call self%UnitSuite%init('Example suite')
 
@@ -36,7 +48,13 @@ contains
     subroutine clean(self)
         class(ExampleSuite), intent(in out) :: self
 
+        print *, 'CLEAN / Examlpe'
         call self%UnitSuite%clean()
+    end subroutine
+
+    subroutine destructor1(self)
+        type(ExampleSuite), intent(in out) :: self
+        print *, 'FINAL / Examlpe'
     end subroutine
 
     subroutine assertTrue_trueConstant_true(self)

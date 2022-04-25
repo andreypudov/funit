@@ -876,4 +876,6 @@ module FUnit
             class(UnitCaseEntry), pointer, intent(in) :: case
         end subroutine
     end interface
+
+    ! type(Asserts), public :: Asserts
 end module

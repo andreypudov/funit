@@ -8,16 +8,21 @@
 #
 
 FC      = ifort
-FFLAGS  = -module ../modules -free -std18 -standard-semantics
-LDFLAGS = -save-temps ../out/libfunit.o # ../out/Unit.dlyb
+FFLAGS  = -module ../../modules -free -std18 -standard-semantics
+LDFLAGS = -save-temps ../../out/libfunit.o # ../out/Unit.dlyb
 
 SOURCES    = ExampleSuite.f ExampleRunner.f Example.f
 OBJECTS    = $(patsubst %.f, %.o, $(SOURCES))
+LIBRARY    = \#libfuit.o
 EXECUTABLE = example
 
 # DYLD_LIBRARY_PATH=../out:$DYLD_LIBRARY_PATH ./example
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(LIBRARY) $(SOURCES) $(EXECUTABLE)
+
+$(LIBRARY):
+	@echo 'Compiling library...'
+	@$(MAKE) -C ../../ -f Makefile.debug
 
 $(EXECUTABLE): $(OBJECTS)
 	@echo 'Linking to $@...'

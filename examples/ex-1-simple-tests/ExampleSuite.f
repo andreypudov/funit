@@ -21,12 +21,7 @@ module ExampleUnit
     contains
         procedure, pass :: init
         procedure, pass :: clean
-        final :: destructor1
     end type
-
-    interface ExampleSuite
-        procedure :: constructor
-    end interface
 contains
     subroutine constructor(self)
         type(ExampleSuite), intent(in out) :: self
@@ -50,11 +45,6 @@ contains
 
         print *, 'CLEAN / Examlpe'
         call self%UnitSuite%clean()
-    end subroutine
-
-    subroutine destructor1(self)
-        type(ExampleSuite), intent(in out) :: self
-        print *, 'FINAL / Examlpe'
     end subroutine
 
     subroutine assertTrue_trueConstant_true(self)

@@ -14,6 +14,7 @@ module ExampleRunnerUnit
     use ExampleUnit
 
     implicit none
+    private
 
     type, extends(UnitRunner), public :: ExampleRunner
     private
@@ -32,7 +33,6 @@ contains
         call self%UnitRunner%init('An example for Unit testing library')
 
         allocate(exampleSuite)
-
         self%exampleSuite => exampleSuite
 
         call self%add(self%exampleSuite)

@@ -16,18 +16,8 @@ module ExampleUnit
     implicit none
     private
 
-    type, extends(UnitSuite), public :: ExampleSuite
-    private
-    contains
-        procedure, pass :: init
-        procedure, pass :: clean
-    end type
+    funit_suite(ExampleSuite)
 contains
-    subroutine constructor(self)
-        type(ExampleSuite), intent(in out) :: self
-        print *, 'INIT / Examlpe'
-    end subroutine
-
     subroutine init(self, name)
         class(ExampleSuite),    intent(in out) :: self
         character(len=*), optional, intent(in) :: name
@@ -43,7 +33,6 @@ contains
     subroutine clean(self)
         class(ExampleSuite), intent(in out) :: self
 
-        print *, 'CLEAN / Examlpe'
         call self%UnitSuite%clean()
     end subroutine
 

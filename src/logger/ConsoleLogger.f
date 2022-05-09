@@ -70,7 +70,11 @@ contains
                 title       = name
 
                 ! no output for success cases
-                return
+                ! return
+
+                if (len(trim(details)) > 0) then
+                    title  = name // ' [' // trim(adjustl(details)) // ']'
+                end if
             else
                 self%failed = self%failed + 1
                 buffer      = 'FAILED'

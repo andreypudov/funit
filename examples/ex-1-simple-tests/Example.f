@@ -7,6 +7,8 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
+#include "FUnit.f"
+
 program Example
 
     use ExampleRunnerUnit
@@ -14,8 +16,5 @@ program Example
     implicit none
 
     type(ExampleRunner) :: runner
-
-    call runner%init()
-    call runner%run()
-    call runner%clean()
+    funit_launch(runner)
 end program

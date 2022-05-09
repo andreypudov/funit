@@ -49,7 +49,7 @@ SOURCES    = src/utils/Arguments.f \
              src/logger/JSONLogger.f \
              src/logger/UnitLogger.f
 OBJECTS    = $(patsubst %.f, out/%.o, $(SOURCES))
-EXECUTABLE = \#libfunit.o # \#Unit.dlyb
+EXECUTABLE = libfunit.o # Unit.dlyb
 
 all: $(SOURCES) $(EXECUTABLE)
 

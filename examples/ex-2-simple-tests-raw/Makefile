@@ -13,8 +13,8 @@ LDFLAGS = -save-temps ../../out/libfunit.o # ../out/Unit.dlyb
 
 SOURCES    = ExampleSuite.f ExampleRunner.f Example.f
 OBJECTS    = $(patsubst %.f, %.o, $(SOURCES))
-LIBRARY    = \#libfuit.o
-EXECUTABLE = example
+LIBRARY    = libfunit.o
+EXECUTABLE = ex-2-simple-tests-raw
 
 # DYLD_LIBRARY_PATH=../out:$DYLD_LIBRARY_PATH ./example
 

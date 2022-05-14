@@ -32,6 +32,8 @@ contains
         class(UnitSuite), intent(in out)  :: self
         type(UnitCaseEntry), pointer      :: entry
 
+        print *, 'UnitSuite / CLEAN'
+
         do while (associated(self%list))
             entry => self%list
             self%list => self%list%next

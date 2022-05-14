@@ -7,8 +7,6 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-#include "FUnit.f"
-
 module ExampleUnit
 
     use FUnit
@@ -16,8 +14,13 @@ module ExampleUnit
     implicit none
     private
 
-    funit_suite(ExampleSuite)
-contains
+    type, extends(UnitSuite), public :: ExampleSuite
+    private
+    contains
+        procedure, pass :: init
+        procedure, pass :: clean
+    end type
+  contains
     subroutine init(self, name)
         class(ExampleSuite),    intent(in out) :: self
         character(len=*), optional, intent(in) :: name
@@ -33,38 +36,35 @@ contains
     subroutine clean(self)
         class(ExampleSuite), intent(in out) :: self
 
+        print *, 'ExampleSuite / CLEAN'
         call self%UnitSuite%clean()
     end subroutine
 
     subroutine assertTrue_trueConstant_true(self)
         class(UnitSuite), intent(in out) :: self
-        type(Asserts) asserts
 
         ! succesfull assert call
-        call asserts%true(.true.)
+        call Assert%true(.true.)
     end subroutine
 
     subroutine expectTrue_trueConstant_true(self)
         class(UnitSuite), intent(in out) :: self
-        type(Expects) expects
 
         ! succesfull expect call
-        call expects%true(.true.)
+        call Expect%true(.true.)
     end subroutine expectTrue_trueConstant_true
 
     subroutine assertTrue_trueConstant_fail(self)
         class(UnitSuite), intent(in out) :: self
-        type(Asserts) asserts
 
         ! failure assert call
-        call asserts%true(.false., 'True condition')
+        call Assert%true(.false., 'True condition')
     end subroutine assertTrue_trueConstant_fail
 
     subroutine expectTrue_trueConstant_fail(self)
         class(UnitSuite), intent(in out) :: self
-        type(Expects) expects
 
         ! failure assert call
-        call expects%true(.false., 'True condition')
+        call Expect%true(.false., 'True condition')
     end subroutine
 end module

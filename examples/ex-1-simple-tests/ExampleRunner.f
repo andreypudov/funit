@@ -7,8 +7,6 @@
 ! See LICENSE.txt in the project root for license information.
 !
 
-#include "FUnit.f"
-
 module ExampleRunnerUnit
 
     use FUnit
@@ -18,9 +16,13 @@ module ExampleRunnerUnit
     implicit none
     private
 
-    funit_runner(ExampleRunner)
-
-    class(UnitSuite), pointer :: exampleSuite1
+    type, extends(UnitRunner), public :: ExampleRunner
+    private
+        class(UnitSuite), pointer :: exampleSuite
+    contains
+        procedure, pass :: init
+        procedure, pass :: clean
+    end type
 contains
     subroutine init(self, name)
         class(ExampleRunner), intent(in out)   :: self
@@ -31,9 +33,9 @@ contains
         call self%UnitRunner%init('An example for Unit testing library')
 
         allocate(exampleSuite)
-        exampleSuite1 => exampleSuite
+        self%exampleSuite => exampleSuite
 
-        call self%add(exampleSuite1)
+        call self%add(self%exampleSuite)
     end subroutine
 
     subroutine clean(self)
